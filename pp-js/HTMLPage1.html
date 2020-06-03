@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="./jquery.js"></script>
+    <script src="./jquery-cs-0.9a.js"></script>
+    
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=e1bdf5fdfd17fbf75b0eb4abe7d7b4eb&libraries=services"></script>
+    
+
+    <script>
+        $(document).init(function () {
+
+            console.log({ 'k1': 'value' }.hasOwnProperty('k111'));
+
+            console.log($('input[type=text][data-vfromnum=1]').data('vfromnum'));
+
+            //plugin 정보
+            console.log($.cs.getInfo());
+
+            //널 검사
+            console.log($.cs.isNull(null));
+            console.log($.cs.isNull(undefined));
+            console.log($.cs.isNull(1234));
+
+            //숫자에 천단위 콤마 붙이기
+            console.log($.cs.addComma(123456));
+
+            //엔터키 이벤트 처리
+            $.cs.bindEnterKey($('[type=search]'), function () {
+                console.log('enter');
+            });
+
+            //첫문자만 대문자로 변환
+            console.log($.cs.capitalize('abcd'));
+
+            //배열을 구분자(콤마)로 붙여 문자열로 만들기
+            console.log($.cs.concat(',', [1, 2, 3, 4, 'a', 'b']));
+
+            //폼 생성
+            console.log('엘리먼트없이 폼만 생성', $.cs.createForm());
+            console.log('폼 생성 후 엘리먼트 2개 추가', $.cs.createForm([{ name: 'n', value: 'v' }, { type: 'search', name: '네임', value: '값' }]));
+
+            //엘리먼트 생성
+            console.log($.cs.createElement({ id: 'id', name: 'name', value: 'value' }));
+
+            //임의의 문자열 생성
+            console.log('파라미터 없는 경우', $.cs.createUid());
+            console.log('파라미터 있는 경우', $.cs.createUid('pre'));
+            
+            //json에 키 존재하는지 검사
+            console.log('키 존재시', $.cs.containsKey({'k1':'v1', 'k2':'v2'}, 'k1'));
+            console.log('키 미존재시', $.cs.containsKey({'k1':'v1', 'k2':'v2'}, 'k3'));
+            
+			//문자열에서 콤마 제거
+            console.log($.cs.deleteComma('123,456'));
+
+            //java의 endsWith와 동일 기능
+            console.log($.cs.endsWith('abcd.do', '.do'));
+            console.log($.cs.endsWith('abcd', 'bc'));
+
+            //공백인지 검사
+            console.log('문자열 공백인 경우', $.cs.isEmpty(''));
+            console.log('값이 있는 경우', $.cs.isEmpty(1));
+            console.log('배열이 공백인 경우', $.cs.isEmpty([]));
+
+            //오라클의 lpad같은 함수
+            console.log($.cs.lpad(1234, 10, '0'));
+            console.log($.cs.lpad('abcd', 10, '0'));
+
+            //오라클의 nvl같은 함수
+            console.log('널이 아닐때', $.cs.nvl('a', 'abcd'));
+            console.log('널일때', $.cs.nvl(null, 'abcd'));
+            console.log('널일때', $.cs.nvl(undefined, 'abcd'));
+
+            //이메일 형식 검사
+            console.log('이메일 형식일때', $.cs.checkEmail('a@a.com'));
+            console.log('이메일 형식이 아닐때', $.cs.checkEmail('s'));
+
+            //날짜 더하기
+            console.log('날짜 더하기', $.cs.addDays('20190130', 10));
+            console.log('날짜 빼기', $.cs.addDays('20190130', -10));
+            console.log('날짜 더하기', $.cs.addDays('2019-01-30', 10));
+            console.log('날짜 빼기', $.cs.addDays('2019-01-30', -10));
+
+            //달(월) 더하기
+            console.log('달 더하기', $.cs.addMonths('20190130', 10));
+            console.log('달 빼기', $.cs.addMonths('20190130', -10));
+            console.log('달 더하기', $.cs.addMonths('2019-01-30', 10));
+            console.log('달 빼기', $.cs.addMonths('2019-01-30', -10));
+
+            //오늘 날짜
+            console.log($.cs.getToday());
+            console.log($.cs.getToday(8));
+            console.log($.cs.getToday(12));
+            console.log($.cs.getToday(14));
+
+            //날짜 형식
+            console.log($.cs.formatDate('20190115123456', 8));
+            console.log($.cs.formatDate('20190115123456', 12));
+            console.log($.cs.formatDate('20190115123456', 14));
+            
+            //날짜 비교
+            console.log('날짜형으로 비교', $.cs.checkDateFromTo(new Date(), new Date()));
+            console.log('문자형으로 비교#1', $.cs.checkDateFromTo('2019-01-01', '2019-01-31'));
+            console.log('문자형으로 비교#2', $.cs.checkDateFromTo('20190131', '20190101'));
+
+            //배열을 key/value json으로 변환. serializeArray()결과를 key/value json으로 변환할 때 사용
+            console.log($.cs.arrayToKVJson([{ name: 'n1', value: 'v1' }, { name: 'n2', value: 'v2' }]));
+
+            //데이터가 없는 테이블에 '데이터가 없습니다' 메시지 표시하기
+			$.cs.noDataFound($('table'));
+			
+            //숫자 선후관계 검사
+            $.cs.validateNumFromTo($('[data-vfromnum]'));
+
+            //날짜 선후관계 검사
+            $.cs.validateDateFromTo($('[data-vfromdate]'));			
+            			
+			//필수입력 항목 검사
+            $.cs.validateReq($('[data-vreq]'));
+
+            //숫자 항목 검사
+            $.cs.validateNum($('[data-vnum]'));
+
+            //날짜 항목 검사
+            $.cs.validateDate($('[data-vdate]'));
+
+        });
+
+    </script>
+</head>
+<body>
+    
+	<input type="search" name="searchName"  value=""  title="아이디" data-vreq >
+	
+	<input type="text" name="id"  value="" title="아이디" data-vreq >
+	<input type="text" name="age"  value="1" title="나이" data-vnum >
+	<input type="text" name="age"  value="2" title="나이" data-vnum >
+	
+	<input type="text" value="2019-01-10" title="일자" data-vdate>
+	
+	<input type="text" value="1" title="온도" data-vfromnum="1">
+	<input type="text" value="-10" title="온도" data-vtonum="1">
+	
+	<input type="text" value="20190110" title="기간" data-vfromdate="1">
+	<input type="text" value="20190101" title="기간" data-vtodate="1">
+	
+	
+	<input type="file">
+	<input type="file">
+	<button onclick="$.cs.checkFileSize($('[type=file]'))">check file size</button>
+	<button onclick="$.cs.checkFileExt($('[type=file]'))">check file ext</button>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>id</th>
+				<th>name</th>
+			</tr>
+		</thead>
+	</table>
+	
+	<div id="map"></div>
+</body>
+</html>
