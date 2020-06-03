@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dev.hyunlab</groupId>
+    <artifactId>pp-parent</artifactId>
+    <version>1.7.0</version>
+    <relativePath>..\pp-parent\pom.xml</relativePath>
+  </parent>
+  <artifactId>pp-core</artifactId>
+  <name>pp-core</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit-dep</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+  
+<!--   <reporting>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-javadoc-plugin</artifactId>
+  			<version>3.0.0</version>
+  			
+  			<configuration>
+  				<skip>true</skip>
+  				<doclet>CsDoclet</doclet>
+  				<docletPath>C:\Users\pp\eclipse-workspace\CsDoclet\bin\</docletPath>
+  				<author>false</author>
+  				<verbose>true</verbose>
+  				<debug>true</debug>
+  				<bottom>c</bottom>
+  			</configuration>
+  		</plugin>
+  	</plugins>
+  </reporting> -->
+	<version>1.8.2004</version>
+	
+	<!-- <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build> -->
+</project>
