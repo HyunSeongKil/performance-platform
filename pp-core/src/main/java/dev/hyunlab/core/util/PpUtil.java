@@ -293,6 +293,24 @@ public class PpUtil {
 		}
 		
 		//
+		Class<?> superclz = clz.getSuperclass();
+		if(null == superclz) {
+			return map;
+		}
+		
+		//
+		fields = superclz.getDeclaredFields();
+		for(Field f : fields) {
+			try {
+				f.setAccessible(true);
+				
+				map.put(f.getName(), f.get(obj));
+			} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				LOGGER.error("{}",e);
+			}
+		}
+		
+		//
 		return map;
 	}
 	
