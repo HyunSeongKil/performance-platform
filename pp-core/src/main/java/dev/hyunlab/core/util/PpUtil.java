@@ -292,7 +292,7 @@ public class PpUtil {
 			}
 		}
 		
-		//
+		//부모 클래스
 		Class<?> superclz = clz.getSuperclass();
 		if(null == superclz) {
 			return map;
