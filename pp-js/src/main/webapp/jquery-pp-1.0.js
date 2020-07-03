@@ -881,6 +881,74 @@
             //
             return json;
         },
+
+
+
+        /**
+         * arrOfNameValue를 key/value json으로 변환
+         * @param {array} arrOfNameValue  [{'name':'string', 'value':'string'},...]
+         */
+        _convertArrayToJson : function(arrOfNameValue){
+            let p={};
+            //
+            for(let i=0; i<arrOfNameValue.length; i++){
+                let json = arrOfNameValue[i];
+                let p2 = _convertNameValueToJson(json.name, json.value);
+                //
+                p = $.extend(p, p2);
+            }
+        },
+
+
+
+        /**
+         * objectOfNameValue를 key/value json으로 변환
+         * @param {object} objectOfNameValue {'name':'string', 'value':'string'}
+         */
+        _convertObjectToJson : function(objectOfNameValue){
+            return _convertNameValueToJson(objectOfNameValue.name, objectOfNameValue.value);
+        },
+
+
+        /**
+         * name,value를 key/value json으로 변환
+         * @param {string} name 
+         * @param {string} value 
+         */
+        _convertNameValueToJson : function(name, value){
+            let k = name;
+            let v = value;
+            //
+            return {k:v};
+        },
+
+        /**
+         *  case1   [{'name':'string, 'value':'string'},...]
+         *  case2   {'name':'string', 'value':'string'}
+         *  case3   name, value
+         */
+        convertNameValueToJson : function(){
+            //error
+            if(0 === arguments.length){
+                return {};
+            }
+
+
+            //case3
+            if(2 === arguments.length){
+                return _convertNameValueToJson(arguments[0], arguments[1]);
+            }
+
+            //
+            if(Array.isArray(arguments[0])){
+                //case1
+                return _convertArrayToJson(arguments[0]);
+
+            }else{
+                //case2
+                return _convertObjectToJson(arguments[0]);
+            }
+        },
         
         /**
          * 날짜형식만 입력 가능
