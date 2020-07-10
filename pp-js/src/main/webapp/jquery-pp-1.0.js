@@ -1,4 +1,4 @@
-﻿// JavaScript source code
+// JavaScript source code
 /**
  * cs 공통 javascript 라이브러리
  * jquery의 plugin
@@ -180,6 +180,57 @@
                 callbackFunction(dataTransferItem);
         	});
         },
+        
+        
+        /**
+         * json의 key/value로 html의 value값 바인드하기
+         * @param opts {yn:bool}
+         * 	yn : true(Y/N으로 표시), false(예/아니오로 표시)
+         * @history
+         * 	20200515	init
+         */
+        bindElementValueFromJson : function($holders, json, opts){
+        	let opt = opts?opts:{};
+        	
+        	//
+        	$holders.each(function(i,item){
+        		let $holder = $(item);
+        		
+        		let keys = Object.keys(json);
+        		for(let i=0; i<keys.length; i++){
+        			let k = keys[i];
+        			let v = json[k];
+        			
+        			//
+        			let $el = $holder.find('[name='+k+']') || $holder.find('#'+k);
+        			if(null == $el || undefined == $el || 0 == $el.length){
+        				continue;
+        			}
+        			
+        			//
+        			if('INPUT' === $el.prop('tagName')){
+        				//TODO checkbox
+        				
+        				
+        				if('Y' === v && !opt.yn){
+        					v = "예";
+        				}
+        				if('N' === v && !opt.yn){
+        					v = "아니오";
+        				}
+        				
+        				$el.val(v);
+        				continue;
+        			}
+        			
+        			//
+        			if('TEXTAREA' === $el.prop('tagName')){
+        				$el.html(v);
+        				continue;
+        			}
+        		}
+        	});
+        },
 
 
         /**
@@ -261,8 +312,10 @@
 
         /**
          * 엘리먼트 생성
-         * @param {Object} attrJson 추가 옵션. 키는 엘리먼트의 attribute가 되고, 값은 엘리먼트의 값이 됨. ex){'name':'이름',value:'값'}
+         * @param {Object} attrJson 추가 옵션. 키는 엘리먼트의 attribute가 되고, 값은 엘리먼트의 값이 됨. ex){'name':'이름',value:'값'} or {'key':'value'}
          * @return {Object} 생성된 엘리먼트
+         * @history
+         * 	20200514	{'key':'value'}처리 로직 추가
          */
         createElement: function (attrJson) {            
             //
@@ -270,12 +323,50 @@
            
             //
             let $el = $('<input type="'+ty+'">');
-            for (let k in attrJson) {
-                $el.attr(k, attrJson[k]);
+            
+            //
+            if(this._hasNameKey(attrJson)){
+            	//json의 key는 element의 attribute가 되고, value는 element의 value가 됨
+            	for (let k in attrJson) {
+            		$el.attr(k, attrJson[k]);
+            	}
+            	
+            }else{
+            	//json의 key는 element의 name's value가 되고, value는 value's value가 됨
+            	for(let k in attrJson){
+            		$el.attr('name', k);
+            		$el.attr('value', attrJson[k]);
+            	}
             }
 
             //
             return $el;
+        },
+        
+        
+        
+        /**
+         * json에 키 이름중에 name이 있는지 검사
+         * @param json json object
+         * @return true(키중에 name이라는게 존재) / false
+         * @history
+         * 	20200514	init
+         */
+        _hasNameKey : function(json){
+        	if(null == json || undefined == json){
+        		return false;
+        	}
+        	
+        	let b = false;
+        	for(let k in json){
+        		if('name' === k){
+        			b = true;
+        			break;
+        		}
+        	}
+        	
+        	//
+        	return b;
         },
 
         
@@ -543,6 +634,33 @@
             throw new Error('.isEmpty - only string or array');
 
         },
+        
+        
+        /**
+         * 배열 요소중에 empty가 있는지 검사
+         * @param arr
+         * @return true(배열 요소중에 하나라도 empty가 존재 or 배열이 null) / false
+         * @since
+         * 	20200518	init
+         */
+        isEmptyAny : function(arr){
+        	if(null == arr || undefined == arr){
+        		return false;
+        	}
+        	
+        	
+        	//
+        	for(let i=0; i<arr.length; i++){
+        		let d = arr[i];
+        		
+        		if(this.isEmpty(d)){
+        			return true;
+        		}
+        	}
+        	
+        	//
+        	return false;
+        },
 
 
         /**
@@ -763,6 +881,74 @@
             //
             return json;
         },
+
+
+
+        /**
+         * arrOfNameValue를 key/value json으로 변환
+         * @param {array} arrOfNameValue  [{'name':'string', 'value':'string'},...]
+         */
+        _convertArrayToJson : function(arrOfNameValue){
+            let p={};
+            //
+            for(let i=0; i<arrOfNameValue.length; i++){
+                let json = arrOfNameValue[i];
+                let p2 = _convertNameValueToJson(json.name, json.value);
+                //
+                p = $.extend(p, p2);
+            }
+        },
+
+
+
+        /**
+         * objectOfNameValue를 key/value json으로 변환
+         * @param {object} objectOfNameValue {'name':'string', 'value':'string'}
+         */
+        _convertObjectToJson : function(objectOfNameValue){
+            return _convertNameValueToJson(objectOfNameValue.name, objectOfNameValue.value);
+        },
+
+
+        /**
+         * name,value를 key/value json으로 변환
+         * @param {string} name 
+         * @param {string} value 
+         */
+        _convertNameValueToJson : function(name, value){
+            let k = name;
+            let v = value;
+            //
+            return {k:v};
+        },
+
+        /**
+         *  case1   [{'name':'string, 'value':'string'},...]
+         *  case2   {'name':'string', 'value':'string'}
+         *  case3   name, value
+         */
+        convertNameValueToJson : function(){
+            //error
+            if(0 === arguments.length){
+                return {};
+            }
+
+
+            //case3
+            if(2 === arguments.length){
+                return _convertNameValueToJson(arguments[0], arguments[1]);
+            }
+
+            //
+            if(Array.isArray(arguments[0])){
+                //case1
+                return _convertArrayToJson(arguments[0]);
+
+            }else{
+                //case2
+                return _convertObjectToJson(arguments[0]);
+            }
+        },
         
         /**
          * 날짜형식만 입력 가능
@@ -931,7 +1117,8 @@
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json;charset=UTF-8',
-                url: actionUrl,
+                dataType: 'json',
+                url: actionUrl.replace(/\/\//gi, '/'),
                 data: strOfJson,
                 async: bAsync,
                 beforeSend: function () {
@@ -941,7 +1128,16 @@
                 },
                 success: function (res) {
                     if ('function' === typeof (callbackSuccess)) {
-                        callbackSuccess(res);
+                    	if('string' === typeof(res)){
+                    		let s = res.trim();
+                    		if('[' === s[0] || '{' === s[0]){
+                    			callbackSuccess(JSON.parse(s));
+                    		}else{
+                    			callbackSuccess(res);
+                    		}
+                    	}else{
+                    		callbackSuccess(res);
+                    	}
                     }
                 },
                 complete: function () {
@@ -954,7 +1150,7 @@
                         callbackError(JSON.parse(xhr.responseText), textStatus, error);
                     }
                     else {
-                    	$.cs.log(xhr, textStatus, error);
+                    	$.pp.log(xhr, textStatus, error);
                         alert('처리중 오류가 발생했습니다.');
                     }
                 }
@@ -964,17 +1160,102 @@
         /**
          * 폼 생성 & get방식으로 전송
          * @param {*} actionUrl 
-         * @param {*} listOfJson [{'name':'', 'value':''},...]
+         * @param {*} arrayOrObject [{'name':'', 'value':''},...] or {'key':'value',...}
          * @history
          *  0702    init
+         *  20200514	refactoring
          */
-        submitGet : function(actionUrl, listOfJson){
-            let $f = this.createForm(listOfJson);
-            $('body').append($f);
-
-            $f.action = actionUrl;
-            $f.method = 'get';
-            $f.submit();
+        submitGet : function(actionUrl, arrayOrObject){
+            this.submit('get', actionUrl, arrayOrObject);
+        },
+        
+        
+        /**
+         * 폼 생성 & post방식으로 전송
+         * @param arrayOrObject	ex)[{'name':'', 'value':''},...] or {'key':'value',...}
+         * @history
+         * 	20200514	init
+         */
+        submitPost : function(actionUrl, arrayOrObject){
+        	this.submit('post', actionUrl, arrayOrObject);
+        },
+        
+        
+        
+        /**
+         * 폼 생성 & 전송
+         * @param mthd
+         * @param actionUrl
+         * @param arrayOrObject ex)[{'name':'', 'value':''},...] or {'key':'value',...}
+         */
+        submit : function(mthd, actionUrl, arrayOrObject){
+        	let $f = this.createForm();
+        	$f = this.appendElementToForm($f, arrayOrObject);
+        	$('body').append($f);
+        	
+        	//
+        	$f.attr('action', actionUrl)
+        		.attr('method', mthd)
+        		.submit();
+        },
+        
+        
+        /**
+         * form에 input element추가하기
+         * @param	$f	폼
+         * @param	arrayOrObject	배열 또는 객체	ex)[{'name':'', 'value':''},...] or {'key':'value',...}
+         * 	배열일 경우	=> 객체의 key는 element의 attribute가 됨, value는 해당 attribute의 값이 됨
+         * 	객체일 경우 => key는 element의 name attribute가 됨. value는 name attribute의 값이 됨
+         * @return	element가 추가된 폼
+         */
+        appendElementToForm : function($f, arrayOrObject){
+        	//
+        	let _createEmptyEl = function(){
+        		return $('<input type="hidden"/>');
+        	};
+        	
+        	
+        	//배열
+        	let _fromArray = function($f, arr){
+        		for(let i=0; i<arr.length; i++){
+        			let obj = arr[i];
+        			let $el =  _createEmptyEl();
+        			
+        			for(let k in obj){
+        				$el.attr(k, obj[k]);
+        			}
+        			
+        			//
+        			$f.append($el);
+        		}
+        		
+        		//
+        		return $f;
+        	};
+        	
+        	//객체
+        	let _fromObject = function($f, obj){
+        		for(let k in obj){
+        			let $el =  _createEmptyEl();
+        			
+        			//
+        			$el.attr('name', k);
+        			$el.attr('value', obj[k]);
+        			
+        			//
+        			$f.append($el);
+        		}
+        		
+        		//
+        		return $f;
+        	};
+        	
+        	//
+        	if(Array.isArray(arrayOrObject)){
+        		return _fromArray($f, arrayOrObject);
+        	}else{
+        		return _fromObject($f, arrayOrObject);
+        	}
         },
 
 
@@ -1026,6 +1307,49 @@
 
             //
             return json;
+        },
+        
+        
+        
+        /**
+         * $selecotr하위 input의 정보(이름,값)를 array로 생성&리턴
+         * @history
+         * 	20200515	init
+         */
+        toArrayFromElement : function($selector){
+        	let arr = {};
+        	
+        	$selector.find('input').each(function(i,item){
+        		let p = {};
+        		p.name = $(item).attr('name');
+        		p.value = $(item).attr('value');
+        		
+        		//
+        		arr.push(p);
+        	});
+        	
+        	//
+        	return arr;
+        },
+        
+        /**
+         * $selecotr하위 input의 정보(이름,값)를 json object로 생성&리턴
+         * @history
+         * 	20200515	init
+         */
+        toJsonFromElement : function($selector){
+        	let p = {};
+        	
+        	$selector.find('input').each(function(i,item){
+        		let k = $(item).attr('name');
+        		let v = $(item).attr('value');
+        		
+        		//
+        		p[k] = v;
+        	});
+        	
+        	//
+        	return p;
         },
 
 

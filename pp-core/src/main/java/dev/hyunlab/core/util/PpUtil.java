@@ -3,9 +3,6 @@
  */
 package dev.hyunlab.core.util;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,8 +39,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
+import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -54,8 +50,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
 
 import dev.hyunlab.core.PpConst;
 import dev.hyunlab.core.PpTransferObject;
@@ -173,7 +167,55 @@ public class PpUtil {
 		//
 		LOGGER.debug(".bindFiles - {}", outFiles.size());
 	}
+
 	
+	/**
+	 * list안에 inStr이 존재하는지 여부. 문자열이 정확하게 같아야 함
+	 * @param list 문자열 목록
+	 * @param inStr 포함여부를 확인할 문자열
+	 * @return
+	 * @since
+	 * 	20200702	init
+	 */
+	public static boolean containsEqual(List<String> list, String inStr){
+		return contains(list, inStr, "EQ");
+	}
+	
+	/**
+	 * list안에 inStr이 존재하는지 여부. 문자열의 일부만 같아도 됨
+	 * @param list 문자열 목록
+	 * @param inStr 포함여부를 확인할 문자열
+	 * @return
+	 * @since
+	 * 	20200702	init
+	 */
+	public static boolean containsLike(List<String> list, String inStr){
+		return contains(list, inStr, "LIKE");
+	}
+	
+	/**
+	 * list안에 inStr이 존재하는지 여부
+	 * @param list 문자열 목록
+	 * @param inStr 포함되었는지 확인할 문자열
+	 * @param gbn 구분자. EQ|LIKE EQ:문자열이 정확하게 같아야 함. LIKE:문자열의 일부만 같아도 됨
+	 * @return
+	 * @since
+	 * 	20200702	init
+	 */
+	private static boolean contains(List<String> list, String inStr, String gbn){
+		for(String s : list){
+			if("EQ".equals(gbn) && s.equals(inStr)){
+				return true;
+			}
+			//
+			if("LIKE".equals(gbn) && s.contains(inStr)){
+				return true;
+			}
+		}
+
+		//
+		return false;
+	}
 	
 	/**
 	 * ceil
@@ -292,8 +334,57 @@ public class PpUtil {
 			}
 		}
 		
+		//부모 클래스
+		Class<?> superclz = clz.getSuperclass();
+		if(null == superclz) {
+			return map;
+		}
+		
+		//
+		fields = superclz.getDeclaredFields();
+		for(Field f : fields) {
+			try {
+				f.setAccessible(true);
+				
+				map.put(f.getName(), f.get(obj));
+			} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				LOGGER.error("{}",e);
+			}
+		}
+		
 		//
 		return map;
+	}
+
+
+	/**
+	 * object를 map으로 변환
+	 * @param obj 오브젝트, 보통 vo class
+	 * @param includeKeys map에 포함될 key 목록
+	 * @return
+	 * @since
+	 * 	20200702	init
+	 */
+	public static Map<String,Object> convertObjectToMap(Object obj, List<String> includeKeys){
+		Map<String,Object> map = convertObjectToMap(obj);
+		//
+		if(PpUtil.isEmpty(map)){
+			return map;
+		}
+
+		//
+		if(PpUtil.isEmpty(includeKeys)){
+			return map;
+		}
+
+		//
+		Map<String,Object> resultMap = new HashMap<>();
+		for(String k : includeKeys){
+			resultMap.put(k, map.get(k));
+		}
+
+		//
+		return resultMap;
 	}
 	
 	
