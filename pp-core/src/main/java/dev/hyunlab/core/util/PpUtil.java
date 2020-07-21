@@ -392,22 +392,28 @@ public class PpUtil {
 	
 	/**
 	 * map을 clazz의 object로 변환하기
+	 * 
 	 * @param map
 	 * @param clazz
 	 * @return
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
-	 * @since
-	 * 	0205	init
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @since 0205 init
 	 */
-	public static Object convertToObject(Map<String,Object> map, Class<?> clazz) throws InstantiationException, IllegalAccessException {
+	public static Object convertToObject(Map<String, Object> map, Class<?> clazz)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
 		if(isEmpty(map) || null == clazz) {
 			LOGGER.info("<<.convertToObject - empty map or null clazz");
 			return null;
 		}
 		
 		//
-		Object obj = clazz.newInstance();
+		Object obj = clazz.getDeclaredConstructor().newInstance();
 		
 		String k;
 		Iterator<String> iter = map.keySet().iterator();
@@ -1042,7 +1048,6 @@ public class PpUtil {
 			
 			return sdf2.format(dt);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -1920,15 +1925,22 @@ public class PpUtil {
 	
 	/**
 	 * map을 object로 변환하기
+	 * 
 	 * @param map
 	 * @param clz
 	 * @return
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Object mapToVo(Map<String,Object> map, Class clz) throws InstantiationException, IllegalAccessException {
-		Object obj = clz.newInstance();
+	public static Object mapToVo(Map<String, Object> map, Class clz)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		Object obj = clz.getDeclaredConstructor().newInstance();
 		
 		//
 		Field[] fields = clz.getDeclaredFields();
@@ -2065,7 +2077,6 @@ public class PpUtil {
 //			ImageIO.write(newImage, "jpg", ios);
 //			
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //	}
