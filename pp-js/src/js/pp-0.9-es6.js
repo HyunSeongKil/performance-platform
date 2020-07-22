@@ -12,7 +12,7 @@
 
 
  /**
-  * 
+  * 파일 확장자 enum
   */
 const Exts = Object.freeze({
     TEXT : {ext:'.txt'},
@@ -22,7 +22,7 @@ const Exts = Object.freeze({
 });
 
 /**
- * 
+ * performance platform util js
  */
 class pp {
     /**
@@ -332,6 +332,21 @@ class pp {
 
         //
         return false;
+    }
+
+
+    /**
+     * str이 한글인지 여부
+     * @param {string} str 문자열
+     * @returns {boolean} true(한글)
+     */
+    static isHangul(str){
+        var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        if( pattern_kor.test(str) ) {
+            return true
+        } else {
+            return false
+        }
     }
 
     /**
