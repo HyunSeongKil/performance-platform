@@ -303,7 +303,7 @@ class pp {
 
     /**
      * obj가 공백인지 여부
-     * @param {string | number | Array<any>|undefined} strOrArr 문자열|배열
+     * @param {string | number | Array<any>|Map|undefined} strOrArr 문자열|배열
      * @returns {boolean}
      */
     static isEmpty(strOrArr) {
@@ -314,6 +314,11 @@ class pp {
         //숫자형은 항상 false
         if ("number" === typeof strOrArr) {
             return false;
+        }
+
+        //
+        if(strOrArr instanceof Map){
+            return 0 === strOrArr.size;
         }
 
         //
