@@ -431,7 +431,7 @@ class pp {
         };
 
         //
-        let fd = FormData();
+        let fd = new FormData();
         let p = pp.toKeyValue(param);
         //
         Object.keys(p).forEach(k=>{
