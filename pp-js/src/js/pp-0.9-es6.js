@@ -367,6 +367,78 @@ class pp {
         }
     }
 
+
+    /**
+     * ajax 호출을 Promise 패턴으로 구현
+     * @param {string} url 
+     * @param {any} param 
+     * @param {any|undefined} option {'method':string|undefined, ascyn:boolean|undefined}
+     * @returns {string|any} 리턴값
+     */
+    static ajaxPromise(url, param, option) {
+        if (pp.isEmpty(url) || pp.isNull(param)) {
+            return new Promise((resolve, reject)=>{
+                reject('url or param is empty');
+            });
+        }
+
+        //
+        let defaultSetting = {
+            method: "POST",
+            async: true
+        };
+
+        //
+        let opt = pp.extend(defaultSetting, option);
+
+        //
+        let xhr = new XMLHttpRequest();
+        //
+        xhr.open(opt.method, url, opt.async);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        //
+        xhr.upload.onprogress = (e) => {
+            if (!e.lengthComputable) {
+                return;
+            }
+
+            //
+            let percentComplete = (e.loaded / e.total) * 100;
+            console.log(percentComplete + '% uploaded');
+        }
+
+        //
+        xhr.onreadystatechange = function () {
+            if (XMLHttpRequest.DONE === xhr.readyState) {
+                let v = xhr.responseText.trim();
+
+                //
+                return new Promise((resolve, reject)=>{
+                    //성공
+                    if (200 === xhr.status) {
+                        //json 형식 or text 형식
+                        v.startsWith('{') ? resolve(JSON.parse(v)) : resolve(v);
+                    } else {
+                        //실패
+                        reject(v);
+                    }
+                });
+            }
+        };
+
+        //
+        let fd = new FormData();
+        let p = pp.toKeyValue(param);
+        //
+        Object.keys(p).forEach(k=>{
+            fd.append(k, p[k]);
+        });
+
+        //
+        xhr.send(fd);
+    }
+
     /**
      *
      * @param {string} url
