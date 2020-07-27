@@ -189,6 +189,16 @@ class ppui{
 
     }
 
+
+    /**
+     * like jquery's toggleClass
+     * @param {Element} el 
+     * @param {string} className 
+     */
+    static toggleClass(el, className){
+        ppui.hasClass(el, className) ? ppui.removeClass(el, className) : ppui.addClass(el, className);
+    }
+
     /**
      * 
      * @param {Element|null} el 
