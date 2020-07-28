@@ -14,8 +14,8 @@
   * isNotNull(obj)
   * isEmpty(strOrArr)
   * isNotEmpty(strOrArr)
-  * isHangul
-  * nvl
+  * isHangul(str)
+  * nvl(obj, defaultValue)
   * ajaxPromise(url, param, option)
   * submitAjax(url, param, callbackSuccess, option)
   * checkFileExt(file, arrOfExts)
