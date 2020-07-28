@@ -319,7 +319,7 @@ var pp = /** @class */ (function () {
             return form;
         }
         //
-        var p = pp.toKeyValue(param);
+        var p = pp.toKv(param);
         //
         var keys = Object.keys(p);
         //
@@ -354,7 +354,7 @@ var pp = /** @class */ (function () {
         //
         el === null || el === void 0 ? void 0 : el.append(form);
         //
-        var p = pp.toKeyValue(param);
+        var p = pp.toKv(param);
         Object.keys(p).forEach(function (k) {
             var name = k;
             var value = p[k];
@@ -508,7 +508,7 @@ var pp = /** @class */ (function () {
         xhr.withCredentials = true;
         xhr.setRequestHeader('Content-Type', 'application/json');
         // param 형 변환
-        var p = pp.toKeyValue(param);
+        var p = pp.toKv(param);
         //
         xhr.send(p);
     };
@@ -617,15 +617,15 @@ var pp = /** @class */ (function () {
      *  case3 {'key':'value'}
      *  case4 [case3]
      */
-    pp.toKeyValue = function (param) {
+    pp.toKv = function (param) {
         var p = {};
         //case2, case4인 경우
         if (Array.isArray(param)) {
-            return pp.toKeyValueFromArray(param);
+            return pp.toKvFromArray(param);
         }
         //case1
         if (pp.isNotEmpty(param.name)) {
-            return pp.toKeyValueFromNameValue(param.name, param.value);
+            return pp.toKvFromNameValue(param.name, param.value);
         }
         //case3
         return param;
@@ -634,7 +634,7 @@ var pp = /** @class */ (function () {
      * 파리미터 형 변환
      * @param arr 파라미터 배열
      */
-    pp.toKeyValueFromArray = function (arr) {
+    pp.toKvFromArray = function (arr) {
         if (pp.isEmpty(arr)) {
             return {};
         }
@@ -643,7 +643,7 @@ var pp = /** @class */ (function () {
         //
         if (pp.isNotEmpty(json.name)) {
             //case2
-            return pp.toKeyValueFromNameValueArray(arr);
+            return pp.toKvFromNameValueArray(arr);
         }
         else {
             //case4
@@ -660,12 +660,12 @@ var pp = /** @class */ (function () {
      * 파라미터 형변환
      * @param arr 파라미터 배열. case2
      */
-    pp.toKeyValueFromNameValueArray = function (arr) {
+    pp.toKvFromNameValueArray = function (arr) {
         var _this = this;
         var p = {};
         //
         arr.forEach(function (json) {
-            p = pp.extend(p, _this.toKeyValueFromNameValue(json.name, json.value));
+            p = pp.extend(p, _this.toKvFromNameValue(json.name, json.value));
         });
         //
         return p;
@@ -675,7 +675,7 @@ var pp = /** @class */ (function () {
      * @param name
      * @param value
      */
-    pp.toKeyValueFromNameValue = function (name, value) {
+    pp.toKvFromNameValue = function (name, value) {
         return {
             'name': name,
             'value': value

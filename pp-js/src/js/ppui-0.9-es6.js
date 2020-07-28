@@ -391,6 +391,37 @@ class ppui{
     }
 
 
+    
+    /**
+     *
+     * @param {string} url
+     * @param {any} param case1~4
+     * @returns {void}
+     */
+    static submitGet(url, param) {
+        let htmlFormElement = ppui.createForm(param);
+
+        //
+        htmlFormElement.setAttribute("method", "get");
+        //
+        htmlFormElement.submit();
+    }
+
+    /**
+     *
+     * @param {string} url
+     * @param {any} param case1~4
+     * @returns {void}
+     */
+    static submitPost(url, param) {
+        let htmlFormElement = ppui.createForm(param);
+
+        //
+        htmlFormElement.setAttribute("method", "post");
+        //
+        htmlFormElement.submit();
+    }
+
 
     
     /**
@@ -526,5 +557,63 @@ class ppui{
 
     }
 
+
+    
+    /**
+     * 파일 업로드
+     * @param {string} url
+     * @param {File} file 
+     * @param {Function} callbackSuccess
+     * @param {any|undefined} option
+     */
+    static uploadFile(url, file, callbackSuccess, option){
+        if(pp.isNull(file)){
+            callbackSuccess({errorCode:'E_NULL'});
+            return;
+        }
+
+        //파일 크기 검사
+        if(!pp.checkFileSize(file, 123456)){
+            callbackSuccess({errorCode:'E_FILE_SIZE'});
+            return;
+        }
+
+        //파일 확장자 검사
+        if(!pp.checkFileExt(file)){
+            callbackSuccess({errorCode:'E_EXT'});
+            return;
+        }
+
+        //
+        let xhr = new XMLHttpRequest();
+        xhr.open('post', url, true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        //
+        xhr.onreadystatechange = ()=>{
+            if(XMLHttpRequest.DONE === xhr.readyState){
+                //성공
+                if (200 === xhr.status) {
+                    //json 형식
+                    if (v.startsWith("{")) {
+                        callbackSuccess(JSON.parse(v));
+                    } else {
+                        //text 형식
+                        callbackSuccess(v);
+                    }
+                } else {
+                    callbackSuccess({errorCode:'E_500'});
+                    return;
+                }
+            }
+        };
+
+        //
+        let fd = new FormData();
+        fd.append('file', file);
+
+        //
+        xhr.send(fd);
+    }
 
 }

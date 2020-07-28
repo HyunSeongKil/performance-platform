@@ -434,7 +434,7 @@ class pp {
 
         //
         let fd = new FormData();
-        let p = pp.toKeyValue(param);
+        let p = pp.toKv(param);
         //
         Object.keys(p).forEach(k=>{
             fd.append(k, p[k]);
@@ -509,7 +509,7 @@ class pp {
 
         //
         let fd = new FormData();
-        let p = pp.toKeyValue(param);
+        let p = pp.toKv(param);
         //
         Object.keys(p).forEach(k=>{
             fd.append(k, p[k]);
@@ -519,93 +519,7 @@ class pp {
         xhr.send(fd);
     }
 
-    /**
-     *
-     * @param {string} url
-     * @param {any} param case1~4
-     * @returns {void}
-     */
-    static submitGet(url, param) {
-        let htmlFormElement = ppui.createForm(param);
 
-        //
-        htmlFormElement.setAttribute("method", "get");
-        //
-        htmlFormElement.submit();
-    }
-
-    /**
-     *
-     * @param {string} url
-     * @param {any} param case1~4
-     * @returns {void}
-     */
-    static submitPost(url, param) {
-        let htmlFormElement = ppui.createForm(param);
-
-        //
-        htmlFormElement.setAttribute("method", "post");
-        //
-        htmlFormElement.submit();
-    }
-
-
-    /**
-     * 파일 업로드
-     * @param {string} url
-     * @param {File} file 
-     * @param {Function} callbackSuccess
-     * @param {any|undefined} option
-     */
-    static uploadFile(url, file, callbackSuccess, option){
-        if(pp.isNull(file)){
-            callbackSuccess({errorCode:'E_NULL'});
-            return;
-        }
-
-        //파일 크기 검사
-        if(!pp.checkFileSize(file, 123456)){
-            callbackSuccess({errorCode:'E_FILE_SIZE'});
-            return;
-        }
-
-        //파일 확장자 검사
-        if(!pp.checkFileExt(file)){
-            callbackSuccess({errorCode:'E_EXT'});
-            return;
-        }
-
-        //
-        let xhr = new XMLHttpRequest();
-        xhr.open('post', url, true);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-        //
-        xhr.onreadystatechange = ()=>{
-            if(XMLHttpRequest.DONE === xhr.readyState){
-                //성공
-                if (200 === xhr.status) {
-                    //json 형식
-                    if (v.startsWith("{")) {
-                        callbackSuccess(JSON.parse(v));
-                    } else {
-                        //text 형식
-                        callbackSuccess(v);
-                    }
-                } else {
-                    callbackSuccess({errorCode:'E_500'});
-                    return;
-                }
-            }
-        };
-
-        //
-        let fd = new FormData();
-        fd.append('file', file);
-
-        //
-        xhr.send(fd);
-    }
 
     /**
      * 업로드 가능한 확장자인지 검사
@@ -646,16 +560,16 @@ class pp {
      *  case4 [case3]
      * @returns {any}
      */
-    static toKeyValue(param) {
+    static toKv(param) {
         let p = {};
         //case2, case4인 경우
         if (Array.isArray(param)) {
-            return pp.toKeyValueFromArray(param);
+            return pp.toKvFromArray(param);
         }
 
         //case1
         if (pp.isNotEmpty(param.name)) {
-            return pp.toKeyValueFromNameValue(param.name, param.value);
+            return pp.toKvFromNameValue(param.name, param.value);
         }
 
         //case3
@@ -663,9 +577,9 @@ class pp {
     }
 
     /**
-     * toKeyValue()와 로직은 동일
-     * 다른점. toKeyValue()는 Object 리턴, toMap()은 Map 리턴
-     * case1~4의 정보는 @see toKeyValue()참고
+     * toKv()와 로직은 동일
+     * 다른점. toKv()는 Object 리턴, toMap()은 Map 리턴
+     * case1~4의 정보는 @see toKv()참고
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
      * @param {Map|Array|object} param 
      * @returns {Map}
@@ -775,7 +689,7 @@ class pp {
      * @param {any} arr 파라미터 배열
      * @returns {any}
      */
-    static toKeyValueFromArray(arr) {
+    static toKvFromArray(arr) {
         if (pp.isEmpty(arr)) {
             return {};
         }
@@ -786,7 +700,7 @@ class pp {
         //
         if (pp.isNotEmpty(json.name)) {
             //case2
-            return pp.toKeyValueFromNameValueArray(arr);
+            return pp.toKvFromNameValueArray(arr);
         } else {
             //case4
             let p = {};
@@ -805,12 +719,12 @@ class pp {
      * @param {Array} arr 파라미터 배열. case2
      * @returns {any}
      */
-    static toKeyValueFromNameValueArray(arr) {
+    static toKvFromNameValueArray(arr) {
         let p = {};
 
         //
         arr.forEach((json) => {
-            p = pp.extend(p, this.toKeyValueFromNameValue(json.name, json.value));
+            p = pp.extend(p, this.toKvFromNameValue(json.name, json.value));
         });
 
         //
@@ -823,7 +737,7 @@ class pp {
      * @param {string} value
      * @returns {any}
      */
-    static toKeyValueFromNameValue(name, value) {
+    static toKvFromNameValue(name, value) {
         let k = name;
         let v = value;
 
