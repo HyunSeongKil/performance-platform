@@ -10,8 +10,7 @@
  */
 
 
-
- /**
+/**
   * 파일 확장자 enum
   */
 const Exts = Object.freeze({
