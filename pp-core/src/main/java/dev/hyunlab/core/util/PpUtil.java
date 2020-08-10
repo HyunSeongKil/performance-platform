@@ -39,8 +39,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import com.google.gson.Gson;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -50,6 +48,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 
 import dev.hyunlab.core.PpConst;
 import dev.hyunlab.core.PpTransferObject;
@@ -166,6 +166,23 @@ public class PpUtil {
 		
 		//
 		LOGGER.debug(".bindFiles - {}", outFiles.size());
+	}
+	
+	
+	/**
+	 * 첫 글자만 대문자로 변환
+	 * @param str
+	 * @return
+	 * @since	
+	 * 	20200810	init
+	 */
+	public static String capitalize(String str) {
+		if(isEmpty(str)) {
+			return "";
+		}
+		
+		//
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
 	
