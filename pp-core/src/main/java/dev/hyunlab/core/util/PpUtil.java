@@ -2588,6 +2588,94 @@ public class PpUtil {
 	}
 	
 	
+
+	/**
+	 * reflection이용.  domain의 fieldName의 값을 value로 설정
+	 * field가 없거나 오류 발생하면 아무런값도 set하지 않음
+	 * @param domain
+	 * @param fieldName
+	 * @param value
+	 * @since
+	 * 	20200811	init
+	 */
+	public static void setFieldValue(Object domain, String fieldName, Object value) {
+		//
+		Field[] fields = domain.getClass().getDeclaredFields();
+
+		//
+		try {
+			for(Field f : fields) {
+				if(fieldName.equals(f.getName())) {
+					f.setAccessible(true);
+					f.set(domain, value);
+				}
+			} 
+		}catch (IllegalArgumentException | IllegalAccessException e) {
+			LOGGER.error("{}",e);
+		}
+	}
+	
+	
+	/**
+	 * reflection이용. domain의 fieldName의 값 추출
+	 * @param domain
+	 * @param fieldName
+	 * @return field의 값. 필드없거나 오류 발생하면 null 리턴
+	 * @since
+	 * 	20200811	init
+	 */
+	public static Object getFieldValue(Object domain, String fieldName) {
+		Object value = null;
+		
+		try {
+			//
+			Field[] fields = domain.getClass().getDeclaredFields();
+			
+			//
+			for(Field f : fields) {
+				if(fieldName.equals(f.getName())) {
+					f.setAccessible(true);
+					value = f.get(domain);
+					break;
+				}
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
+			LOGGER.error("{}",e);
+		}
+		
+		//
+		return value;
+		
+	}
+	
+	/**
+	 * reflection이용. domain의 fieldName목록 추출
+	 * @param domain
+	 * @return fieldName목록. 오류발생|field가 없으면 빈 목록 리턴
+	 * @since
+	 * 	20200811	init
+	 */
+	public static Set<String> getFieldNames(Object domain) {
+		Set<String> fieldNames = new HashSet<>();
+		
+		
+		try {
+			Field[] fields = domain.getClass().getDeclaredFields();
+			
+			//
+			for(Field f : fields) {
+				fieldNames.add(f.getName());
+			}
+			
+		} catch (IllegalArgumentException | SecurityException e) {
+			LOGGER.error("{}",e);
+		}
+		
+		//
+		return fieldNames;
+	}
+	
+	
 	
 	
 }
