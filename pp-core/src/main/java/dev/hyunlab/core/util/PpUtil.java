@@ -1549,6 +1549,47 @@ public class PpUtil {
 		//
 		return (0 == obj.toString().length());
 	}
+
+
+	/**
+	 * empty인지 아닌지 판단하여 리턴값 결정
+	 * @param <T>
+	 * @param obj 비교할 값
+	 * @param emptysValue obj가 empty일때 리턴값
+	 * @param notEmptysValue obj가 not empty일때 리턴값
+	 * @return
+	 * @since
+	 * 	20200817	init
+	 */
+	public static <T> T isEmpty(Object obj, T emptysValue, T notEmptysValue){
+		if(isEmpty(obj)){
+			return emptysValue;
+		}
+
+		//
+		return notEmptysValue;
+	}
+	
+
+
+	/**
+	 * empty인지 아닌지 판단하여 리턴값 결정
+	 * @param <T>
+	 * @param obj 비교할 값
+	 * @param notEmptysValue obj가 not empty일때 리턴값
+	 * @param emptysValue obj가 empty일때 리턴값
+	 * @return
+	 * @since
+	 * 	20200817	init
+	 */
+	public static <T> T isNotEmpty(Object obj, T notEmptysValue, T emptysValue){
+		if(isNotEmpty(obj)){
+			return notEmptysValue;
+		}
+
+		//
+		return emptysValue;
+	}
 	
 	
 	/**
