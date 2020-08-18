@@ -3,6 +3,7 @@
  * es6 버전
  * jquery사용하지 않음
  * typescript버전을 es6로 변환
+ * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
  * @since
  *  2020-07-xx 바닐라js
  *  2020-07-16  pp와 ppui 분리
@@ -516,6 +517,62 @@ class pp {
 
         //
         xhr.send(fd);
+    }
+
+
+    /**
+     * 파일 또는 blob 전송
+     * @param {string} url 
+     * @param {File|Blob} fileOrBlob 
+     * @param {Function} callbackFn 
+     * @param {Object} option 
+     */
+    static submitFile(url, fileOrBlob, callbackFn, option){
+        
+        //
+        let fd = new FormData();
+        fd.append('file', fileOrBlob);  //TODO 파일인 경우 파싱필요?
+        
+        //
+        this.submitFormData(url, fd, callbackFn, option);
+    }
+    
+    
+    
+    /**
+     *  formdata 전송
+     * @since
+     *	20200818	init
+     */
+    static submitFormData(url, formData, callbackFn, option){
+    	let xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader("Access-Control-Allow-Headers", "*");
+        xhr.onload = function(e){
+            //console.log(e);
+        }
+        
+        //
+        xhr.onreadystatechange = function(){
+            if(4 === xhr.readyState){
+                let str = xhr.response;
+                if(pp.isEmpty(str)){
+                    str = '{}';
+                }
+
+                //json이면
+                if('{' === str.trim()[0]){
+                    let json = JSON.parse(str);
+                    callbackFn(json);
+                }else{
+                    //json 문자열이 아니면
+                    callbackFn(str);
+                }
+            }	
+        }
+        
+        //
+        xhr.send(formData);
     }
 
 
