@@ -9,6 +9,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * es6 버전
  * jquery사용하지 않음
  * typescript버전을 es6로 변환
+ * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
  * @since
  *  2020-07-xx 바닐라js
  *  2020-07-16  pp와 ppui 분리
@@ -35,13 +36,51 @@ var pp = function () {
     }
 
     _createClass(pp, null, [{
-        key: 'addComma',
+        key: 'base64ToBlob',
+
+
+        /**
+         * base64 문자열을 Blob로 변환하기
+         * @see https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+         * @param {string} base64 
+         * @param {string} contentType 
+         * @returns {Blob}
+         */
+        value: function base64ToBlob(base64) {
+            var contentType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'image/png';
+
+            var byteCharacters = window.atob(base64);
+            var byteArrays = [];
+            var sliceSize = 512;
+
+            //
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                //
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                //
+                var byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            //
+            var blob = new Blob(byteArrays, { type: contentType });
+            return blob;
+        }
 
         /**
          * 천단위 콤마 추가
          * @param {string|number} strOrNum
          * @returns {string}
          */
+
+    }, {
+        key: 'addComma',
         value: function addComma(strOrNum) {
             var s = strOrNum;
             if (pp.isEmpty(strOrNum)) {

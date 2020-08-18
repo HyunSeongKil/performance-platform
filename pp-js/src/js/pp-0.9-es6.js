@@ -25,6 +25,39 @@ const Exts = Object.freeze({
  * performance platform util js
  */
 class pp {
+
+    /**
+     * base64 문자열을 Blob로 변환하기
+     * @see https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+     * @param {string} base64 
+     * @param {string} contentType 
+     * @returns {Blob}
+     */
+    static base64ToBlob(base64, contentType='image/png'){
+        let byteCharacters = window.atob(base64);
+        let byteArrays=[];
+        let sliceSize=512;
+        
+        //
+        for(let offset=0; offset<byteCharacters.length; offset+=sliceSize){
+            let slice = byteCharacters.slice(offset, offset + sliceSize);
+            
+            //
+            let byteNumbers = new Array(slice.length);
+            for(let i=0; i<slice.length; i++){
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            
+            //
+            let byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        
+        //
+        let blob = new Blob(byteArrays, {type:contentType});
+        return blob;
+    }
+
     /**
      * 천단위 콤마 추가
      * @param {string|number} strOrNum
