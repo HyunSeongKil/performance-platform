@@ -4,6 +4,8 @@
  * es6 버전
  * jquery사용하지 않음
  * typescript버전을 es6로 변환
+ * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
+ * ※ 주의! 이 pp-js가 원본임. 다른 경로의 파일 수정 불허
  * @since   
  *  2020-07-16  init
  * @author gravity@daumsoft.com
@@ -268,6 +270,48 @@ class ppui{
         return el;
 
     }
+
+
+	/**
+	 * blob로 <img> 생성
+     * @param {Object} blob 이미지 blob
+	 * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}
+	 * @param {function} callbackFn 이미지 생성 완료 후 호출할 콜백함수. FileReader가 비동기적으로 처리되기 때문에 콜백사용
+	 */
+	static createImgByBlob(blob, option, callbackFn){
+		let img = document.createElement('img');
+		
+		//
+		let opt = pp.extend({}, option);
+		
+		//
+		if(pp.isNotEmpty(opt.id)){
+			img.id = opt.id;
+		}
+		//
+		if(pp.isNotEmpty(opt.name)){
+			img.name = opt.name;
+		}
+		//
+		if(pp.isNotEmpty(opt.width)){
+			img.width = opt.width;			
+		}
+		//
+		if(pp.isNotEmpty(opt.height)){
+			img.height = opt.height;			
+		}
+		
+		//@see http://www.jongminjang.com/html5/file/2018/12/27/blob-as-img-src.html
+		let reader = new FileReader();
+		reader.onload = function(e){
+			img.src = reader.result;	
+			
+			//
+			callbackFn(img);		
+		}
+		//
+		reader.readAsDataURL(blob);
+	}
 
 
     
@@ -555,6 +599,24 @@ class ppui{
         //
         return map;
 
+    }
+    
+    
+    /**
+     * el에 이벤트 등록
+     * @param {HtmlElement} el
+     * @param {string} eventName
+     * @param {Function} callbackFn
+     * @since	20200818	init
+     */
+    static on(el, eventName, callbackFn){
+    	if(pp.isNull(el)){
+    		console.log('on', 'null htmlNode');
+    		return;
+    	}
+    	
+    	//
+    	el.addEventListener(eventName, callbackFn);
     }
 
 

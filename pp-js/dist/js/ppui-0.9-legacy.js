@@ -9,6 +9,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * es6 버전
  * jquery사용하지 않음
  * typescript버전을 es6로 변환
+ * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
  * ※ 주의! 이 pp-js가 원본임. 다른 경로의 파일 수정 불허
  * @since   
  *  2020-07-16  init
@@ -623,6 +624,26 @@ var ppui = function () {
 
             //
             return map;
+        }
+
+        /**
+         * el에 이벤트 등록
+         * @param {HtmlElement} el
+         * @param {string} eventName
+         * @param {Function} callbackFn
+         * @since	20200818	init
+         */
+
+    }, {
+        key: 'on',
+        value: function on(el, eventName, callbackFn) {
+            if (pp.isNull(el)) {
+                console.log('on', 'null htmlNode');
+                return;
+            }
+
+            //
+            el.addEventListener(eventName, callbackFn);
         }
 
         /**
