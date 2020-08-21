@@ -1387,6 +1387,36 @@ public class PpUtil {
 		
 		return (T)map.get(key);
 	}
+	
+	
+	/**
+	 * 모든 필드 목록 추출
+	 * 재귀호출. 부모의 필드 목록까지 추출
+	 * @param currentClass 클랙스
+	 * @param fields 필드 목록. 리턴값
+	 * @since 20200821	init
+	 */
+	public static void getFieldsUpTo(Class<?> currentClass, List<Field> fields){
+		
+		if(null == currentClass) {
+			return;
+		}
+		
+		List<Field> list = Arrays.asList(currentClass.getDeclaredFields());
+		if(isEmpty(list)) {
+			return;
+		}
+		
+		//
+		fields.addAll(list);
+		
+		//
+		Class<?> parentClass = currentClass.getSuperclass();
+		if(null != parentClass) {
+			getFieldsUpTo(parentClass, fields);
+		}
+	}
+	
 
 	/**
 	 * 문자열을 xss피할 수 있는 html 문자열로 생성
