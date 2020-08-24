@@ -8,8 +8,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * ui와 관련없는 것들
  * es6 버전
  * jquery사용하지 않음
- * typescript버전을 es6로 변환
+ * 원본 파일 : pp-version-es6.js
+ * 변환 파일 : pp-version-legacy.js
+ * 변환툴 : babel
  * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
+ * 주의! 직접 ppui-version-lagacy.js파일 변경 불허
  * @since
  *  2020-07-xx 바닐라js
  *  2020-07-16  pp와 ppui 분리
@@ -907,6 +910,80 @@ var pp = function () {
             p[k] = v;
             //
             return p;
+        }
+
+        /**
+         * @see https://jasonwatmore.com/post/2018/08/07/javascript-pure-pagination-logic-in-vanilla-js-typescript
+         * @param {number} totalItems 전체 아이템 갯수
+         * @param {number} currentPage 현재 페이지 번호. default:1
+         * @param {number} pageSize 페이징 크기. default:10
+         * @param {number} maxPages 화면에 표시할 페이지 번호 갯수. default:10
+         */
+
+    }, {
+        key: 'paginate',
+        value: function paginate(totalItems) {
+            var currentPage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+            var pageSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
+            var maxPages = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
+
+
+            // calculate total pages
+            var totalPages = Math.ceil(totalItems / pageSize);
+
+            // ensure current page isn't out of range
+            if (currentPage < 1) {
+                currentPage = 1;
+            } else if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+            var startPage = void 0,
+                endPage = void 0;
+            if (totalPages <= maxPages) {
+                // total pages less than max so show all pages
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // total pages more than max so calculate start and end pages
+                var maxPagesBeforeCurrentPage = Math.floor(maxPages / 2);
+                var maxPagesAfterCurrentPage = Math.ceil(maxPages / 2) - 1;
+                if (currentPage <= maxPagesBeforeCurrentPage) {
+                    // current page near the start
+                    startPage = 1;
+                    endPage = maxPages;
+                } else if (currentPage + maxPagesAfterCurrentPage >= totalPages) {
+                    // current page near the end
+                    startPage = totalPages - maxPages + 1;
+                    endPage = totalPages;
+                } else {
+                    // current page somewhere in the middle
+                    startPage = currentPage - maxPagesBeforeCurrentPage;
+                    endPage = currentPage + maxPagesAfterCurrentPage;
+                }
+            }
+
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+            // create an array of pages to ng-repeat in the pager control
+            var pages = Array.from(Array(endPage + 1 - startPage).keys()).map(function (i) {
+                return startPage + i;
+            });
+
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
         }
     }]);
 
