@@ -95,7 +95,7 @@ public class PpWebSessionUtil {
 	 * @date : 2018. 2. 9.
 	 * @param request
 	 * @param key
-	 * @return
+	 * @return {null|String}
 	 */
 	public static String getAsString(HttpServletRequest request, String key) {
 		if(null == request || null == request.getSession()) {
