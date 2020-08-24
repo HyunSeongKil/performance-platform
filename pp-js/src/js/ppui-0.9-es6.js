@@ -3,9 +3,11 @@
  * ui와 관련된 것들
  * es6 버전
  * jquery사용하지 않음
- * typescript버전을 es6로 변환
+ * 원본 파일 : ppui-version-es6.js
+ * 변환 파일 : ppui-version-legacy.js
+ * 변환툴 : babel
  * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
- * ※ 주의! 이 pp-js가 원본임. 다른 경로의 파일 수정 불허
+ * 주의! 직접 ppui-version-lagacy.js파일 변경 불허
  * @since   
  *  2020-07-16  init
  * @author gravity@daumsoft.com
