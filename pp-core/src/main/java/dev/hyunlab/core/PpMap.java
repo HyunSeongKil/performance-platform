@@ -18,9 +18,9 @@ import dev.hyunlab.core.util.PpUtil;
 
 
 /**
- * UI => DB 파라미터 전달용 클래스
+ * UI =&gt; DB 파라미터 전달용 클래스
  * @author cs1492
- * @date   2018. 3. 16.
+ * @since   2018. 3. 16.
  *
  */
 public class PpMap extends HashMap<String, Object> {
@@ -36,7 +36,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * map의 key/value를 CsMap으로 복사
 	 * @param map key/value를 복사해올 원본 맵
-	 * @return
+	 * @return 맵
 	 */
 	public static PpMap copyFrom(Map<String,Object> map) {
 		if(null == map) {
@@ -59,10 +59,10 @@ public class PpMap extends HashMap<String, Object> {
 	
 	
 	/**
-	 * 특정 key/value만 복사
-	 * @param map
-	 * @param keys
-	 * @return
+	 * map에서 특정 key/value만 복사
+	 * @param map 맵
+	 * @param keys key 목록
+	 * @return 맵
 	 */
 	public static PpMap copyFrom(Map<String,Object> map, String...keys) {
 		if(null == map) {
@@ -82,9 +82,9 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * key/value 추가 후 인스턴스 리턴
-	 * @param key
-	 * @param value
-	 * @return
+	 * @param key key
+	 * @param value 값
+	 * @return 맵
 	 */
 	public PpMap add(String key, Object value) {
 		this.put(key, value);
@@ -95,7 +95,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * map의 key/value를 map에 복사
 	 * @param map key/value를 복사할 대상 맵
-	 * @return
+	 * @return 값
 	 */
 	public Map<String, Object> copyTo(Map<String,Object> map) {
 		if(null == map) {
@@ -117,7 +117,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * key의 값을 문자열 배열로 리턴
 	 * @param key 키
-	 * @return
+	 * @return 값
 	 */
 	public String[] getArr(String key) {
 		Object o = get(key);
@@ -154,8 +154,8 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * key의 값을 Boolean형으로 리턴
-	 * @param key
-	 * @return
+	 * @param key key
+	 * @return 값
 	 * @since	
 	 * 	0207	init
 	 */
@@ -181,8 +181,8 @@ public class PpMap extends HashMap<String, Object> {
 
 	/**
 	 * key의 class 리턴
-	 * @param key
-	 * @return
+	 * @param key key
+	 * @return 클래스
 	 * @since
 	 * 	0207	init
 	 */
@@ -194,7 +194,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * key의 값을 Doble형으로 리턴
 	 * @param key 키
-	 * @return
+	 * @return 값
 	 */
 	public double getDouble(String key) {
 		double rtnValue = 0.0;
@@ -209,7 +209,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * key의 값을 int형으로 리턴
 	 * @param key 키
-	 * @return
+	 * @return 값
 	 */
 	public int getInt(String key) {
 		return (int) getDouble(key);
@@ -217,7 +217,7 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * 맵에 저장된 로그인 정보 리턴
-	 * @return
+	 * @return 값
 	 */
 	public PpMap getLoginResult() {
 		return (PpMap)this.get(PpConst.LOGIN_RESULT);
@@ -226,7 +226,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * key의 값을 Long형으로 리턴
 	 * @param key 키
-	 * @return
+	 * @return 값 
 	 */
 	public long getLong(String key) {
 		return (long) getDouble(key);
@@ -238,7 +238,7 @@ public class PpMap extends HashMap<String, Object> {
 	/**
 	 * key의 값을 String으로 리턴
 	 * @param key 키
-	 * @return
+	 * @return 값
 	 */
 	public String getString(String key) {
 		if(null == super.get(key)) {
@@ -249,9 +249,10 @@ public class PpMap extends HashMap<String, Object> {
 	}
 	
 	/**
-	 * @param key
+	 * 맵의 값을 문자열로 리턴
+	 * @param key key
 	 * @param defaultValue	default value
-	 * @return
+	 * @return 값
 	 */
 	public String getString(String key, String defaultValue) {
 		String result = this.getString(key);
@@ -267,8 +268,9 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * key의 값을 generic으로 리턴
-	 * @param key
-	 * @return
+	 * @param <T> 리턴 타입
+	 * @param key key
+	 * @return 값
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getT(String key) {
@@ -277,7 +279,7 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * CsMap의 key/value를 json 문자열로 리턴
-	 * @return
+	 * @return 문자열
 	 */
 	public String toJsonString(){
 		return (new com.google.gson.Gson()).toJson(this);
@@ -361,8 +363,8 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * List로 리턴
-	 * @param key
-	 * @return
+	 * @param key key
+	 * @return List
 	 */
 	public List<String> getList(String key){
 		String[] arr = this.getArr(key);
@@ -387,7 +389,7 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * key에 해당하는 값 검사
-	 * @param key
+	 * @param key key
 	 * @return true(key 미 존재시, key는 존재하나 값이 널|공백이면)/false
 	 */
 	public boolean isEmpty(String key) {
@@ -401,8 +403,8 @@ public class PpMap extends HashMap<String, Object> {
 	
 	/**
 	 * key에 해당하는 값 검사
-	 * @param key
-	 * @return true(key가 존재하고 값이 널&공백이 아니면)/false
+	 * @param key key
+	 * @return true(key가 존재하고 값이 널|공백이 아니면)/false
 	 */
 	public boolean isNotEmpty(String key) {
 		return !this.isEmpty(key);

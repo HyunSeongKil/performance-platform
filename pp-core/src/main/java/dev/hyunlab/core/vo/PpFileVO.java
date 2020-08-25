@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * File vo
  * 
  * @author cs1492
- * @date 2018. 2. 1.
+ * @since 2018. 2. 1.
  *
  */
 public class PpFileVO extends PpVO {

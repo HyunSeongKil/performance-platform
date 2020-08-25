@@ -58,7 +58,7 @@ import dev.hyunlab.core.vo.PpFileVO;
 /**
  * 유틸리티 클래스
  * @author cs1492
- * @date   2018. 3. 16.
+ * @since   2018. 3. 16.
  *
  */
 public class PpUtil {
@@ -70,10 +70,10 @@ public class PpUtil {
 	
 	/**
 	 * 디렉터리만 추출
-	 * @param path
-	 * @param outDirs
-	 * @return
-	 * @history
+	 * @param path 경로
+	 * @param outDirs 결과 정보를 저장할 리스트
+	 * @return 추출된 디렉터리 목록
+	 * @since
 	 * 	0707	init
 	 */
 	public static List<Path> bindDirs(Path path, List<Path> outDirs) {
@@ -103,16 +103,18 @@ public class PpUtil {
 	
 	/**
 	 * 파일 목록 바인드
-	 * @param path
-	 * @param outFiles
+	 * @param path 경로
+	 * @param outFiles 추출된 파일 목록
 	 */
 	public static void bindFiles(Path path, List<File> outFiles) {
 		bindFiles(path.toString(), outFiles);
 	}
 	
 	/**
-	 * @param path
-	 * @param outFiles
+	 * 파일 목록 추출
+	 * @ref {@code bindFiles(String,List,String,int)}
+	 * @param path 경로
+	 * @param outFiles 추출된 파일 목록
 	 */
 	public static void bindFiles(String path, List<File> outFiles) {
 		bindFiles(path, outFiles, null, Integer.MAX_VALUE);
@@ -171,8 +173,8 @@ public class PpUtil {
 	
 	/**
 	 * 첫 글자만 대문자로 변환
-	 * @param str
-	 * @return
+	 * @param str 문자열
+	 * @return 변환된 문자열
 	 * @since	
 	 * 	20200810	init
 	 */
@@ -190,7 +192,7 @@ public class PpUtil {
 	 * list안에 inStr이 존재하는지 여부. 문자열이 정확하게 같아야 함
 	 * @param list 문자열 목록
 	 * @param inStr 포함여부를 확인할 문자열
-	 * @return
+	 * @return true(문자열이 포함된 경우) / false
 	 * @since
 	 * 	20200702	init
 	 */
@@ -202,7 +204,7 @@ public class PpUtil {
 	 * list안에 inStr이 존재하는지 여부. 문자열의 일부만 같아도 됨
 	 * @param list 문자열 목록
 	 * @param inStr 포함여부를 확인할 문자열
-	 * @return
+	 * @return true(문자열이 포함된 경우) / false
 	 * @since
 	 * 	20200702	init
 	 */
@@ -215,7 +217,7 @@ public class PpUtil {
 	 * @param list 문자열 목록
 	 * @param inStr 포함되었는지 확인할 문자열
 	 * @param gbn 구분자. EQ|LIKE EQ:문자열이 정확하게 같아야 함. LIKE:문자열의 일부만 같아도 됨
-	 * @return
+	 * @return true(문자열이 포함된 경우) / false
 	 * @since
 	 * 	20200702	init
 	 */
@@ -236,8 +238,8 @@ public class PpUtil {
 	
 	/**
 	 * ceil
-	 * @param str
-	 * @return
+	 * @param str 문자열
+	 * @return ceil된 결과
 	 */
 	public static String ceil(String str) {
 		return ""+((int)(Double.parseDouble(str) + (1-(Double.parseDouble(str)%1)) % 1));
@@ -245,9 +247,9 @@ public class PpUtil {
 	
 	/**
 	 * 영어,숫자 이외의 문자를 다른 문자(x)로 치환
-	 * @param str
-	 * @return
-	 * @history
+	 * @param str 문자열
+	 * @return 치환된 결과 문자열
+	 * @since
 	 * 	0621	조회 로직 변경. 기존 로직 주석처리
 	 */
 	public static String clearHangul(String str) {
@@ -271,7 +273,7 @@ public class PpUtil {
 	 * 문자열 더하기
 	 * @param deli	구분자
 	 * @param objects 오브젝트
-	 * @return
+	 * @return 더하기된 문자열
 	 */
 	public static String concat(String deli, Object...objects){
 		String s="";
@@ -292,10 +294,10 @@ public class PpUtil {
 	
 
 	/**
-	 * object형을 리스트로 변환
-	 * @param <T>
-	 * @param obj
-	 * @return
+	 * object가 배열이면 값을 커내 리스트로 변환
+	 * @param <T> 제네릭 타입
+	 * @param obj 리스트|배열
+	 * @return 변환된 리스트
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> convertToList(Object obj){
@@ -326,9 +328,9 @@ public class PpUtil {
 	
 	
 	/**
-	 * object를 map으로 변환하기
-	 * @param obj
-	 * @return
+	 * object를 map으로 변환하기. 객체의 field를 추출하여 field명은 맵의 key가 됨. field값은 맵의 value가 됨
+	 * @param obj 객체
+	 * @return 변환된 맵
 	 */
 	public static Map<String,Object> convertObjectToMap(Object obj) {
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -378,7 +380,7 @@ public class PpUtil {
 	 * object를 map으로 변환
 	 * @param obj 오브젝트, 보통 vo class
 	 * @param includeKeys map에 포함될 key 목록
-	 * @return
+	 * @return 변화된 맵
 	 * @since
 	 * 	20200702	init
 	 */
@@ -408,17 +410,16 @@ public class PpUtil {
 
 	
 	/**
-	 * map을 clazz의 object로 변환하기
-	 * 
-	 * @param map
-	 * @param clazz
-	 * @return
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
+	 * map을 clazz의 object로 변환하기. convertObjectToMap의 반대
+	 * @param map 맵
+	 * @param clazz 클래스
+	 * @return 변환된 object
+	 * @throws InstantiationException 예외
+	 * @throws IllegalAccessException 예외
+	 * @throws SecurityException 예외
+	 * @throws NoSuchMethodException 예외
+	 * @throws InvocationTargetException 예외
+	 * @throws IllegalArgumentException 예외
 	 * @since 0205 init
 	 */
 	public static Object convertToObject(Map<String, Object> map, Class<?> clazz)
@@ -458,8 +459,8 @@ public class PpUtil {
 	
 	
 	/**
-	 * @see kr.co.ucsit.core.CsUtil.createFileForcedown(String)
-	 * @throws IOException
+	 * @ref kr.co.ucsit.core.CsUtil.createFileForcedown(String)
+	 * @throws IOException  예외
 	 */
 	public static void createFileForcedown() throws IOException {
 		createFileForcedown("");
@@ -468,8 +469,8 @@ public class PpUtil {
 	
 	/**
 	 * forcedown 파일 생성
-	 * @param postfix TODO
-	 * @throws IOException
+	 * @param postfix 접두
+	 * @throws IOException  예외
 	 */
 	public static void createFileForcedown(String postfix) throws IOException {
 		List<Path> paths = getDefaultPaths();
@@ -488,7 +489,7 @@ public class PpUtil {
 	
 	/**
 	 * nanotime으로 hash 값 계산 후 리턴
-	 * @return
+	 * @return 유니크한 문자열
 	 */
 	public static String createLongUid(){
 		return DigestUtils.sha256Hex(""+System.nanoTime());
@@ -496,7 +497,7 @@ public class PpUtil {
 	
 	/**
 	 * row 생성
-	 * @param row
+	 * @param row 행
 	 * @param datas 데이터 목록
 	 */
 	public static void createRow(Row row, String[] datas) {
@@ -508,7 +509,7 @@ public class PpUtil {
 	
 	/**
 	 * row 생성
-	 * @param row
+	 * @param row 행
 	 * @param keys 데이터 map의 key 목록
 	 * @param data 데이터
 	 */
@@ -565,7 +566,7 @@ public class PpUtil {
 	 * @param sheetName 생성할 sheet의 이름
 	 * @param titles 제목줄에 표시할 제목 목록
 	 * @param keys map에서 데이터를 추출할 key의 목록
-	 * @param datas 데이터 목록
+	 * @param data 데이터 목록
 	 */
 	public static void createSheet(Workbook workbook, String sheetName, String[] titles, String[] keys, Map<String,Object> data) {
 		List<Map<String,Object>> list = new ArrayList<>();
@@ -577,10 +578,10 @@ public class PpUtil {
 	
 	
 	/**
-	 * nanotime 리턴
+	 * nanotime 으로 유니크한 문자열 생성
 	 * @param prefix 리턴값 앞에 붙일 접두어
-	 * @return
-	 * @history
+	 * @return 유니크한 문자열
+	 * @since
 	 * 	20180215	prefix 추가
 	 */
 	public static String createShortUid(String prefix){		
@@ -591,8 +592,8 @@ public class PpUtil {
 	}
 	
 	/**
-	 * uuid 생성(32bytes)
-	 * @return
+	 * uuid를 이용하여 유니크한 문자열 생성(32bytes)
+	 * @return 유니크한 문자열
 	 */
 	public static String createUuid(){
 		return UUID.randomUUID().toString().replaceAll("-", "");
@@ -600,9 +601,10 @@ public class PpUtil {
 	
 	
 	/**
-	 * 중복 제거 & 정렬
+	 * 중복 제거. 맵에서 key에 해당하는 값만 추출하여 중복제거
 	 * @param list 데이터 목록
 	 * @param key 맵의 키
+	 * @return 중복 제거된 목록
 	 */
 	public static Set<String> deDupl(List<Map<String,Object>> list, String key){
 		Set<String> set = new TreeSet<String>();
@@ -635,7 +637,7 @@ public class PpUtil {
 	 * 중복 제거
 	 * @param lines 중복 제거할 문자열 목록
 	 * @return 중복 제거된 목록
-	 * @history
+	 * @since
 	 * 	0716	init
 	 */
 	public static List<String> deDupl(List<String> lines){
@@ -671,9 +673,9 @@ public class PpUtil {
 	
 	/**
 	 * 파일의 내용 중복 제거 후 같은 파일로 저장(덮어씀)
-	 * @param path
-	 * @param filename
-	 * @throws IOException
+	 * @param path 경로
+  	 * @param filename 파일명
+	 * @throws IOException  예외
 	 * @since
 	 * 	0925	init
 	 */
@@ -746,9 +748,9 @@ public class PpUtil {
 	/**
 	 * 빈 디렉터리(하위 디렉터리 없음, 하위 파일 없음)이면 삭제
 	 * path를 루트로 하위 디렉터리 추출하여 빈 디렉터리들 삭제
-	 * @param path
-	 * @throws IOException
-	 * @history
+	 * @param path 경로
+	 * @throws IOException  예외
+	 * @since
 	 * 	0707	init
 	 */
 	public static void deleteEmptyDirs(Path path) throws IOException {
@@ -774,19 +776,20 @@ public class PpUtil {
 	
 	
 	/**
-	 * @see kr.co.ucsit.core.CsUtil.deleteFileForcedown(String)
-	 * @throws IOException
+	 * @ref kr.co.ucsit.core.CsUtil.deleteFileForcedown(String)
+	 * @throws IOException  예외
 	 */
 	public static void deleteFileForcedown() throws IOException {
 		deleteFileForcedown("");
 	}
 	/**
 	 * forcedown 파일 삭제
-	 * @param postfix TODO
-	 * @throws IOException 
-	 * @history
+	 * @param postfix 접미어
+	 * @throws IOException   예외
+	 * @since
 	 * 	0106	init
 	 */
+	@Deprecated
 	public static void deleteFileForcedown(String postfix) throws IOException {
 		//
 		List<Path> paths = getDefaultPaths();
@@ -809,8 +812,8 @@ public class PpUtil {
 
 	/**
 	 * 여러 파일 삭제
-	 * @param files
-	 * @return
+	 * @param files 파일 목록
+	 * @return 삭제된 파일 갯수
 	 */
 	public static int deleteFiles(List<File> files) {
 		boolean b;
@@ -837,7 +840,7 @@ public class PpUtil {
 	 * 오래된 디렉터 삭제
 	 * @param path 루트 디렉터리
 	 * @param diffDate 얼마나 오래된건가.... -1:1일전
-	 * @throws IOException
+	 * @throws IOException  예외
 	 */
 	public static void deleteOldPath(Path path, int diffDate) throws IOException {
 		LOGGER.info(">>.deleteOldPath - {} {}", path, diffDate);
@@ -872,9 +875,10 @@ public class PpUtil {
 	}
 	
 	/**
-	 * @see kr.co.ucsit.core.CsUtil.existsFileForcedown(String)
-	 * @return
+	 * @ref kr.co.ucsit.core.CsUtil.existsFileForcedown(String)
+	 * @return true/false
 	 */
+	@Deprecated
 	public static boolean existsFileForcedown() {
 		return existsFileForcedown("");
 	}
@@ -882,9 +886,10 @@ public class PpUtil {
 	
 	/**
 	 * forcedown파일 존재 여부
-	 * @param postfix TODO
-	 * @return
+	 * @param postfix 파일명 접미어
+	 * @return true/false
 	 */
+	@Deprecated
 	public static boolean existsFileForcedown(String postfix) {
 		//
 		List<Path> paths = getDefaultPaths();
@@ -905,11 +910,12 @@ public class PpUtil {
 	
 	
 	/**
-	 * 노드 목록에서 excludeNode에 속한 노드 삭제 & 리턴
+	 * 노드 목록에서 excludeNode에 속한 노드 삭제, 리턴
 	 * @param nodes 노드 목록
 	 * @param excludeNode 노드 목록에서 제외할 노드 아이디. 여러개일 경우 구분자:,
-	 * @return
+	 * @return 목록
 	 */
+	@Deprecated
 	public static List<Map<String, Object>> filteringNodesByExclude(List<Map<String, Object>> nodes, String excludeNode) {
 		if(isEmpty(nodes) || isEmpty(excludeNode)) {
 			return nodes;
@@ -943,11 +949,12 @@ public class PpUtil {
 	
 	
 	/**
-	 * 노드 목록에서 includeNode에 속한 노드만 추출 & 리턴
+	 * 노드 목록에서 includeNode에 속한 노드만 추출, 리턴
 	 * @param nodes 노드 목록
 	 * @param includeNode 노드 목록에 포함할 노드 아이디. 여러개일 경우 구분자:,
-	 * @return
+	 * @return 목록
 	 */
+	@Deprecated
 	public static List<Map<String, Object>> filteringNodesByInclude(List<Map<String, Object>> nodes, String includeNode) {
 		if(isEmpty(nodes) || isEmpty(includeNode)) {
 			return nodes;
@@ -981,8 +988,8 @@ public class PpUtil {
 	
 	/**
 	 * 파일, 디렉터리 모두 삭제 가능
-	 * @param path
-	 * @throws IOException
+	 * @param path 경로
+	 * @throws IOException  예외
 	 */
 	public static void forceDelete(Path path) throws IOException {
 		LOGGER.info(">>.forceDelete - {}", path);
@@ -1002,7 +1009,7 @@ public class PpUtil {
 	/**
 	 * 날짜 형식 변환. yyyy-MM-dd
 	 * @param str 문자열
-	 * @return
+	 * @return 날짜형 문자열
 	 */
 	public static String formatDate(String str) {
 		if(isEmpty(str)) {
@@ -1019,7 +1026,7 @@ public class PpUtil {
 	 * 날짜 형식 변환
 	 * @param str 문자열
 	 * @param num 리턴할 날짜의 길이
-	 * @return
+	 * @return 날짜형 문자열
 	 */
 	public static String formatDate(String str, Integer num){
 		if(isEmpty(str)){
@@ -1073,8 +1080,8 @@ public class PpUtil {
 	
 	/**
 	 * 천단위 콤마
-	 * @param str
-	 * @return
+	 * @param str 문자열
+	 * @return 천단위 콤마 추가된 문자열
 	 */
 	public static String formatNumber(String str){
 		if(isEmpty(str)){
@@ -1092,8 +1099,8 @@ public class PpUtil {
 
 	/**
 	 * 현재 경로 추출
-	 * @param clz
-	 * @return
+	 * @param clz 클래스
+	 * @return 현재 경로 
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Path getCurrentPath(Class clz) {
@@ -1107,40 +1114,14 @@ public class PpUtil {
 		//
 		return Paths.get("").toAbsolutePath();
 	}
-	
-	/**
-	 * CsTransferObject의 data 키의 값
-	 * @param trans CsTransferObject
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Map<String,Object>> T getData(PpTransferObject trans){
-		if(null == trans || !trans.containsKey(PpConst.DATA)) {
-			return (T) new HashMap<String,Object>();
-		}
-		
-		return (T) trans.get(PpConst.DATA);
-	}
 
-	/**
-	 * CsTransferObject의 datas 키의 값
-	 * @param trans CsTransferObject
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Map<String,Object>> List<T> getDatas(PpTransferObject trans){
-		if(null == trans || !trans.containsKey(PpConst.DATAS)) {
-			return new ArrayList<T>();
-		}
-		
-		return  (List<T>) trans.get(PpConst.DATAS);
-	}
 	
 	/**
-	 * @see public static <T extends Map> List<String> getDatas(List<T> listOfT, String key, boolean addDummyIfEmpty){
-	 * @param listOfT
-	 * @param key
-	 * @return
+	 * @ref {@code public static <T extends Map> List<String> getDatas(List<T> listOfT, String key, boolean addDummyIfEmpty)}
+	 * @param <T> 맵의 자식
+	 * @param listOfT T타입의 목록
+	 * @param key 맵의 key
+	 * @return 추출된 목록
 	 */
 	@SuppressWarnings("rawtypes")
 	public static <T extends Map> List<String> getDatas(List<T> listOfT, String key){
@@ -1149,10 +1130,11 @@ public class PpUtil {
 	
 	/**
 	 * listOfT에서 특정 key의 값만 추출하여 목록으로 리턴
+	 * @param <T> 맵의 자식
 	 * @param listOfT T타입의 목록
 	 * @param key map's key
 	 * @param addDummyIfEmpty 리턴 리스트가 empty이면 더미 데이터를 추가할지 여부
-	 * @return
+	 * @return 추출된 목록
 	 */
 	@SuppressWarnings("rawtypes")
 	public static <T extends Map> List<String> getDatas(List<T> listOfT, String key, boolean addDummyIfEmpty){
@@ -1191,8 +1173,8 @@ public class PpUtil {
 	/**
 	 * 기본(?) 경로 목록
 	 * os계정의 home 경로 또는 어플리케이션을 실행시킨 경로
-	 * @return
-	 * @history
+	 * @return 기본 경로
+	 * @since
 	 * 	0108	init
 	 */
 	public static List<Path> getDefaultPaths(){
@@ -1201,9 +1183,9 @@ public class PpUtil {
 
 	/**
 	 * 두 날짜 사이의 차이 일수
-	 * @param dt1
-	 * @param dt2
-	 * @return 0 : 두 날짜가 같음, 양수:dt1 < dt2, 음수:dt1 > dt2
+	 * @param dt1 날짜1
+	 * @param dt2 날짜2
+	 * @return 0 : 두 날짜가 같음, 양수:dt1 &lt; dt2, 음수:dt1 &gt; dt2
 	 */
 	public static long getDiffDays(String dt1, String dt2) {
 		if(PpUtil.isEmpty(dt1) || PpUtil.isEmpty(dt2)) {
@@ -1254,7 +1236,7 @@ public class PpUtil {
 	
 	/**
 	 * 여유메모리 용량 리턴(MB)
-	 * @return
+	 * @return 여유 메모리 용량
 	 */
 	public static long getFreeMemory(){
 		return Runtime.getRuntime().freeMemory()/1024/1024;
@@ -1265,7 +1247,7 @@ public class PpUtil {
 	
 	/**
 	 * obj를 정수형으로 변환
-	 * @param obj
+	 * @param obj object
 	 * @return Integer or null(정수 또는 정수형 문자열이 아니면)
 	 * @since
 	 * 	20200414	init
@@ -1296,10 +1278,10 @@ public class PpUtil {
 	 * 파일의 라인수 리턴
 	 * Iterator를 사용하여 파일 크기에 관계없이 안정적으로 기능 수행 가능
 	 * 공백 라인은 계산하지 않음
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 * @history
+	 * @param file 파일
+	 * @return 파일 라인수
+	 * @throws IOException  예외
+	 * @since
 	 * 	0707	init
 	 */
 	public static long getLineCount(File file) throws IOException {
@@ -1326,9 +1308,9 @@ public class PpUtil {
 	}
 	
 	/**
-	 * 메소드명 리턴
-	 * @param arr
-	 * @return
+	 * StackTraceElement배열에서 메소드명 리턴
+	 * @param arr 배열
+	 * @return 메소드명
 	 * @since	20191112
 	 */
 	public static String getMethodName(StackTraceElement[] arr) {
@@ -1343,7 +1325,7 @@ public class PpUtil {
 	
 	/**
 	 * 자바 임시 경로 리턴
-	 * @return
+	 * @return 자바 임시 경로
 	 */
 	public static Path getTempPath() {
 		try {
@@ -1359,7 +1341,7 @@ public class PpUtil {
 	
 	/**
 	 * 전체메모리 용량 리턴(MB)
-	 * @return
+	 * @return 전체 메모리 용량
 	 */
 	public static long getTotalMemory(){
 		return Runtime.getRuntime().totalMemory()/1024/1024;
@@ -1369,10 +1351,10 @@ public class PpUtil {
 	/**
 	 * 맵에서 값 추출
 	 * generic type 사용
-	 * @param <T>
-	 * @param map
-	 * @param key
-	 * @return
+	 * @param <T> 변환할 타입
+	 * @param map 맵
+	 * @param key 맵에서 추출할 key
+	 * @return 추출된 값
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> T getValue(Map map, String key) {
@@ -1420,8 +1402,8 @@ public class PpUtil {
 
 	/**
 	 * 문자열을 xss피할 수 있는 html 문자열로 생성
-	 * @param str
-	 * @return
+	 * @param str 문자열
+	 * @return 치환된 문자열
 	 */
 	public static String html(String str) {
 		if(isEmpty(str)) {
@@ -1439,8 +1421,8 @@ public class PpUtil {
 	
 	/**
 	 * 문자열 배열의 모든 값이 같은지 여부
-	 * @param strings
-	 * @return
+	 * @param strings 문자열들
+	 * @return 모두 같은면 true
 	 */
 	public static boolean isAllEquals(String...strings) {
 		if(isEmpty(strings)) {
@@ -1472,8 +1454,8 @@ public class PpUtil {
 	
 	/**
 	 * 압축파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param fileVo 파일vo
+	 * @return 압축파일이면 true
 	 */
 	public static boolean isArchiveFile(PpFileVO fileVo) {
 		if(null == fileVo || isEmpty(fileVo.getOrginlFileName())) {
@@ -1486,8 +1468,8 @@ public class PpUtil {
 	
 	/**
 	 * 압축파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param file 파일
+	 * @return 압축파일이면 true
 	 */
 	public static boolean isArchiveFile(File file) {
 		if(null == file) {
@@ -1500,8 +1482,8 @@ public class PpUtil {
 	
 	/**
 	 * 압축파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param filename 파일명
+	 * @return 압축파일이면 true
 	 */
 	public static boolean isArchiveFile(String filename) {
 		if(isEmpty(filename)) {
@@ -1533,9 +1515,9 @@ public class PpUtil {
 
 	/**
 	 * 공백 여부
-	 * @param obj 오브젝트
-	 * @return
-	 * @history
+	 * @param obj 오브젝트. String|Collection|Map|Set|List|배열
+	 * @return 공백이면 true
+	 * @since
 	 * 	20180322	배열, 리스트 처리 추가
 	 * 	20200221	Map관련 추가
 	 */
@@ -1583,32 +1565,32 @@ public class PpUtil {
 
 	/**
 	 * empty인지 아닌지 판단하여 리턴값 결정
-	 * @param <T>
+	 * @param <T> 리터할 타입
 	 * @param obj 비교할 값
-	 * @param emptysValue obj가 empty일때 리턴값
-	 * @param notEmptysValue obj가 not empty일때 리턴값
-	 * @return
+	 * @param emptyValue obj가 empty일때 리턴값
+	 * @param notEmptyValue obj가 not empty일때 리턴값
+	 * @return obj가 empty이면 emptysValue, 아니면 notEmptyValue
 	 * @since
 	 * 	20200817	init
 	 */
-	public static <T> T isEmpty(Object obj, T emptysValue, T notEmptysValue){
+	public static <T> T isEmpty(Object obj, T emptyValue, T notEmptyValue){
 		if(isEmpty(obj)){
-			return emptysValue;
+			return emptyValue;
 		}
 
 		//
-		return notEmptysValue;
+		return notEmptyValue;
 	}
 	
 
 
 	/**
 	 * empty인지 아닌지 판단하여 리턴값 결정
-	 * @param <T>
+	 * @param <T> 리턴할 타입
 	 * @param obj 비교할 값
 	 * @param notEmptysValue obj가 not empty일때 리턴값
 	 * @param emptysValue obj가 empty일때 리턴값
-	 * @return
+	 * @return obj가 empty이면 emptysValue, 아니면 notEmptysValue
 	 * @since
 	 * 	20200817	init
 	 */
@@ -1624,8 +1606,8 @@ public class PpUtil {
 	
 	/**
 	 * 목록중 하나라도 empty이면 true 리턴
-	 * @param objects
-	 * @return
+	 * @param objects object
+	 * @return object중 하나라도 empty이면 true
 	 */
 	public static boolean isEmptyAny(Object...objects) {
 		boolean b = false;
@@ -1644,8 +1626,8 @@ public class PpUtil {
 	
 	/**
 	 * 이미지파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param fileVo 파일vo
+	 * @return 이미지 파일이면 true
 	 */
 	public static boolean isImageFile(PpFileVO fileVo) {
 		if(null == fileVo || isEmpty(fileVo.getOrginlFileName())) {
@@ -1659,8 +1641,8 @@ public class PpUtil {
 	
 	/**
 	 * 이미지파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param file 파일
+	 * @return 이미지 파일이면 true
 	 */
 	public static boolean isImageFile(File file) {
 		if(null == file) {
@@ -1673,8 +1655,8 @@ public class PpUtil {
 	
 	/**
 	 * 이미지파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param filename 파일명
+	 * @return 이미지 파일이면 true
 	 */
 	public static boolean isImageFile(String filename) {
 		if(isEmpty(filename)) {
@@ -1700,9 +1682,9 @@ public class PpUtil {
 	/**
 	 * json 문자열인지 여부
 	 * [나 {로 시작하면 json이라고 판단
-	 * @param str
-	 * @return
-	 * @history
+	 * @param str 문자열
+	 * @return json 문자열이면 true
+	 * @since
 	 * 	0102	init
 	 */
 	public static boolean isJsonString(String str) {
@@ -1717,13 +1699,13 @@ public class PpUtil {
 	
 	/**
 	 * isEmpty의 반대
-	 * @param str 문자열
+	 * @param obj 문자열
 	 * @return true / false
 	 * 	true 조건
 	 * 		문자열인 경우 공백이 아니면
-	 * 		collection(Set, List,...)인 경우 0 < size
-	 * 		배열인 경우 0 < length
-	 * 		Map인 경우 0 < size
+	 * 		collection(Set, List,...)인 경우 0 &lt; size
+	 * 		배열인 경우 0 &lt; length
+	 * 		Map인 경우 0 &lt; size
 	 */
 	public static boolean isNotEmpty(Object obj) {
 		return !isEmpty(obj);
@@ -1735,7 +1717,7 @@ public class PpUtil {
 	/**
 	 * !널여부
 	 * @param obj 오브젝트
-	 * @return
+	 * @return 널이 아니면 true
 	 */
 	public static boolean isNotNull(Object obj) {
 		return !isNull(obj);
@@ -1745,7 +1727,7 @@ public class PpUtil {
 	/**
 	 * 널여부 검사
 	 * @param obj 오브젝트
-	 * @return
+	 * @return 널이면 true
 	 */
 	public static boolean isNull(Object obj){
 		return (null == obj);
@@ -1769,9 +1751,9 @@ public class PpUtil {
 	
 	/**
 	 * 오피스 파일인지 여부
-	 * @see kr.co.ucsit.core.CsUtil.isOfficeFile(String)
-	 * @param fileVo
-	 * @return
+	 * @ref kr.co.ucsit.core.CsUtil.isOfficeFile(String)
+	 * @param fileVo 파일vo
+	 * @return 오피스 파일이면 true
 	 */
 	public static boolean isOfficeFile(PpFileVO fileVo) {
 		if(null == fileVo || isEmpty(fileVo.getOrginlFileName())) {
@@ -1785,9 +1767,9 @@ public class PpUtil {
 	
 	/**
 	 * 오피스 파일인지 여부
-	 * @see kr.co.ucsit.core.CsUtil.isOfficeFile(String)
-	 * @param file
-	 * @return
+	 * @ref kr.co.ucsit.core.CsUtil.isOfficeFile(String)
+	 * @param file 파일
+	 * @return 오피스 파일이면 true
 	 */
 	public static boolean isOfficeFile(File file) {
 		if(null == file) {
@@ -1799,8 +1781,8 @@ public class PpUtil {
 	
 	/**
 	 * 오피스 파일인지 여부. 확장자로만 판단
-	 * @param file
-	 * @return
+	 * @param filename 파일명
+	 * @return 오피스 파일이면 true
 	 */
 	public static boolean isOfficeFile(String filename) {
 		if(isEmpty(filename)) {
@@ -1828,8 +1810,8 @@ public class PpUtil {
 	
 	/**
 	 * 텍스트 파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param fileVo 파일vo
+	 * @return 텍스트 파일이면 true
 	 */
 	public static boolean isTextFile(PpFileVO fileVo) {
 		if(null == fileVo || isEmpty(fileVo.getOrginlFileName())) {
@@ -1843,8 +1825,8 @@ public class PpUtil {
 	
 	/**
 	 * 텍스트 파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param file 파일
+	 * @return 텍스트 파일이면 true
 	 */
 	public static boolean isTextFile(File file) {
 		if(null == file) {
@@ -1857,8 +1839,8 @@ public class PpUtil {
 	
 	/**
 	 * 텍스트 파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
+	 * @param filename 파일명
+	 * @return 텍스트 파일이면 true
 	 */
 	public static boolean isTextFile(String filename) {
 		if(isEmpty(filename)) {
@@ -1884,9 +1866,9 @@ public class PpUtil {
 	
 	/**
 	 * 허용 가능한 파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
-	 * @history
+	 * @param file 파일
+	 * @return 업로드 가능 파일이면 true
+	 * @since
 	 * 	0905	init
 	 */
 	public static boolean isWhiteFileExtension(File file) {
@@ -1900,9 +1882,9 @@ public class PpUtil {
 	
 	/**
 	 * 허용 가능한 파일인지 여부. 확장자로 판단
-	 * @param file
-	 * @return
-	 * @history
+	 * @param filename 파일명
+	 * @return 업로드 가능 파일이면 true
+	 * @since
 	 * 	0905	init
 	 */
 	public static boolean isWhiteFileExtension(String filename) {
@@ -1937,9 +1919,9 @@ public class PpUtil {
 	
 	/**
 	 * xml 문자열인지 여부
-	 * <xml로 시작하면 xml 문자열이라고 판단
-	 * @param str
-	 * @return
+	 * &lt;xml로 시작하면 xml 문자열이라고 판단
+	 * @param str 문자열
+	 * @return xml 문자열이면 true
 	 */
 	public static boolean isXmlString(String str) {
 		if(isEmpty(str)) {
@@ -1953,8 +1935,8 @@ public class PpUtil {
 	
 	/**
 	 * 프로세스 죽이기. kill -9 호출
-	 * @param clz
-	 * @return
+	 * @param clz 클래스명
+	 * @return 프로세스 죽이기 성공이면 true
 	 */
 	public static boolean killProcess(Class<?> clz) {
 		String filename = new File(clz.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
@@ -1965,7 +1947,8 @@ public class PpUtil {
 
 	/**
 	 * 프로세스 죽이기. kill -9 호출
-	 * @param name
+	 * @param name 프로세스명
+	 * @return 프로세스 죽이기 성공이면 true
 	 */
 	public static boolean killProcess(String name) {
 
@@ -2013,16 +1996,15 @@ public class PpUtil {
 	
 	/**
 	 * map을 object로 변환하기
-	 * 
-	 * @param map
-	 * @param clz
-	 * @return
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
+	 * @param map 맵
+	 * @param clz 객체 class
+	 * @return 변환된 객체
+	 * @throws InstantiationException  예외
+	 * @throws IllegalAccessException  예외
+	 * @throws SecurityException  예외
+	 * @throws NoSuchMethodException  예외
+	 * @throws InvocationTargetException  예외
+	 * @throws IllegalArgumentException  예외
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Object mapToVo(Map<String, Object> map, Class clz)
@@ -2056,7 +2038,7 @@ public class PpUtil {
 	 * 오라클의 nvl()과 유사한 메소드
 	 * @param obj 오브젝트
 	 * @param defaultValue 기본값
-	 * @return
+	 * @return obj가 널이면 defaultValue, 아니면 obj값
 	 */
 	public static Object nvl(Object obj, Object defaultValue){
 		if(isNull(obj)){
@@ -2068,7 +2050,7 @@ public class PpUtil {
 	/**
 	 * random값 구하기
 	 * @param bound	random값 구하기 위한 max값(범위)
-	 * @return
+	 * @return 랜덤값
 	 */
 	public static long rand(int bound){
 		return (new Random()).nextInt(bound);
@@ -2076,9 +2058,10 @@ public class PpUtil {
 	
 	
 	/**
-	 * @param file
-	 * @return
-	 * @throws IOException
+	 * 텍스트 파일 내용 읽기
+	 * @param file 파일
+	 * @return 추출한 파일 내용 목록
+	 * @throws IOException  예외
 	 */
 	public static List<String> readAllLines(File file) throws IOException{
 		return readAllLines(file.toPath().getParent(), file.toPath().getFileName().toString());
@@ -2089,11 +2072,11 @@ public class PpUtil {
 	 * 파일 내용 읽기
 	 * 파일 미존재시 빈 리스트 리턴
 	 * 파일 크기 0이면 빈 리스트 리턴
-	 * @param path
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 * @history
+	 * @param path 경로
+	 * @param filename 파일명
+	 * @return 추출한 파일 내용 목록
+	 * @throws IOException  예외
+	 * @since
 	 * 	0528	exists추가
 	 * 	0821	if문 몇개 추가
 	 */
@@ -2129,11 +2112,11 @@ public class PpUtil {
 	
 	
 	
-	/**
-	 * 이미지 크기 변경
-	 * @param orginlFile 원본 이미지 파일
-	 * @param resizedFile 크기 변견된 이미지 파일
-	 */
+//	/**
+//	 * 이미지 크기 변경
+//	 * @param orginlFile 원본 이미지 파일
+//	 * @param resizedFile 크기 변견된 이미지 파일
+//	 */
 //	public static void resizeImage(File orginlFile, File resizedFile) {
 //		try {
 //			//원본 이미지
@@ -2177,9 +2160,10 @@ public class PpUtil {
 	
 	/**
 	 * os 명령어 실행
-	 * @param cmd
-	 * @return
-	 * @throws IOException
+	 * @param cmd 명령어
+	 * @param ignoreError 오류 발생시 무시 여부
+	 * @return 명령어 실행 결과 문자열 List
+	 * @throws IOException  예외
 	 */
 	public static List<String> runProcess(List<String> cmd, boolean ignoreError) throws IOException {
 		if(PpUtil.isEmpty(cmd)) {
@@ -2235,10 +2219,10 @@ public class PpUtil {
 	
 	/**
 	 * os 명령어 실행
-	 * @see kr.co.ucsit.core.CsUtil.runProcess(List<String>)
-	 * @param cmd
-	 * @return
-	 * @throws IOException
+	 * @ref {@code kr.co.ucsit.core.CsUtil.runProcess(List<String>)}
+	 * @param cmd 명령어
+	 * @return 명령어 실행 결과 메시지
+	 * @throws IOException  예외
 	 */
 	public static List<String> runProcess(String[] cmd) throws IOException {
 		return runProcess(Arrays.asList(cmd));
@@ -2246,11 +2230,11 @@ public class PpUtil {
 	
 	/**
 	 * 파일 저장 with bom
-	 * @param path
-	 * @param filename
-	 * @param lines
-	 * @param bAppend 
-	 * @throws IOException
+	 * @param path 경로
+	 * @param filename 파일명
+	 * @param lines 데이터 목록
+	 * @param bAppend 기존 파일에 추가할지 여부
+	 * @throws IOException  예외
 	 */
 	public static void saveFileWithBOM(Path path, String filename, List<String> lines, boolean bAppend) throws IOException {
 		if(bAppend) {
@@ -2271,6 +2255,13 @@ public class PpUtil {
 		writer.close();
 	}
 	
+	/**
+	 * 데이터를 텍스트 파일로 저장하기
+	 * @param file 파일
+	 * @param lines 데이터 목록
+	 * @param isAppend 기존 파일에 추가할지 여부
+	 * @throws IOException  예외
+	 */
 	public static void saveToFile(File file, List<String> lines, boolean isAppend) throws IOException {
 		saveToFile(Paths.get(file.getParent()), file.getName(), lines, isAppend);
 	}
@@ -2282,7 +2273,7 @@ public class PpUtil {
 	 * @param filename 파일명
 	 * @param lines 데이터 줄 목록
 	 * @param isAppend 기존 파일에 overwrite할지 여부
-	 * @throws IOException
+	 * @throws IOException  예외
 	 */
 	public static void saveToFile(Path p, String filename, Collection<String> lines, boolean isAppend) throws IOException {
 
@@ -2323,10 +2314,10 @@ public class PpUtil {
 	
 	/**
 	 * lines내용을 텍스트 파일로 저장. 동일 파일 존재시 기존 내용 하단에 append
-	 * @param p
-	 * @param filename
-	 * @param lines
-	 * @throws IOException
+	 * @param p 경로
+	 * @param filename 파일명
+	 * @param lines 데이터 목록
+	 * @throws IOException  예외
 	 * @since
 	 * 	1228 문자열 시작이 bom문자일 경우 제거하는 로직 추가
 	 */
@@ -2336,11 +2327,11 @@ public class PpUtil {
 	
 	
 	/**
-	 * @see kr.co.ucsit.core.CsUtil.saveToFile(Path, String, List<String>)
-	 * @param p
-	 * @param filename
-	 * @param lines
-	 * @throws IOException
+	 * @ref {@code saveToFile(Path, String, List<String>)}
+	 * @param p 경로
+	 * @param filename 파일명
+	 * @param data 데이터
+	 * @throws IOException  예외
 	 * @since
 	 * 	1228	문자열이 bom문자열로 시작하면 bom문자열 제거하는 로직 추가 
 	 */
@@ -2376,119 +2367,17 @@ public class PpUtil {
 	
 	
 	
-	/**
-	 * list 랜덤(asc or desc)으로 정렬
-	 * @param list
-	 * @return
-	 */
-	public static List<Map<String,Object>> sortRandom(List<Map<String,Object>> list){
-		//
-		List<Map<String,Object>> result = list;
-		
-		if(PpUtil.isEmpty(result)) {
-			return result;
-		}
-		
-		//
-		if(50 > result.size()) {
-			//
-			if(0 == PpUtil.rand(2)) {
-				LOGGER.debug(".sortRandom - reverse");
-				Collections.reverse(result);
-			}
-			
-			return result;			
-		}
-		
-		//
-		result = new ArrayList<>();
-		
-		int fromIndex=0, toIndex=0;
-		while(true) {
-			fromIndex = toIndex;
-			toIndex = fromIndex + 10;
-			
-			
-			//
-			if(fromIndex > list.size()) {
-				fromIndex = list.size();
-			}
-			
-			//
-			if(toIndex > list.size()) {
-				toIndex = list.size();
-			}
-			
-			//
-			if(fromIndex >= toIndex) {
-				break;
-			}
-			
-			//
-			LOGGER.debug(".sortRandom - {}~{}/{}", fromIndex, toIndex, list.size());
-			result.addAll( sortRandom(list.subList(fromIndex, toIndex)) );
-		}
-		
-		
-		//
-		return result;
-		
-	}
-	
-	
-	/**
-	 * list를 size크기로 잘라 목록에 담음 & 리턴
-	 * @param list
-	 * @param size
-	 * @return
-	 */
-	public static <T> List<List<T>> subList(List<T> list, int size){
-		List<List<T>> result = new ArrayList<>();
-		
-		//
-		if(PpUtil.isEmpty(list)) {
-			return result;
-		}
-		
-		//
-		int fromIndex=0, toIndex=0;
-		while(true) {
-			fromIndex = toIndex;
-			toIndex += size;
-			
-			//
-			if(fromIndex > list.size()) {
-				fromIndex = list.size();
-			}
-			
-			//
-			if(toIndex > list.size()) {
-				toIndex = list.size();
-			}
-			
-			//
-			if(fromIndex == toIndex) {
-				break;
-			}
-			
-			//
-			result.add( list.subList(fromIndex, toIndex) );
-		}
-		
-		//
-		return result;
-	}
 	
 
 
 	/**
 	 * substring
 	 * str의 길이가 endIndex가 작으면 전체 str 문자열 리턴
-	 * @param str
-	 * @param beginIndex
-	 * @param endIndex
-	 * @return
-	 * @history
+	 * @param str 문자열
+	 * @param beginIndex 시작 인덱스. include
+	 * @param endIndex 종료 인덱스. exclude
+	 * @return substring된 문자열
+	 * @since
 	 * 	1230	init
 	 */
 	public static String substring(String str, int beginIndex, int endIndex) {
@@ -2506,9 +2395,9 @@ public class PpUtil {
 	
 	/**
 	 * 언더바 표기 문자열을 낙타법 문자열로 변환
-	 * 예)AB_CD => abCd
-	 * @param str
-	 * @return
+	 * 예)AB_CD =&gt; abCd
+	 * @param str 문자열
+	 * @return 낙타법으로 변환된 문자열
 	 */
 	public static String toCamel(String str) {
 		if(PpUtil.isEmpty(str)) {
@@ -2537,10 +2426,10 @@ public class PpUtil {
 	
 	
 	/**
-	 * 문자열을 List<String>으로 리턴
-	 * @param str
-	 * @return
-	 * @history
+	 * 문자열을 콤마로 split하여 List형태로 리턴
+	 * @param str 문자열
+	 * @return 변환된 리스트
+	 * @since
 	 * 	0102	init
 	 */
 	public static List<String> toList(String str){
@@ -2560,33 +2449,12 @@ public class PpUtil {
 		return Arrays.asList(str.split(",", -1));
 	}
 
-	/**
-	 * 숫자형으로 변환
-	 * @param numberString ex)100k 100m 100g
-	 * @return
-	 */
-	public static long toNumber(String numberString) {
-		if(numberString.toLowerCase().endsWith("k")) {
-			return 1000 * Long.parseLong(numberString.replaceAll("k", ""));
-		}
-		
-		if(numberString.toLowerCase().endsWith("m")) {
-			return 1000000 * Long.parseLong(numberString.replaceAll("m", ""));
-		}
-		
-		if(numberString.toLowerCase().endsWith("g")) {
-			return 1000000000 * Long.parseLong(numberString.replaceAll("g", ""));
-		}
-		
-		//
-		return Long.parseLong(numberString);
-	}
 	
 	
 	/**
 	 * json 문자열 시리얼라이즈
-	 * @param jsonString
-	 * @return object
+	 * @param jsonString json 문자열
+	 * @return List|Map
 	 */
 	public static Object toObjectFromJsonString(String jsonString){
 		if(PpUtil.isEmpty(jsonString)){
@@ -2610,8 +2478,8 @@ public class PpUtil {
 	
 	/**
 	 * 배열을 콤마 구분자 문자열로 변환
-	 * @param arr
-	 * @return
+	 * @param arr 배열
+	 * @return  문자열
 	 */
 	public static String toString(Object[] arr) {
 		String str = "";
@@ -2630,42 +2498,13 @@ public class PpUtil {
 		return str;
 	}
 	
-	/**
-	 * 맵 목록에서 key만 맞는 값만 추출하여 목록으로 리턴
-	 * @param listOfT T 타입 목록
-	 * @param key 맵의 키
-	 * @param addDummyIfEmpty 결과가 빈값이면 더미 데이터를 추가할지 여부
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	public static <T extends Map> List<String> createListOfValue(List<T> listOfT, String key, boolean addDummyIfEmpty){
-		List<String> list = new ArrayList<String>();
-		
-		//
-		for(T t : listOfT) {
-			if(null == t.get(key)) {
-				continue;
-			}
-			
-			//
-			list.add(t.get(key).toString());
-		}
-		
-		if(0 == list.size() && addDummyIfEmpty) {
-			list.add("dummy");
-		}
-		
-		return list;
-	}
-	
-	
 
 	/**
 	 * reflection이용.  domain의 fieldName의 값을 value로 설정
 	 * field가 없거나 오류 발생하면 아무런값도 set하지 않음
-	 * @param domain
-	 * @param fieldName
-	 * @param value
+	 * @param domain 도메인
+	 * @param fieldName 필드명
+	 * @param value 값
 	 * @since
 	 * 	20200811	init
 	 */
@@ -2689,8 +2528,8 @@ public class PpUtil {
 	
 	/**
 	 * reflection이용. domain의 fieldName의 값 추출
-	 * @param domain
-	 * @param fieldName
+	 * @param domain 도메일
+	 * @param fieldName 필드명
 	 * @return field의 값. 필드없거나 오류 발생하면 null 리턴
 	 * @since
 	 * 	20200811	init
@@ -2721,7 +2560,7 @@ public class PpUtil {
 	
 	/**
 	 * reflection이용. domain의 fieldName목록 추출
-	 * @param domain
+	 * @param domain 도메일
 	 * @return fieldName목록. 오류발생|field가 없으면 빈 목록 리턴
 	 * @since
 	 * 	20200811	init

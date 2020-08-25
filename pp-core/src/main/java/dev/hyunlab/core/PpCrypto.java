@@ -18,7 +18,7 @@ import dev.hyunlab.core.util.PpUtil;
 /**
  * AES 암호화/복호화
  * @author cs1492
- * @date   2018. 2. 28.
+ * @since   2018. 2. 28.
  *
  */
 public class PpCrypto {
@@ -55,7 +55,7 @@ public class PpCrypto {
 	/**
 	 * hash function(sha256) 암호화 처리
 	 * @param plainText 평문
-	 * @return
+	 * @return 암호화된 문자열
 	 */
 	public static String sha256(String plainText){
 		if(PpUtil.isEmpty(plainText)){
@@ -68,7 +68,7 @@ public class PpCrypto {
 	/**
 	 * hash function(sha512) 암호화 처리
 	 * @param plainText 평문
-	 * @return
+	 * @return 암호화된 문자열
 	 */
 	public static String sha512(String plainText){
 		if(PpUtil.isEmpty(plainText)){
@@ -80,14 +80,19 @@ public class PpCrypto {
 
 	
 	/**
-	 * @see	kr.co.ucsit.fwk.utl.FwkCrypto.encrypt(String, String, String)
+	 * @ref	kr.co.ucsit.fwk.utl.FwkCrypto.encrypt(String, String, String)
+	 * @param plainText 평문
+	 * @return 암호화된 문자열
 	 */
 	public static String encrypt(String plainText) {
 		return encrypt(plainText, SECRET_KEY, INIT_VECTOR);
 	}
 
 	/**
-	 * @see	kr.co.ucsit.fwk.utl.FwkCrypto.encrypt(String, String, String)
+	 * @ref	kr.co.ucsit.fwk.utl.FwkCrypto.encrypt(String, String, String)
+	 * @param plainText 평문
+	 * @param secretKey 비밀 키
+	 * @return 암호화된 문자열
 	 */
 	public static String encrypt(String plainText, String secretKey) {
 		return encrypt(plainText, secretKey, INIT_VECTOR);
@@ -98,7 +103,7 @@ public class PpCrypto {
 	 * @param plainText	평문
 	 * @param secretKey	키
 	 * @param initVector init vector
-	 * @return
+	 * @return 암호화된 문자열
 	 */
 	public static String encrypt(String plainText, String secretKey, String initVector) {
 		if(PpUtil.isEmpty(plainText)) {
@@ -125,14 +130,19 @@ public class PpCrypto {
 	
 	
 	/**
-	 * @see	kr.co.ucsit.fwk.utl.FwkCrypto.decrypt(String, String, String)	
+	 * @ref	kr.co.ucsit.fwk.utl.FwkCrypto.decrypt(String, String, String)	
+	 * @param cipherText 암호화된 문자열
+	 * @return 복호화된 문자열
 	 */
 	public static String decrypt(String cipherText) {
 		return decrypt(cipherText, SECRET_KEY, INIT_VECTOR);
 	}
 	
 	/**
-	 * @see	kr.co.ucsit.fwk.utl.FwkCrypto.decrypt(String, String, String)	
+	 * @ref	kr.co.ucsit.fwk.utl.FwkCrypto.decrypt(String, String, String)	
+	 * @param cipherText 암호화된 문자열
+	 * @param secretKey 비밀키
+	 * @return 복호화된 값
 	 */
 	public static String decrypt(String cipherText, String secretKey) {
 		return decrypt(cipherText, secretKey, INIT_VECTOR);
@@ -144,7 +154,7 @@ public class PpCrypto {
 	 * @param cipherText	암호화된 텍스트
 	 * @param secretKey	키
 	 * @param initVector	init vector
-	 * @return
+	 * @return 복호화된 값
 	 */
 	public static String decrypt(String cipherText, String secretKey, String initVector) {
 		if(PpUtil.isEmpty(cipherText)) {
@@ -173,7 +183,7 @@ public class PpCrypto {
 	 * AES 암호화
 	 * @param paramMap CsMap
 	 * @param keys CsMap의 키 목록
-	 * @return
+	 * @return 암호화된 값이 추가된 맵
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Map encrypt(PpMap paramMap, String...keys	) {
@@ -182,7 +192,7 @@ public class PpCrypto {
 		}
 		
 		for(String k : keys) {
-			paramMap.put(k + "Enc", PpCrypto.encrypt(paramMap.getString(k)));
+			paramMap.put(k + "_ENC", PpCrypto.encrypt(paramMap.getString(k)));
 		}
 		
 		return paramMap;
@@ -192,7 +202,7 @@ public class PpCrypto {
 	 * AES 복호화
 	 * @param datas 데이터
 	 * @param keys 맵의 키 목록
-	 * @return
+	 * @return 복호화값이 추가된 List
 	 */
 	public static List<Map<String,Object>> decrypt(List<Map<String, Object>> datas, String...keys) {
 		if(null == datas || null == keys) {
@@ -211,6 +221,7 @@ public class PpCrypto {
 	 * AES 복호화 
 	 * @param data 데이터
 	 * @param keys 맵의 키 목록
+	 * @return 복호화 값이 추가된 맵
 	 */
 	public static Map<String,Object> decrypt(Map<String, Object> data, String...keys) {
 		if(null == data || null == keys) {

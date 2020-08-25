@@ -23,11 +23,11 @@ public class PpExcelUtil {
 	static final Logger LOGGER = LoggerFactory.getLogger(PpExcelUtil.class);
 	
 	/**
-	 * row 생성 & 데이터 바인드
-	 * @param sheet
-	 * @param rownum
-	 * @param datas
-	 * @return
+	 * row 생성, 데이터 바인드
+	 * @param sheet 시트
+	 * @param rownum 행번호
+	 * @param datas 데이터 목록
+	 * @return 생성된 행
 	 */
 	public static Row createRow(Sheet sheet, int rownum, String[] datas) {
 		Row row = sheet.createRow(rownum);
@@ -42,12 +42,12 @@ public class PpExcelUtil {
 	}
 	
 	/**
-	 * row 생성 & 데이터 바인드
-	 * @param sheet
-	 * @param rownum
-	 * @param data
-	 * @param keys
-	 * @return
+	 * row 생성, 데이터 바인드
+	 * @param sheet 시트
+	 * @param rownum 행번호
+	 * @param data 데이터
+	 * @param keys 키목록
+	 * @return 생성된 행
 	 */
 	public static Row createRow(Sheet sheet, int rownum, Map<String,Object> data, String[] keys) {
 		Row row = sheet.createRow(rownum);
@@ -81,12 +81,12 @@ public class PpExcelUtil {
 	}
 	
 	/**
-	 * row 생성 & 데이터 바인드
-	 * @param sheet
-	 * @param rownum
-	 * @param datas
-	 * @param keys
-	 * @return
+	 * row 생성, 데이터 바인드
+	 * @param sheet 시트
+	 * @param rownum 행번호
+	 * @param datas 데이터 목록
+	 * @param keys 키 목록
+	 * @return 생성된 행
 	 */
 	public static Row createRow(Sheet sheet, int rownum, List<Map<String,Object>> datas, String[] keys) {
 		int i = rownum;
@@ -105,9 +105,9 @@ public class PpExcelUtil {
 	 * @param workbook workbook
 	 * @param sheetName 생성할 sheet의 이름
 	 * @param titles 제목줄에 표시할 제목 목록
-	 * @param keys map에서 데이터를 추출할 key의 목록
-	 * @param datas 데이터 목록
-	 * @return 
+	 * @param keys 데이터 목록
+	 * @param data map에서 데이터를 추출할 key의 목록
+	 * @return  생성된 시트
 	 */
 	public static Sheet createSheet(Workbook workbook, String sheetName, String[] titles, Map<String,Object> data, String[] keys) {
 		LOGGER.debug(".createSheet");
@@ -125,7 +125,7 @@ public class PpExcelUtil {
 	 * @param titles 제목줄에 표시할 제목 목록
 	 * @param datas 데이터 목록
 	 * @param keys map에서 데이터를 추출할 key의 목록
-	 * @return 
+	 * @return 생성된 시트
 	 */
 	public static Sheet createSheet(Workbook workbook, String sheetName, String[] titles, List<Map<String,Object>> datas, String[] keys) {
 		LOGGER.debug(".createSheet - workbook:{}, sheetName:{}, titles:{}, datas:{}, keys:{}"

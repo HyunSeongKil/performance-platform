@@ -20,8 +20,8 @@ public interface PpService<T,T2> {
 	
 	/**
 	 * 조회
-	 * @param searchVo
-	 * @return
+	 * @param searchVo vo
+	 * @return 객체
 	 */
 	default T get(T2 searchVo) {
 		return null;
@@ -29,8 +29,8 @@ public interface PpService<T,T2> {
 	
 	/**
 	 * 목록 조회
-	 * @param searchVo
-	 * @return
+	 * @param searchVo vo
+	 * @return 목록
 	 */
 	default List<T> gets(T2 searchVo) {
 		return null;
@@ -38,26 +38,26 @@ public interface PpService<T,T2> {
 	
 	/**
 	 * 삭제
-	 * @param searchVo
+	 * @param searchVo vo
 	 */
 	default void delete(T2 searchVo) { }
 	
 	/**
 	 * 등록
-	 * @param vo
+	 * @param vo vo 
 	 */
 	default void regist(T vo) {	}
 	
 	/**
 	 * 수정
-	 * @param vo
+	 * @param vo vo
 	 */
 	default void updt(T vo) { }
 	
 	/**
 	 * 조회
-	 * @param map
-	 * @return
+	 * @param map 맵
+	 * @return PpTransferObject
 	 */
 	default PpTransferObject get(Map<?,?> map) {
 		return null;
@@ -65,8 +65,8 @@ public interface PpService<T,T2> {
 	
 	/**
 	 * 목록 조회
-	 * @param map
-	 * @return
+	 * @param map 맵
+	 * @return PpTransferObject
 	 */
 	default PpTransferObject gets(Map<?,?> map) {
 		return null;
@@ -74,19 +74,19 @@ public interface PpService<T,T2> {
 	
 	/**
 	 * 등록
-	 * @param map
+	 * @param map 맵
 	 */
 	default void regist(Map<?,?> map) {}
 	
 	/**
 	 * 수정
-	 * @param map
+	 * @param map 맵
 	 */
 	default void updt(Map<?,?> map) {}
 	
 	/**
 	 * 삭제
-	 * @param map
+	 * @param map 맵
 	 */
 	default void delete(Map<?,?> map) {}
 	

@@ -6,7 +6,7 @@ package dev.hyunlab.core;
 /**
  * 상수 정의
  * @author cs1492
- * @date   2018. 3. 16.
+ * @since   2018. 3. 16.
  *
  */
 public class PpConst {

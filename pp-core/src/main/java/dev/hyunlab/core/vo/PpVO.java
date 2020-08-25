@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * vo class
  * 
  * @author cs1492
- * @date 2018. 3. 16.
+ * @since 2018. 3. 16.
  *
  */
 public class PpVO implements Serializable {
