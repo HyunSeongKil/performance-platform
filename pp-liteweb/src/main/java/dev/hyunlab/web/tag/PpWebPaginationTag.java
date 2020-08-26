@@ -14,7 +14,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.hyunlab.core.PpMap;
+import dev.hyunlab.core.misc.PpMap;
 
 /**
  * 페이징 Custom Tag
