@@ -23,7 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.hyunlab.core.PpConst;
+import dev.hyunlab.core.misc.PpConst;
 import dev.hyunlab.core.util.PpUtil;
 import dev.hyunlab.core.vo.PpFileVO;
 import dev.hyunlab.web.util.PpWebSessionUtil;
