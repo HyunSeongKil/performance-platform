@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -210,7 +211,7 @@ public class PpWebUtil extends PpUtil{
 			//.json 요청이면
 			if(null != request.getQueryString()) {
 				//파라미터가 get/post방식으로 전달되었으면
-				return toParameterMap(request);
+				return toMap(request);
 			}else {
 				try {
 					return payloadToParamMap(request);
@@ -221,74 +222,128 @@ public class PpWebUtil extends PpUtil{
 			}
 		}else {
 			//.do 요청이면
-			return toParameterMap(request);
+			return toMap(request);
 		}
 	}
 	
 	/**
-	 * 
-	 * @date : 2018. 2. 2.
-	 * @param request
-	 * @return
+	 * request의 attribute, parameter를 T의 key/value로 설정. payload는 처리하지 않음
+	 * @param <T> Map을 상속받은 클래스
+	 * @param request request
+	 * @param clazz 클래스
+	 * @return 값이 세팅된 T의 인스턴스
+	 * @since 20200826	init
 	 */
-	private static Map<String,Object> toParameterMap(HttpServletRequest request) {
-		log.trace(".toParameterMap");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T extends Map> T toMap(HttpServletRequest request, Class<T> clazz) {
+		T map = null;
 		
-		Map<String,Object> paramMap = new HashMap<>();
 		
-		Enumeration<String> e = request.getAttributeNames();
-		String k;
-		
-		while(e.hasMoreElements()) {
-			k = e.nextElement();
+		try {
+			map = clazz.getDeclaredConstructor().newInstance();
 			
-			if(null == k) {
-				continue;
-			}
-			
-			if(30 < k.length()) {
-				continue;
-			}
-		
-			paramMap.put(k, request.getAttribute(k));
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException	| NoSuchMethodException | SecurityException e) {
+			log.error("{}",e);
 		}
 		
 		//
-		e = request.getParameterNames();
+		if(null == map) {
+			return null;
+		}
 		
-		while(e.hasMoreElements()) {
-			k = e.nextElement();
+		//
+		String k;
+		Enumeration<String> en = request.getAttributeNames();
+		while(en.hasMoreElements()) {
+			k = en.nextElement();
+			
+			//
+			if(PpUtil.isEmpty(k)) {
+				continue;
+			}
+			
+			//
+			map.put(k, request.getAttribute(k));
+		}
+		
+		//
+		en = request.getParameterNames();
+		
+		while(en.hasMoreElements()) {
+			k = en.nextElement();
 			
 			if(null == k) {
 				continue;
 			}
 			
-			if(30 < k.length()) {
-				continue;
-			}
 			
 			if(1 == request.getParameterValues(k).length) {
-				paramMap.put(k, request.getParameter(k));
+				map.put(k, request.getParameter(k));
 			}else {
-				paramMap.put(k, request.getParameterValues(k));
+				map.put(k, request.getParameterValues(k));
 			}
 		}
 		
-		return paramMap;
+		//
+		return map;
+	}
+	
+	/**
+	 * request의 attribute, parameter를 맵에 설정. payload는 처리하지 않음
+	 * @date : 2018. 2. 2.
+	 * @param request request
+	 * @return 값이 세팅된 맵
+	 */
+	@SuppressWarnings("unchecked")
+	private static Map<String,Object> toMap(HttpServletRequest request) {
+		Map<String,Object> map = toMap(request, Map.class);
+		
+		//
+		return map;		
 	}
 	
 	
 	/**
-	 * payload body를 CsMap에 put함
+	 * payload body를 map으로 변환
+	 * @param request request 
+	 * @return map
+	 * @throws IOException 예외
+	 */
+	@Deprecated
+	@SuppressWarnings("unchecked")
+	public static Map<String,Object> payloadToParamMap(HttpServletRequest request) throws IOException {
+		Map<String,Object> map = payloadToMap(request, Map.class);
+		//
+		return map;
+	}
+	
+	
+	/**
+	 * payload body를 map으로 변환
+	 * @param request request 
+	 * @return map
+	 * @throws IOException 예외
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String,Object> payloadToMap(HttpServletRequest request) throws IOException {
+		Map<String,Object> map = payloadToMap(request, Map.class);
+		//
+		return map;
+	}
+	
+	
+	/**
+	 * payload body를 map으로 변환
 	 * @date : 2018. 2. 2.
-	 * @param request
-	 * @return
-	 * @throws IOException
+	 * @param request request
+	 * @return map
+	 * @throws IOException 예외
 	 * @history
 	 * 	20200514	double형인데 끝이 .0으로 끝나면 integer로 변환하여 저장
+	 * 	20200826	generic type으로 리펙토링
 	 */
-	@SuppressWarnings({ "unchecked" })
-	public static Map<String,Object> payloadToParamMap(HttpServletRequest request) throws IOException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T extends Map> T payloadToMap(HttpServletRequest request, Class<T> clazz) throws IOException {
 		log.trace(".jsonToParameterMap");
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -314,33 +369,31 @@ public class PpWebUtil extends PpUtil{
 		}
 		
 		//
-		Map<String,Object> paramMap = (new Gson()).fromJson(str, Map.class);
+		T map = (new Gson()).fromJson(str, clazz);
 		
 		//
-		request.setAttribute(PpConst.PARAM_MAP, paramMap);
-		
-		//
-		if(null == paramMap || 0 == paramMap.size()) {
-			return paramMap;
+		if(null == map) {
+			return null;
 		}
 		
+		
 		//
-		Iterator<String> iter = paramMap.keySet().iterator();
+		Iterator<String> iter = map.keySet().iterator();
 		while(iter.hasNext()) {
 			String k = iter.next();
 			
 			//
-			if(null == paramMap.get(k)) {
+			if(null == map.get(k)) {
 				continue;
 			}
 			
 			//더블형인데 끝이 .0 이면 integer로 변환
-			if(Double.class == paramMap.get(k).getClass() && paramMap.get(k).toString().endsWith(".0")) {
-				paramMap.put(k, ((Double)paramMap.get(k)).intValue());
+			if(Double.class == map.get(k).getClass() && map.get(k).toString().endsWith(".0")) {
+				map.put(k, ((Double)map.get(k)).intValue());
 			}
 		}
 		
-		return paramMap;
+		return map;
 	}
 	
 	
