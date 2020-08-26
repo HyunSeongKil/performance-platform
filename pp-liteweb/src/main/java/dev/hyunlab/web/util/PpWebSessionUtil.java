@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.hyunlab.core.PpConst;
-import dev.hyunlab.core.PpMap;
+import dev.hyunlab.core.misc.PpConst;
+import dev.hyunlab.core.misc.PpMap;
 import dev.hyunlab.core.util.PpUtil;
 
 /**
