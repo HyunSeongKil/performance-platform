@@ -6,7 +6,7 @@ package dev.hyunlab.core.service;
 import java.util.List;
 import java.util.Map;
 
-import dev.hyunlab.core.PpTransferObject;
+import dev.hyunlab.core.misc.PpTransferObject;
 
 /**
  * @author hyunseongkil

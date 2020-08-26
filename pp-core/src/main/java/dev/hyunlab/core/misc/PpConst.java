@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dev.hyunlab.core;
+package dev.hyunlab.core.misc;
 
 /**
  * 상수 정의

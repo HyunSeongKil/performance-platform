@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dev.hyunlab.core;
+package dev.hyunlab.core.misc;
 
 import java.util.List;
 import java.util.Map;

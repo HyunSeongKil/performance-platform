@@ -51,8 +51,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import dev.hyunlab.core.PpConst;
-import dev.hyunlab.core.PpTransferObject;
+import dev.hyunlab.core.misc.PpConst;
+import dev.hyunlab.core.misc.PpTransferObject;
 import dev.hyunlab.core.vo.PpFileVO;
 
 /**

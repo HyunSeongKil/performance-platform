@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import dev.hyunlab.core.PpConst;
+import dev.hyunlab.core.misc.PpConst;
 import dev.hyunlab.core.util.PpUtil;
 
 /**

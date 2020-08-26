@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dev.hyunlab.core;
+package dev.hyunlab.core.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
