@@ -8,9 +8,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * ui와 관련된 것들
  * es6 버전
  * jquery사용하지 않음
- * typescript버전을 es6로 변환
+ * 원본 파일 : ppui-version-es6.js
+ * 변환 파일 : ppui-version-legacy.js
+ * 변환툴 : babel
  * es5로 컴파일하는 방법 : @see https://stackoverflow.com/questions/34747693/how-do-i-get-babel-6-to-compile-to-es5-javascript
- * ※ 주의! 이 pp-js가 원본임. 다른 경로의 파일 수정 불허
+ * 주의! 직접 ppui-version-lagacy.js파일 변경 불허
  * @since   
  *  2020-07-16  init
  * @author gravity@daumsoft.com
@@ -21,6 +23,88 @@ var ppui = function () {
     }
 
     _createClass(ppui, null, [{
+        key: 'bindDatas',
+
+
+        /**
+         * 엘리먼트에 값 바인드
+         * @param {string|object} selectorOrEl 엘리먼트 선택자 또는 엘리먼트
+         * @param {array} datas 데이터 목록
+         * @param {object} option {initValue:string|null, tkey:string, vkey:string, headerText:string|null, headerValue:string|null, append:boolean}
+         *                  initValue : 초기값. 선택
+         *                  tkey : 텍스트 키. datas에서 text로 사용될 키의 정보. 필수
+         *                  vkey : 값 키. datas에서 value으로 사용될 키의 정보. 필수
+         *                  headerText : 헤더 텍스트. 헤더 텍스트 존재시 headerValue도 반드시 존재해야 함. 선택
+         *                  headerValue : 헤더 값. 헤더 값 존재시 headerText도 반드시 존재해야 함. 선택
+         *                  append : 추가 여부. false이면 기존 option 모두 삭제 후 데이터 바인드. 선택. 초기값:true
+         * @since 20200827 init
+         */
+        value: function bindDatas(selectorOrEl, datas, option) {
+            var el = selectorOrEl;
+
+            //
+            if ('string' === typeof selectorOrEl) {
+                el = document.querySelector(selectorOrEl);
+            }
+
+            //
+            if (pp.isNull(el)) {
+                return;
+            }
+
+            //
+            var opt = pp.extend({ 'initValue': null, 'append': true, 'headerText': null, 'headerValue': null }, option);
+
+            //
+            var _select = function _select(el, datas, opt) {
+                //추가가 아니면
+                if (!opt.append) {
+                    //기존 옵션 모두 삭제
+                    el.options.length = 0;
+                }
+
+                //헤더 텍스트 존재하면
+                if (pp.isNotEmpty(opt.headerText)) {
+                    var _option = document.createElement('option');
+                    el.appendChild(_option);
+                    //
+                    _option.text = opt.headerText;
+                    _option.value = opt.headerValue;
+                }
+
+                //
+                for (var i = 0; i < datas.length; i++) {
+                    var d = datas[i];
+
+                    //
+                    var _option2 = document.createElement('option');
+                    el.appendChild(_option2);
+                    //
+                    _option2.value = d[opt.vkey];
+                    _option2.text = d[opt.tkey];
+                }
+
+                //초기값 존재하면
+                if (pp.isNotEmpty(opt.initValue)) {
+                    for (var _i = 0; _i < el.options.length; _i++) {
+                        if (opt.initValue == el.options[_i].value) {
+                            el.selectedIndex = _i;
+                            break;
+                        }
+                    }
+                }
+
+                //
+                return el;
+            };
+
+            //
+            if ('SELECT' === el.tagName) {
+                _select(el, datas, opt);
+                return;
+            }
+        }
+    }, {
         key: 'bindEnterKey',
 
 

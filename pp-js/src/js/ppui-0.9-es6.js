@@ -13,6 +13,87 @@
  * @author gravity@daumsoft.com
  */
 class ppui{
+
+
+    /**
+     * 엘리먼트에 값 바인드
+     * @param {string|object} selectorOrEl 엘리먼트 선택자 또는 엘리먼트
+     * @param {array} datas 데이터 목록
+     * @param {object} option {initValue:string|null, tkey:string, vkey:string, headerText:string|null, headerValue:string|null, append:boolean}
+     *                  initValue : 초기값. 선택
+     *                  tkey : 텍스트 키. datas에서 text로 사용될 키의 정보. 필수
+     *                  vkey : 값 키. datas에서 value으로 사용될 키의 정보. 필수
+     *                  headerText : 헤더 텍스트. 헤더 텍스트 존재시 headerValue도 반드시 존재해야 함. 선택
+     *                  headerValue : 헤더 값. 헤더 값 존재시 headerText도 반드시 존재해야 함. 선택
+     *                  append : 추가 여부. false이면 기존 option 모두 삭제 후 데이터 바인드. 선택. 초기값:true
+     * @since 20200827 init
+     */
+    static bindDatas(selectorOrEl, datas, option) {
+        let el = selectorOrEl;
+
+        //
+        if ('string' === typeof (selectorOrEl)) {
+            el = document.querySelector(selectorOrEl);
+        }
+
+        //
+        if (pp.isNull(el)) {
+            return;
+        }
+
+        //
+        let opt = pp.extend({'initValue':null, 'append':true, 'headerText':null, 'headerValue':null}, option);
+
+        //
+        let _select = function (el, datas, opt) {
+            //추가가 아니면
+            if (!opt.append) {
+                //기존 옵션 모두 삭제
+                el.options.length = 0;
+            }
+
+            //헤더 텍스트 존재하면
+            if (pp.isNotEmpty(opt.headerText)) {
+                let option = document.createElement('option');
+                el.appendChild(option);
+                //
+                option.text = opt.headerText;
+                option.value = opt.headerValue;
+            }
+
+            //
+            for (let i = 0; i < datas.length; i++) {
+                let d = datas[i];
+
+                //
+                let option = document.createElement('option');
+                el.appendChild(option);
+                //
+                option.value = d[opt.vkey];
+                option.text = d[opt.tkey];
+            }
+
+            //초기값 존재하면
+            if (pp.isNotEmpty(opt.initValue)) {
+                for (let i = 0; i < el.options.length; i++) {
+                    if (opt.initValue == el.options[i].value) {
+                        el.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            //
+            return el;
+        };
+
+
+        //
+        if ('SELECT' === el.tagName) {
+            _select(el, datas, opt);
+            return;
+        }
+    };
     
     /**
      * 엔터키 처리
