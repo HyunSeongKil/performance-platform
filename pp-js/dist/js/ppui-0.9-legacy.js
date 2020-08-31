@@ -183,60 +183,128 @@ var ppui = function () {
         }
 
         /**
+         * el이 엘리먼트인지 여부
+         * @param {HTMLElement|any} el 엘리먼트
+         * @returns {boolean} 엘리먼트이면 true
+         */
+
+    }, {
+        key: '_isElement',
+        value: function _isElement(el) {
+            return el instanceof HTMLElement;
+        }
+
+        /**
+         * 콜렉션인지 여부
+         * @param {HTMLCollection|any} coll  콜렉션
+         * @returns {boolean} 콜렉션이면 true
+         */
+
+    }, {
+        key: '_isCollection',
+        value: function _isCollection(coll) {
+            return coll instanceof HTMLCollection;
+        }
+
+        /**
+         * 노드리스트인지 여부
+         * @param {NodeList|any} nl  노드리스트
+         * @returns {boolean} 노드리스트이면 true
+         */
+
+    }, {
+        key: '_isNodeList',
+        value: function _isNodeList(nl) {
+            return nl instanceof NodeList;
+        }
+
+        /**
          * el에 클래스 추가. like jq's addClass
-         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>} el getElement or getElements or querySelectorAll()
+         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>|string} el getElement or getElements or querySelectorAll()
          * @param {string} className 클래스명
-         * @returns {HTMLElement|HTMLCollection|NodeListOf<Element>}
+         * @returns {object} ppui
+         * @since
+         *  20200831    el에 string 추가
          */
 
     }, {
         key: 'addClass',
-        value: function addClass(el, className) {
-            if (pp.isNull(el)) {
-                return el;
-            }
+        value: function addClass(elOrSelector, className) {
+            //엘리먼트
+            var _element = function _element(el, className) {
+                if (!ppui._isElement(el)) {
+                    return;
+                }
 
-            //
-            if (el instanceof HTMLElement) {
+                //
                 if (ppui.hasClass(el, className)) {
-                    return el;
+                    return;
                 }
 
                 //
                 el.classList.add(className);
-                //
-                return el;
-            }
+            };
 
-            //
-            if (el instanceof HTMLCollection) {
-                for (var i = 0; i < el.length; i++) {
-                    if (ppui.hasClass(el.item(i), className)) {
+            //콜렉션
+            var _collection = function _collection(coll, className) {
+                if (!ppui._isCollection(coll)) {
+                    return;
+                }
+
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var _el = coll.item(i);
+
+                    if (ppui.hasClass(_el, className)) {
                         continue;
                     }
 
                     //
-                    el.item(i).classList.add(className);
+                    _el.classList.add(className);
                 }
-                //
-                return el;
-            }
+            };
 
-            //
-            if (el instanceof NodeList) {
-                el.forEach(function (x) {
-                    if (ppui.hasClass(x, className)) {
+            //노드리스트
+            var _nodeList = function _nodeList(nodeList, className) {
+                if (!ppui._isNodeList(nodeList)) {
+                    return;
+                }
+
+                //
+                nodeList.forEach(function (el) {
+                    if (ppui.hasClass(el, className)) {
                         return;
                     }
                     //
-                    x.classList.add(className);
+                    el.classList.add(className);
                 });
-                //
-                return el;
+            };
+
+            //
+            if (pp.isNull(elOrSelector)) {
+                return ppui;
             }
 
             //
-            return el;
+            var el = elOrSelector;
+            if ('string' === typeof elOrSelector) {
+                el = document.querySelectorAll(elOrSelector);
+            }
+
+            //
+            if (pp.isNull(el)) {
+                return ppui;
+            }
+
+            //
+            _element(el, className);
+            //
+            _collection(el, className);
+            //
+            _nodeList(el, className);
+
+            //
+            return ppui;
         }
 
         /**
@@ -249,38 +317,74 @@ var ppui = function () {
     }, {
         key: 'hasClass',
         value: function hasClass(el, className) {
+            //엘리먼트
+            var _element = function _element(el, className) {
+                if (!ppui._isElement(el)) {
+                    return null;
+                }
+
+                //
+                return ppui._hasClassAtElement(el, className);
+            };
+
+            //콜렉션
+            var _collection = function _collection(coll, className) {
+                if (!ppui._isCollection(coll)) {
+                    return null;
+                }
+
+                //
+                var b = false;
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var _el2 = coll.item(i);
+                    //
+                    b = b || ppui._hasClassAtElement(_el2, className);
+                }
+
+                //
+                return b;
+            };
+
+            //노드리스트
+            var _nodeList = function _nodeList(nl, className) {
+                if (!ppui._nodeList(nl)) {
+                    return null;
+                }
+
+                var b = false;
+                //
+                nl.forEach(function (el) {
+                    b = b || ppui._hasClassAtElement(el, className);
+                });
+
+                //
+                return b;
+            };
+
             if (pp.isNull(el)) {
                 return false;
             }
 
             //
-            if (el instanceof Element) {
-                return ppui._hasClassAtElement(el, className);
-            }
+            var b = null;
 
             //
-            if (el instanceof HTMLCollection) {
-                //
-                var b = false;
-                //
-                for (var i = 0; i < el.length; i++) {
-                    b = b || ppui._hasClassAtElement(el.item(i), className);
-                }
-
-                //
+            b = _element(el);
+            if (null != b) {
                 return b;
             }
 
             //
-            if (el instanceof NodeList) {
-                var _b = false;
-                //
-                el.forEach(function (x) {
-                    _b = _b || ppui._hasClassAtElement(x, className);
-                });
+            b = _collection(el);
+            if (null != b) {
+                return b;
+            }
 
-                //
-                return _b;
+            //
+            b = _nodeList(el);
+            if (null != b) {
+                return b;
             }
 
             //
@@ -291,12 +395,15 @@ var ppui = function () {
          * like jquery's toggleClass
          * @param {Element} el 
          * @param {string} className 
+         * @returns {object} ppui
          */
 
     }, {
         key: 'toggleClass',
         value: function toggleClass(el, className) {
             ppui.hasClass(el, className) ? ppui.removeClass(el, className) : ppui.addClass(el, className);
+
+            return ppui;
         }
 
         /**
@@ -328,47 +435,90 @@ var ppui = function () {
 
         /**
          * el에서 클래스 삭제. like jq's removeClass
-         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>} el getElement or getElements or querySelectorAll()
+         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>|string} el getElement or getElements or querySelectorAll()
          * @param {string} className 클래스명
-         * @returns {HTMLElement|HTMLCollection|NodeListOf<Element>}
+         * @returns {object} ppui
+         * @since
+         *  20200831    el에 string추가
          */
 
     }, {
         key: 'removeClass',
-        value: function removeClass(el, className) {
-            if (pp.isNull(el)) {
-                return el;
-            }
+        value: function removeClass(elOrSelector, className) {
+            //엘리먼트
+            var _element = function _element(el, className) {
+                if (!ppui._isElement(el)) {
+                    return;
+                }
 
-            //
-            if (el instanceof HTMLElement) {
                 //
                 el.classList.remove(className);
+            };
 
-                //
-                return el;
-            }
-
-            //
-            if (el instanceof HTMLCollection) {
-                for (var i = 0; i < el.length; i++) {
-                    el.item(i).classList.remove(className);
+            //콜렉션
+            var _collection = function _collection(coll, className) {
+                if (!ppui._isCollection(coll)) {
+                    return;
                 }
-                //
-                return el;
-            }
 
-            //
-            if (el instanceof NodeList) {
-                el.forEach(function (x) {
-                    x.classList.remove(className);
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var _el3 = coll.item(i);
+                    //
+                    _el3.classList.remove(className);
+                }
+            };
+
+            //노드리스트
+            var _nodeList = function _nodeList(nl, className) {
+                if (!ppui._isNodeList(nl)) {
+                    return;
+                }
+
+                //
+                nl.forEach(function (el) {
+                    el.classList.remove(className);
                 });
-                //
-                return el;
+            };
+
+            //
+            if (pp.isNull(elOrSelector)) {
+                return ppui;
             }
 
             //
-            return el;
+            var el = elOrSelector;
+            if ('string' === typeof elOrSelector) {
+                el = document.querySelectorAll(elOrSelector);
+            }
+
+            //
+            _element(el, className);
+            //
+            _collection(el, className);
+            //
+            _nodeList(el, className);
+
+            //
+            return ppui;
+        }
+
+        /**
+         * 
+         * @param {Element|Node|NodeList|string} elOrSelector 
+         * @param {string} beforeClassName 변경전 classname
+         * @param {string} afterClassName 변경후 classname
+         */
+
+    }, {
+        key: 'replaceClass',
+        value: function replaceClass(elOrSelector, beforeClassName, afterClassName) {
+
+            //
+            ppui.removeClass(elOrSelector, beforeClassName).addClass(elOrSelector, afterClassName);
+
+            //
+            return ppui;
         }
 
         /**
