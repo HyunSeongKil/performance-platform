@@ -33,12 +33,12 @@ var Exts = Object.freeze({
  * performance platform util js
  */
 
-var pp = function () {
-    function pp() {
-        _classCallCheck(this, pp);
+var Pp = function () {
+    function Pp() {
+        _classCallCheck(this, Pp);
     }
 
-    _createClass(pp, null, [{
+    _createClass(Pp, null, [{
         key: 'base64ToBlob',
 
 
@@ -86,7 +86,7 @@ var pp = function () {
         key: 'addComma',
         value: function addComma(strOrNum) {
             var s = strOrNum;
-            if (pp.isEmpty(strOrNum)) {
+            if (Pp.isEmpty(strOrNum)) {
                 return "";
             }
             //
@@ -106,7 +106,7 @@ var pp = function () {
     }, {
         key: 'unComma',
         value: function unComma(str) {
-            if (pp.isEmpty(str)) {
+            if (Pp.isEmpty(str)) {
                 return "";
             }
             //
@@ -121,7 +121,7 @@ var pp = function () {
     }, {
         key: 'formatNumber',
         value: function formatNumber(strOrNum) {
-            return pp.addComma(strOrNum);
+            return Pp.addComma(strOrNum);
         }
 
         /**
@@ -197,7 +197,7 @@ var pp = function () {
                 throw new Error(".lpad - not allowed type");
             }
             //
-            if (pp.isEmpty(s)) {
+            if (Pp.isEmpty(s)) {
                 return "";
             }
             //
@@ -302,7 +302,7 @@ var pp = function () {
                 return targetMap;
             };
 
-            if (pp.isNull(target) || pp.isNull(source)) {
+            if (Pp.isNull(target) || Pp.isNull(source)) {
                 return target;
             }
 
@@ -361,7 +361,7 @@ var pp = function () {
     }, {
         key: 'isNotNull',
         value: function isNotNull(obj) {
-            return !pp.isNull(obj);
+            return !Pp.isNull(obj);
         }
 
         /**
@@ -373,7 +373,7 @@ var pp = function () {
     }, {
         key: 'isNotEmpty',
         value: function isNotEmpty(strOrArr) {
-            return !pp.isEmpty(strOrArr);
+            return !Pp.isEmpty(strOrArr);
         }
 
         /**
@@ -385,7 +385,7 @@ var pp = function () {
     }, {
         key: 'isEmpty',
         value: function isEmpty(strOrArr) {
-            if (pp.isNull(strOrArr)) {
+            if (Pp.isNull(strOrArr)) {
                 return true;
             }
 
@@ -444,11 +444,11 @@ var pp = function () {
     }, {
         key: 'nvl',
         value: function nvl(obj, defaultValue) {
-            if (pp.isNotNull(obj)) {
+            if (Pp.isNotNull(obj)) {
                 return obj;
             }
             //
-            if (pp.isNull(defaultValue)) {
+            if (Pp.isNull(defaultValue)) {
                 return "";
             } else {
                 return defaultValue;
@@ -466,7 +466,7 @@ var pp = function () {
     }, {
         key: 'ajaxPromise',
         value: function ajaxPromise(url, param, option) {
-            if (pp.isEmpty(url) || pp.isNull(param)) {
+            if (Pp.isEmpty(url) || Pp.isNull(param)) {
                 return new Promise(function (resolve, reject) {
                     reject('url or param is empty');
                 });
@@ -479,7 +479,7 @@ var pp = function () {
             };
 
             //
-            var opt = pp.extend(defaultSetting, option);
+            var opt = Pp.extend(defaultSetting, option);
 
             //
             var xhr = new XMLHttpRequest();
@@ -519,7 +519,7 @@ var pp = function () {
 
             //
             var fd = new FormData();
-            var p = pp.toKv(param);
+            var p = Pp.toKv(param);
             //
             Object.keys(p).forEach(function (k) {
                 fd.append(k, p[k]);
@@ -540,7 +540,7 @@ var pp = function () {
     }, {
         key: 'submitAjax',
         value: function submitAjax(url, param, callbackSuccess, option) {
-            if (pp.isEmpty(url) || pp.isNull(param)) {
+            if (Pp.isEmpty(url) || Pp.isNull(param)) {
                 return;
             }
 
@@ -551,7 +551,7 @@ var pp = function () {
                 callbackError: null
             };
             //
-            var opt = pp.extend(defaultSetting, option);
+            var opt = Pp.extend(defaultSetting, option);
 
             //
             var xhr = new XMLHttpRequest();
@@ -586,7 +586,7 @@ var pp = function () {
                         }
                     } else {
                         //실패
-                        if (pp.isNotNull(opt.callbackError)) {
+                        if (Pp.isNotNull(opt.callbackError)) {
                             opt.callbackError(v);
                         } else {
                             alert("오류가 발생했습니다.");
@@ -597,7 +597,7 @@ var pp = function () {
 
             //
             var fd = new FormData();
-            var p = pp.toKv(param);
+            var p = Pp.toKv(param);
             //
             Object.keys(p).forEach(function (k) {
                 fd.append(k, p[k]);
@@ -647,7 +647,7 @@ var pp = function () {
             ;xhr.onreadystatechange = function () {
                 if (4 === xhr.readyState) {
                     var str = xhr.response;
-                    if (pp.isEmpty(str)) {
+                    if (Pp.isEmpty(str)) {
                         str = '{}';
                     }
 
@@ -676,7 +676,7 @@ var pp = function () {
     }, {
         key: 'checkFileExt',
         value: function checkFileExt(file, arrOfExts) {
-            if (pp.isNull(file)) {
+            if (Pp.isNull(file)) {
                 return false;
             }
 
@@ -694,7 +694,7 @@ var pp = function () {
     }, {
         key: 'checkFileSize',
         value: function checkFileSize(file, maxFileSize) {
-            if (pp.isNull(file)) {
+            if (Pp.isNull(file)) {
                 return false;
             }
 
@@ -718,12 +718,12 @@ var pp = function () {
             var p = {};
             //case2, case4인 경우
             if (Array.isArray(param)) {
-                return pp.toKvFromArray(param);
+                return Pp.toKvFromArray(param);
             }
 
             //case1
-            if (pp.isNotEmpty(param.name)) {
-                return pp.toKvFromNameValue(param.name, param.value);
+            if (Pp.isNotEmpty(param.name)) {
+                return Pp.toKvFromNameValue(param.name, param.value);
             }
 
             //case3
@@ -781,7 +781,7 @@ var pp = function () {
                     }
 
                     //
-                    resultMap = pp.extend(resultMap, json);
+                    resultMap = Pp.extend(resultMap, json);
                 });
 
                 //
@@ -805,7 +805,7 @@ var pp = function () {
                     }
 
                     //
-                    resultMap = pp.extend(resultMap, map);
+                    resultMap = Pp.extend(resultMap, map);
                 });
 
                 //
@@ -846,7 +846,7 @@ var pp = function () {
     }, {
         key: 'toKvFromArray',
         value: function toKvFromArray(arr) {
-            if (pp.isEmpty(arr)) {
+            if (Pp.isEmpty(arr)) {
                 return {};
             }
 
@@ -854,15 +854,15 @@ var pp = function () {
             var json = arr[0];
 
             //
-            if (pp.isNotEmpty(json.name)) {
+            if (Pp.isNotEmpty(json.name)) {
                 //case2
-                return pp.toKvFromNameValueArray(arr);
+                return Pp.toKvFromNameValueArray(arr);
             } else {
                 //case4
                 var p = {};
                 //
                 arr.forEach(function (json) {
-                    p = pp.extend(p, json);
+                    p = Pp.extend(p, json);
                 });
 
                 //
@@ -885,7 +885,7 @@ var pp = function () {
 
             //
             arr.forEach(function (json) {
-                p = pp.extend(p, _this.toKvFromNameValue(json.name, json.value));
+                p = Pp.extend(p, _this.toKvFromNameValue(json.name, json.value));
             });
 
             //
@@ -987,5 +987,5 @@ var pp = function () {
         }
     }]);
 
-    return pp;
+    return Pp;
 }();

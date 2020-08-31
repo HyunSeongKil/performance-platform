@@ -27,7 +27,7 @@ const Exts = Object.freeze({
 /**
  * performance platform util js
  */
-class pp {
+class Pp {
 
     /**
      * base64 문자열을 Blob로 변환하기
@@ -68,7 +68,7 @@ class pp {
      */
     static addComma(strOrNum) {
         var s = strOrNum;
-        if (pp.isEmpty(strOrNum)) {
+        if (Pp.isEmpty(strOrNum)) {
             return "";
         }
         //
@@ -85,7 +85,7 @@ class pp {
      * @returns {string}
      */
     static unComma(str) {
-        if (pp.isEmpty(str)) {
+        if (Pp.isEmpty(str)) {
             return "";
         }
         //
@@ -97,7 +97,7 @@ class pp {
      * @param {string|number} strOrNum 문자열 또는 숫자
      */
     static formatNumber(strOrNum) {
-        return pp.addComma(strOrNum);
+        return Pp.addComma(strOrNum);
     }
 
 
@@ -171,7 +171,7 @@ class pp {
             throw new Error(".lpad - not allowed type");
         }
         //
-        if (pp.isEmpty(s)) {
+        if (Pp.isEmpty(s)) {
             return "";
         }
         //
@@ -272,7 +272,7 @@ class pp {
         };
 
 
-        if (pp.isNull(target) || pp.isNull(source)) {
+        if (Pp.isNull(target) || Pp.isNull(source)) {
             return target;
         }
 
@@ -325,7 +325,7 @@ class pp {
      * @returns {boolean}
      */
     static isNotNull(obj) {
-        return !pp.isNull(obj);
+        return !Pp.isNull(obj);
     }
 
     /**
@@ -334,7 +334,7 @@ class pp {
      * @returns {boolean}
      */
     static isNotEmpty(strOrArr) {
-        return !pp.isEmpty(strOrArr);
+        return !Pp.isEmpty(strOrArr);
     }
 
     /**
@@ -343,7 +343,7 @@ class pp {
      * @returns {boolean}
      */
     static isEmpty(strOrArr) {
-        if (pp.isNull(strOrArr)) {
+        if (Pp.isNull(strOrArr)) {
             return true;
         }
 
@@ -397,11 +397,11 @@ class pp {
      * @returns {any}
      */
     static nvl(obj, defaultValue) {
-        if (pp.isNotNull(obj)) {
+        if (Pp.isNotNull(obj)) {
             return obj;
         }
         //
-        if (pp.isNull(defaultValue)) {
+        if (Pp.isNull(defaultValue)) {
             return "";
         } else {
             return defaultValue;
@@ -417,7 +417,7 @@ class pp {
      * @returns {string|any} 리턴값
      */
     static ajaxPromise(url, param, option) {
-        if (pp.isEmpty(url) || pp.isNull(param)) {
+        if (Pp.isEmpty(url) || Pp.isNull(param)) {
             return new Promise((resolve, reject)=>{
                 reject('url or param is empty');
             });
@@ -430,7 +430,7 @@ class pp {
         };
 
         //
-        let opt = pp.extend(defaultSetting, option);
+        let opt = Pp.extend(defaultSetting, option);
 
         //
         let xhr = new XMLHttpRequest();
@@ -470,7 +470,7 @@ class pp {
 
         //
         let fd = new FormData();
-        let p = pp.toKv(param);
+        let p = Pp.toKv(param);
         //
         Object.keys(p).forEach(k=>{
             fd.append(k, p[k]);
@@ -488,7 +488,7 @@ class pp {
      * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function}
      */
     static submitAjax(url, param, callbackSuccess, option) {
-        if (pp.isEmpty(url) || pp.isNull(param)) {
+        if (Pp.isEmpty(url) || Pp.isNull(param)) {
             return;
         }
 
@@ -499,7 +499,7 @@ class pp {
             callbackError: null,
         };
         //
-        let opt = pp.extend(defaultSetting, option);
+        let opt = Pp.extend(defaultSetting, option);
 
         //
         let xhr = new XMLHttpRequest();
@@ -534,7 +534,7 @@ class pp {
                     }
                 } else {
                     //실패
-                    if (pp.isNotNull(opt.callbackError)) {
+                    if (Pp.isNotNull(opt.callbackError)) {
                         opt.callbackError(v);
                     } else {
                         alert("오류가 발생했습니다.");
@@ -545,7 +545,7 @@ class pp {
 
         //
         let fd = new FormData();
-        let p = pp.toKv(param);
+        let p = Pp.toKv(param);
         //
         Object.keys(p).forEach(k=>{
             fd.append(k, p[k]);
@@ -592,7 +592,7 @@ class pp {
         xhr.onreadystatechange = function(){
             if(4 === xhr.readyState){
                 let str = xhr.response;
-                if(pp.isEmpty(str)){
+                if(Pp.isEmpty(str)){
                     str = '{}';
                 }
 
@@ -620,7 +620,7 @@ class pp {
      * @returns {boolean}
      */
     static checkFileExt(file, arrOfExts){
-        if(pp.isNull(file)){
+        if(Pp.isNull(file)){
             return false;
         }
 
@@ -635,7 +635,7 @@ class pp {
      * @returns {boolean}
      */
     static checkFileSize(file, maxFileSize){
-        if(pp.isNull(file)){
+        if(Pp.isNull(file)){
             return false;
         }
 
@@ -656,12 +656,12 @@ class pp {
         let p = {};
         //case2, case4인 경우
         if (Array.isArray(param)) {
-            return pp.toKvFromArray(param);
+            return Pp.toKvFromArray(param);
         }
 
         //case1
-        if (pp.isNotEmpty(param.name)) {
-            return pp.toKvFromNameValue(param.name, param.value);
+        if (Pp.isNotEmpty(param.name)) {
+            return Pp.toKvFromNameValue(param.name, param.value);
         }
 
         //case3
@@ -716,7 +716,7 @@ class pp {
                 }
 
                 //
-                resultMap = pp.extend(resultMap, json);
+                resultMap = Pp.extend(resultMap, json);
             });
 
             //
@@ -740,7 +740,7 @@ class pp {
                 }
 
                 //
-                resultMap = pp.extend(resultMap, map);
+                resultMap = Pp.extend(resultMap, map);
             });
 
             //
@@ -782,7 +782,7 @@ class pp {
      * @returns {any}
      */
     static toKvFromArray(arr) {
-        if (pp.isEmpty(arr)) {
+        if (Pp.isEmpty(arr)) {
             return {};
         }
 
@@ -790,15 +790,15 @@ class pp {
         let json = arr[0];
 
         //
-        if (pp.isNotEmpty(json.name)) {
+        if (Pp.isNotEmpty(json.name)) {
             //case2
-            return pp.toKvFromNameValueArray(arr);
+            return Pp.toKvFromNameValueArray(arr);
         } else {
             //case4
             let p = {};
             //
             arr.forEach((json) => {
-                p = pp.extend(p, json);
+                p = Pp.extend(p, json);
             });
 
             //
@@ -816,7 +816,7 @@ class pp {
 
         //
         arr.forEach((json) => {
-            p = pp.extend(p, this.toKvFromNameValue(json.name, json.value));
+            p = Pp.extend(p, this.toKvFromNameValue(json.name, json.value));
         });
 
         //
