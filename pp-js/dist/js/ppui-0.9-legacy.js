@@ -370,19 +370,19 @@ var Ppui = function () {
             var b = null;
 
             //
-            b = _element(el);
+            b = _element(el, className);
             if (null != b) {
                 return b;
             }
 
             //
-            b = _collection(el);
+            b = _collection(el, className);
             if (null != b) {
                 return b;
             }
 
             //
-            b = _nodeList(el);
+            b = _nodeList(el, className);
             if (null != b) {
                 return b;
             }
