@@ -862,7 +862,7 @@ var Ppui = function () {
 
         /**
          * el에 이벤트 등록
-         * @param {HtmlElement} el
+         * @param {HtmlElement|HTMLCollection|NodeList|string} elOrSelector
          * @param {string} eventName
          * @param {Function} callbackFn
          * @since	20200818	init
@@ -870,14 +870,61 @@ var Ppui = function () {
 
     }, {
         key: 'on',
-        value: function on(el, eventName, callbackFn) {
-            if (Pp.isNull(el)) {
+        value: function on(elOrSelector, eventName, callbackFn) {
+            var _element = function _element(el, eventName, callbackFn) {
+                if (!Ppui._isElement(el)) {
+                    return;
+                }
+
+                //
+                el.addEventListener(eventName, callbackFn);
+            };
+
+            //
+            var _collection = function _collection(coll, eventName, callbackFn) {
+                if (!Ppui._isCollection(coll)) {
+                    return;
+                }
+
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var el = coll.item(i);
+
+                    //
+                    _element(el, eventName, callbackFn);
+                }
+            };
+
+            //
+            var _nodeList = function _nodeList(nl, eventName, callbackFn) {
+                if (!Ppui._isNodeList(nl)) {
+                    return;
+                }
+
+                //
+                nl.forEach(function (node) {
+                    _element(node, eventName, callbackFn);
+                });
+            };
+
+            //
+            if (Pp.isNull(elOrSelector)) {
                 console.log('on', 'null htmlNode');
                 return;
             }
 
             //
-            el.addEventListener(eventName, callbackFn);
+            var elOrColl = elOrSelector;
+            if ('string' === typeof elOrColl) {
+                elOrColl = document.querySelectorAll(elOrSelector);
+            }
+
+            //
+            _element(elOrColl, eventName, callbackFn);
+            //
+            _collection(elOrColl, eventName, callbackFn);
+            //
+            _nodeList(elOrColl, eventName, callbackFn);
         }
 
         /**

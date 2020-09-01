@@ -834,19 +834,68 @@ class Ppui{
     
     /**
      * el에 이벤트 등록
-     * @param {HtmlElement} el
+     * @param {HtmlElement|HTMLCollection|NodeList|string} elOrSelector
      * @param {string} eventName
      * @param {Function} callbackFn
      * @since	20200818	init
      */
-    static on(el, eventName, callbackFn){
-    	if(Pp.isNull(el)){
+    static on(elOrSelector, eventName, callbackFn){
+        let _element = function(el, eventName, callbackFn){
+            if(!Ppui._isElement(el)){
+                return;
+            }
+
+            //
+            el.addEventListener(eventName, callbackFn);
+        };
+        
+        //
+        let _collection = function(coll, eventName, callbackFn){
+            if(!Ppui._isCollection(coll)){
+                return;
+            }
+
+            //
+            for(let i=0; i<coll.length; i++){
+                let el = coll.item(i);
+
+                //
+                _element(el, eventName, callbackFn);
+            }
+            
+        };
+        
+        //
+        let _nodeList = function(nl, eventName, callbackFn){
+            if(!Ppui._isNodeList(nl)){
+                return;
+            }
+
+            //
+            nl.forEach(node=>{
+                _element(node, eventName, callbackFn);
+            });
+
+        };
+
+        //
+    	if(Pp.isNull(elOrSelector)){
     		console.log('on', 'null htmlNode');
     		return;
-    	}
+        }
+        
+        //
+        let elOrColl = elOrSelector;
+        if('string' === typeof(elOrColl)){
+            elOrColl = document.querySelectorAll(elOrSelector);
+        }
     	
-    	//
-    	el.addEventListener(eventName, callbackFn);
+        //
+        _element(elOrColl, eventName, callbackFn);
+        //
+        _collection(elOrColl, eventName, callbackFn);
+        //
+        _nodeList(elOrColl, eventName, callbackFn);
     }
 
 
