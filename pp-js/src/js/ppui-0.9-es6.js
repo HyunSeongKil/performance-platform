@@ -899,6 +899,65 @@ class Ppui{
     }
 
 
+
+    /**
+     * 이벤트 강제로 실행시키기
+     * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+     * @param {string} eventName 이벤트명
+     */
+    static trigger(elOrSelector, eventName){
+        //엘리먼트
+        let _element = function(el, eventName){
+            if(!Ppui._isElement(el)){
+                return;
+            }
+
+            //
+            el.dispatchEvent(new Event(eventName));
+        };
+
+        //콜렉션
+        let _collection = function(coll, eventName){
+            if(!Ppui._isCollection(coll)){
+                return;
+            }
+
+            //
+            for(let i=0; i<coll.length; i++){
+                let el = coll.item(i);
+
+                //
+                _element(el, eventName);
+            }
+        };
+
+        //노드리스트
+        let _nodeList = function(nl, eventName){
+            if(!Ppui._isNodeList(nl)){
+                return;
+            }
+
+            //
+            nl.forEach(node=>{
+                _element(node, eventName);
+            });
+        };
+
+        //
+        let el = elOrSelector;
+        if('string' === typeof(el)){
+            el = document.querySelectorAll(elOrSelector);
+        }
+
+        //
+        _element(el, eventName);
+        //
+        _collection(el, eventName);
+        //
+        _nodeList(el, eventName);
+    }
+
+
     
     /**
      * 파일 업로드

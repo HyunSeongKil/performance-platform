@@ -928,6 +928,66 @@ var Ppui = function () {
         }
 
         /**
+         * 이벤트 강제로 실행시키기
+         * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+         * @param {string} eventName 이벤트명
+         */
+
+    }, {
+        key: 'trigger',
+        value: function trigger(elOrSelector, eventName) {
+            //엘리먼트
+            var _element = function _element(el, eventName) {
+                if (!Ppui._isElement(el)) {
+                    return;
+                }
+
+                //
+                el.dispatchEvent(new Event(eventName));
+            };
+
+            //콜렉션
+            var _collection = function _collection(coll, eventName) {
+                if (!Ppui._isCollection(coll)) {
+                    return;
+                }
+
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var _el4 = coll.item(i);
+
+                    //
+                    _element(_el4, eventName);
+                }
+            };
+
+            //노드리스트
+            var _nodeList = function _nodeList(nl, eventName) {
+                if (!Ppui._isNodeList(nl)) {
+                    return;
+                }
+
+                //
+                nl.forEach(function (node) {
+                    _element(node, eventName);
+                });
+            };
+
+            //
+            var el = elOrSelector;
+            if ('string' === typeof el) {
+                el = document.querySelectorAll(elOrSelector);
+            }
+
+            //
+            _element(el, eventName);
+            //
+            _collection(el, eventName);
+            //
+            _nodeList(el, eventName);
+        }
+
+        /**
          * 파일 업로드
          * @param {string} url
          * @param {File} file 
