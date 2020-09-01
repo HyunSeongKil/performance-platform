@@ -523,7 +523,7 @@ var Ppui = function () {
 
         /**
          * blob로 <img> 생성
-            * @param {Object} blob 이미지 blob
+         * @param {Object} blob 이미지 blob
          * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}
          * @param {function} callbackFn 이미지 생성 완료 후 호출할 콜백함수. FileReader가 비동기적으로 처리되기 때문에 콜백사용
          */
@@ -985,6 +985,30 @@ var Ppui = function () {
             _collection(el, eventName);
             //
             _nodeList(el, eventName);
+        }
+
+        /**
+         * click 이벤트 등록
+         * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+         * @param {function} callbackFn 
+         */
+
+    }, {
+        key: 'click',
+        value: function click(elOrSelector, callbackFn) {
+            Ppui.on(elOrSelector, 'click', callbackFn);
+        }
+
+        /**
+         * change 이벤트 등록
+         * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+         * @param {function} callbackFn 
+         */
+
+    }, {
+        key: 'change',
+        value: function change(elOrSelector, callbackFn) {
+            Ppui.on(elOrSelector, 'change', callbackFn);
         }
 
         /**

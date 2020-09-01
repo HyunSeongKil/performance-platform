@@ -12,7 +12,7 @@
  *  2020-07-16  init
  * @author gravity@daumsoft.com
  */
-class Ppui{
+class Ppui {
 
 
     /**
@@ -42,7 +42,7 @@ class Ppui{
         }
 
         //
-        let opt = Pp.extend({'initValue':null, 'append':true, 'headerText':null, 'headerValue':null}, option);
+        let opt = Pp.extend({ 'initValue': null, 'append': true, 'headerText': null, 'headerValue': null }, option);
 
         //
         let _select = function (el, datas, opt) {
@@ -94,28 +94,28 @@ class Ppui{
             return;
         }
     };
-    
+
     /**
      * 엔터키 처리
      * @param {HTMLElement|HTMLCollection|NodeListOf<Element>} el getElement or getElements or querySelectorAll()
      * @param {Function} callback 
      * @returns {void}
      */
-    static bindEnterKey(el, callback){
+    static bindEnterKey(el, callback) {
         /**
          * getElement의 경우
          * @param {Element|null} el element
          * @param {Function} callback 
          */
-        function _element(el, callback){
+        function _element(el, callback) {
             //
-            el.removeEventListener('keypress', function(){
+            el.removeEventListener('keypress', function () {
                 //nothing
             });
 
             //
-            el.addEventListener('keypress', (ev)=>{
-                if(13 === ev.keyCode){
+            el.addEventListener('keypress', (ev) => {
+                if (13 === ev.keyCode) {
                     callback(ev);
                 }
             });
@@ -126,14 +126,14 @@ class Ppui{
          * @param {HTMLCollection} coll 콜렉션
          * @param {Function} callback 
          */
-        function _collection(coll, callback){
-            if(Pp.isNull(coll)){
+        function _collection(coll, callback) {
+            if (Pp.isNull(coll)) {
                 return;
             }
 
             //
-            for(let i=0; i<coll.length; i++){
-                _element( coll.item(i), callback);
+            for (let i = 0; i < coll.length; i++) {
+                _element(coll.item(i), callback);
             }
         }
 
@@ -143,29 +143,29 @@ class Ppui{
          * @param {NodeList} nl 노드 리스트
          * @param {Function} callback
          */
-        function _nodeList(nl, callback){
-            if(Pp.isNull(nl)){
+        function _nodeList(nl, callback) {
+            if (Pp.isNull(nl)) {
                 return;
             }
 
             //
-            nl.forEach(x=>{
+            nl.forEach(x => {
                 _element(x, callback);
             });
         }
 
         //
-        if(el instanceof HTMLElement){
-           _element(el, callback);
+        if (el instanceof HTMLElement) {
+            _element(el, callback);
         }
 
         //
-        if(el instanceof HTMLCollection){
+        if (el instanceof HTMLCollection) {
             _collection(el, callback);
         }
 
         //
-        if(el instanceof NodeList){
+        if (el instanceof NodeList) {
             _nodeList(el, callback);
         }
     }
@@ -176,7 +176,7 @@ class Ppui{
      * @param {HTMLElement|any} el 엘리먼트
      * @returns {boolean} 엘리먼트이면 true
      */
-    static _isElement(el){
+    static _isElement(el) {
         return (el instanceof HTMLElement);
     }
 
@@ -185,7 +185,7 @@ class Ppui{
      * @param {HTMLCollection|any} coll  콜렉션
      * @returns {boolean} 콜렉션이면 true
      */
-    static _isCollection(coll){
+    static _isCollection(coll) {
         return (coll instanceof HTMLCollection);
     }
 
@@ -194,7 +194,7 @@ class Ppui{
      * @param {NodeList|any} nl  노드리스트
      * @returns {boolean} 노드리스트이면 true
      */
-    static _isNodeList(nl){
+    static _isNodeList(nl) {
         return (nl instanceof NodeList);
     }
 
@@ -208,15 +208,15 @@ class Ppui{
      * @since
      *  20200831    el에 string 추가
      */
-    static addClass(elOrSelector, className){
+    static addClass(elOrSelector, className) {
         //엘리먼트
-        let _element = function(el, className){
-            if(!Ppui._isElement(el)){
+        let _element = function (el, className) {
+            if (!Ppui._isElement(el)) {
                 return;
             }
 
             //
-            if(Ppui.hasClass(el, className)){
+            if (Ppui.hasClass(el, className)) {
                 return;
             }
 
@@ -226,33 +226,33 @@ class Ppui{
 
 
         //콜렉션
-        let _collection = function(coll, className){
-            if(!Ppui._isCollection(coll)){
+        let _collection = function (coll, className) {
+            if (!Ppui._isCollection(coll)) {
                 return;
             }
 
             //
-            for(let i=0; i<coll.length; i++){
+            for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
 
-                if(Ppui.hasClass(el, className)){
+                if (Ppui.hasClass(el, className)) {
                     continue;
                 }
 
                 //
                 el.classList.add(className);
-            }            
+            }
         }
 
         //노드리스트
-        let _nodeList = function(nodeList, className){
-            if(!Ppui._isNodeList(nodeList)){
+        let _nodeList = function (nodeList, className) {
+            if (!Ppui._isNodeList(nodeList)) {
                 return;
             }
 
             //
-            nodeList.forEach(el=>{
-                if(Ppui.hasClass(el, className)){
+            nodeList.forEach(el => {
+                if (Ppui.hasClass(el, className)) {
                     return;
                 }
                 //
@@ -262,21 +262,21 @@ class Ppui{
         }
 
         //
-        if(Pp.isNull(elOrSelector)){
+        if (Pp.isNull(elOrSelector)) {
             return Ppui;
         }
 
         //
         let el = elOrSelector;
-        if('string' === typeof(elOrSelector)){
+        if ('string' === typeof (elOrSelector)) {
             el = document.querySelectorAll(elOrSelector);
         }
 
         //
-        if(Pp.isNull(el)){
+        if (Pp.isNull(el)) {
             return Ppui;
         }
-        
+
 
         //
         _element(el, className);
@@ -297,10 +297,10 @@ class Ppui{
      * @param {string} className 클래스명
      * @returns {boolean|null}
      */
-    static hasClass(el, className){
+    static hasClass(el, className) {
         //엘리먼트
-        let _element = function(el, className){
-            if(!Ppui._isElement(el)){
+        let _element = function (el, className) {
+            if (!Ppui._isElement(el)) {
                 return null;
             }
 
@@ -310,33 +310,33 @@ class Ppui{
 
 
         //콜렉션
-        let _collection = function(coll, className){
-            if(!Ppui._isCollection(coll)){
+        let _collection = function (coll, className) {
+            if (!Ppui._isCollection(coll)) {
                 return null;
             }
-                
+
             //
-            let b=false;
+            let b = false;
             //
-            for(let i=0; i<coll.length; i++){
+            for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
                 //
-                b = b || Ppui._hasClassAtElement( el, className);
+                b = b || Ppui._hasClassAtElement(el, className);
             }
-    
+
             //
             return b;
         };
 
         //노드리스트
-        let _nodeList = function(nl, className){
-            if(!Ppui._nodeList(nl)){
+        let _nodeList = function (nl, className) {
+            if (!Ppui._nodeList(nl)) {
                 return null;
             }
 
             let b = false;
             //
-            nl.forEach(el=>{
+            nl.forEach(el => {
                 b = b || Ppui._hasClassAtElement(el, className);
             });
 
@@ -344,7 +344,7 @@ class Ppui{
             return b;
         };
 
-        if(Pp.isNull(el)){
+        if (Pp.isNull(el)) {
             return false;
         }
 
@@ -353,19 +353,19 @@ class Ppui{
 
         //
         b = _element(el, className);
-        if(null != b){
+        if (null != b) {
             return b;
         }
 
         //
         b = _collection(el, className);
-        if(null != b){
+        if (null != b) {
             return b;
         }
 
         //
-        b = _nodeList(el, className);       
-        if(null != b){
+        b = _nodeList(el, className);
+        if (null != b) {
             return b;
         }
 
@@ -381,7 +381,7 @@ class Ppui{
      * @param {string} className 
      * @returns {object} Ppui
      */
-    static toggleClass(el, className){
+    static toggleClass(el, className) {
         Ppui.hasClass(el, className) ? Ppui.removeClass(el, className) : Ppui.addClass(el, className);
 
         return Ppui;
@@ -393,22 +393,22 @@ class Ppui{
      * @param {string} className 
      * @returns {boolean}
      */
-    static _hasClassAtElement(el, className){
-        if(Pp.isNull(el)){
+    static _hasClassAtElement(el, className) {
+        if (Pp.isNull(el)) {
             return false;
         }
 
-         //
-         let b = false;
-         //
-         el.classList.forEach(x=>{
-             if(x === className){
-                 b=true;
-             }
-         });
- 
-         //
-         return b;
+        //
+        let b = false;
+        //
+        el.classList.forEach(x => {
+            if (x === className) {
+                b = true;
+            }
+        });
+
+        //
+        return b;
     }
 
 
@@ -422,25 +422,25 @@ class Ppui{
      * @since
      *  20200831    el에 string추가
      */
-    static removeClass(elOrSelector, className){
+    static removeClass(elOrSelector, className) {
         //엘리먼트
-        let _element = function(el, className){
-            if(!Ppui._isElement(el)){
-                return;
-            }
-
-             //
-             el.classList.remove(className);
-        };
-        
-        //콜렉션
-        let _collection = function(coll, className){
-            if(!Ppui._isCollection(coll)){
+        let _element = function (el, className) {
+            if (!Ppui._isElement(el)) {
                 return;
             }
 
             //
-            for(let i=0; i<coll.length; i++){
+            el.classList.remove(className);
+        };
+
+        //콜렉션
+        let _collection = function (coll, className) {
+            if (!Ppui._isCollection(coll)) {
+                return;
+            }
+
+            //
+            for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
                 //
                 el.classList.remove(className);
@@ -449,26 +449,26 @@ class Ppui{
         };
 
         //노드리스트
-        let _nodeList = function(nl, className){
-            if(!Ppui._isNodeList(nl)){
+        let _nodeList = function (nl, className) {
+            if (!Ppui._isNodeList(nl)) {
                 return;
             }
 
             //
-            nl.forEach(el=>{
+            nl.forEach(el => {
                 el.classList.remove(className);
             });
         };
 
 
         //
-        if(Pp.isNull(elOrSelector)){
+        if (Pp.isNull(elOrSelector)) {
             return Ppui;
         }
 
         //
         let el = elOrSelector
-        if('string' === typeof(elOrSelector)){
+        if ('string' === typeof (elOrSelector)) {
             el = document.querySelectorAll(elOrSelector);
         }
 
@@ -491,7 +491,7 @@ class Ppui{
      * @param {string} beforeClassName 변경전 classname
      * @param {string} afterClassName 변경후 classname
      */
-    static replaceClass(elOrSelector, beforeClassName, afterClassName){
+    static replaceClass(elOrSelector, beforeClassName, afterClassName) {
 
         //
         Ppui.removeClass(elOrSelector, beforeClassName)
@@ -502,49 +502,49 @@ class Ppui{
     }
 
 
-	/**
-	 * blob로 <img> 생성
+    /**
+     * blob로 <img> 생성
      * @param {Object} blob 이미지 blob
-	 * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}
-	 * @param {function} callbackFn 이미지 생성 완료 후 호출할 콜백함수. FileReader가 비동기적으로 처리되기 때문에 콜백사용
-	 */
-	static createImgByBlob(blob, option, callbackFn){
-		let img = document.createElement('img');
-		
-		//
-		let opt = Pp.extend({}, option);
-		
-		//
-		if(Pp.isNotEmpty(opt.id)){
-			img.id = opt.id;
-		}
-		//
-		if(Pp.isNotEmpty(opt.name)){
-			img.name = opt.name;
-		}
-		//
-		if(Pp.isNotEmpty(opt.width)){
-			img.width = opt.width;			
-		}
-		//
-		if(Pp.isNotEmpty(opt.height)){
-			img.height = opt.height;			
-		}
-		
-		//@see http://www.jongminjang.com/html5/file/2018/12/27/blob-as-img-src.html
-		let reader = new FileReader();
-		reader.onload = function(e){
-			img.src = reader.result;	
-			
-			//
-			callbackFn(img);		
-		}
-		//
-		reader.readAsDataURL(blob);
-	}
+     * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}
+     * @param {function} callbackFn 이미지 생성 완료 후 호출할 콜백함수. FileReader가 비동기적으로 처리되기 때문에 콜백사용
+     */
+    static createImgByBlob(blob, option, callbackFn) {
+        let img = document.createElement('img');
+
+        //
+        let opt = Pp.extend({}, option);
+
+        //
+        if (Pp.isNotEmpty(opt.id)) {
+            img.id = opt.id;
+        }
+        //
+        if (Pp.isNotEmpty(opt.name)) {
+            img.name = opt.name;
+        }
+        //
+        if (Pp.isNotEmpty(opt.width)) {
+            img.width = opt.width;
+        }
+        //
+        if (Pp.isNotEmpty(opt.height)) {
+            img.height = opt.height;
+        }
+
+        //@see http://www.jongminjang.com/html5/file/2018/12/27/blob-as-img-src.html
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = reader.result;
+
+            //
+            callbackFn(img);
+        }
+        //
+        reader.readAsDataURL(blob);
+    }
 
 
-    
+
     /**
      * element 생성
      * @param {string} tagName 
@@ -553,11 +553,11 @@ class Ppui{
      * @param {any|undefined} opt case3
      * @returns {HTMLElement}
      */
-    static createElement(tagName, name, value, opt){
+    static createElement(tagName, name, value, opt) {
         let htmlElement = document.createElement(tagName);
 
         //
-        if('INPUT' === tagName.toUpperCase()){
+        if ('INPUT' === tagName.toUpperCase()) {
             htmlElement.setAttribute('type', 'hidden');
             htmlElement.setAttribute('value', value);
         }
@@ -566,14 +566,14 @@ class Ppui{
         htmlElement.setAttribute('name', name);
 
         //
-        if(Pp.isNull(opt)){
+        if (Pp.isNull(opt)) {
             return htmlElement;
         }
 
         //
         let keys = Object.keys(opt);
         //
-        keys.forEach(k=>{
+        keys.forEach(k => {
             let key = k;
             let value = opt[k];
             //
@@ -590,27 +590,27 @@ class Ppui{
      * @param {Array|any|undefined} param case1,case2,case3,case4
      * @returns {HTMLFormElement}
      */
-    static createForm(param){
+    static createForm(param) {
         let htmlFormElement = document.createElement('form');
         //
         htmlFormElement.setAttribute('id', Pp.createUid());
 
         //
-        if(Pp.isNull(param)){
+        if (Pp.isNull(param)) {
             return htmlFormElement;
         }
 
         //
         let map = Pp.toMap(param);
         //
-        map.forEach((value, key)=>{
+        map.forEach((value, key) => {
             //
             let el = Ppui.createElement('INPUT', key, value);
             //
             htmlFormElement.appendChild(el);
         });
 
-       
+
         //
         return htmlFormElement;
     }
@@ -622,10 +622,10 @@ class Ppui{
      * @param {Array|any|undefined} param 
      * @returns {void}
      */
-    static createFormAndSubmit(url, param){
+    static createFormAndSubmit(url, param) {
         let htmlFormElement = Ppui.createForm(param);
         //
-        if(Pp.isNull(htmlFormElement)){
+        if (Pp.isNull(htmlFormElement)) {
             return;
         }
 
@@ -633,7 +633,7 @@ class Ppui{
         //
         let el = document.querySelector('body:last-child');
         //
-        if(Pp.isNull(el)){
+        if (Pp.isNull(el)) {
             return;
         }
 
@@ -649,14 +649,14 @@ class Ppui{
     }
 
 
-    
+
     /**
      * 폼 전송
      * @param {string} url 
      * @param {htmlFormElement} htmlFormElement  form element
      * @returns {void}
      */
-    static submitForm(url, htmlFormElement){
+    static submitForm(url, htmlFormElement) {
         //
         htmlFormElement.setAttribute('method', 'post');
         htmlFormElement.setAttribute('action', url);
@@ -665,7 +665,7 @@ class Ppui{
     }
 
 
-    
+
     /**
      *
      * @param {string} url
@@ -697,13 +697,13 @@ class Ppui{
     }
 
 
-    
+
     /**
      * like jquery's serializeArray
      * @param {HTMLCollection} htmlCollection document.getElementsByTagName('body') 
      * @returns {Array}
      */
-    static serializeArray(htmlCollection){
+    static serializeArray(htmlCollection) {
         /**
          * children쪽 처리
          * @param {htmlCollection} htmlCollection body하위의 children
@@ -712,29 +712,29 @@ class Ppui{
         function _children(htmlCollection) {
             let arr = [];
             //
-            if(Pp.isNull(htmlCollection)){
+            if (Pp.isNull(htmlCollection)) {
                 return arr;
             }
 
             //
-            for(let i=0; i<htmlCollection.length; i++){
+            for (let i = 0; i < htmlCollection.length; i++) {
                 let el = htmlCollection.item(i);
-                if(Pp.isNull(el)){
+                if (Pp.isNull(el)) {
                     continue;
                 }
 
                 //
-                if('INPUT' === el.tagName){
+                if ('INPUT' === el.tagName) {
                     arr.push({
-                        'name' : el.name,
-                        'value' : el.value
+                        'name': el.name,
+                        'value': el.value
                     });
                 }
                 //
-                if('TEXTAREA' === el.tagName){
+                if ('TEXTAREA' === el.tagName) {
                     arr.push({
-                        'name' : el.name,
-                        'value' : el.value
+                        'name': el.name,
+                        'value': el.value
                     });
                 }
                 //TODO others
@@ -750,26 +750,26 @@ class Ppui{
         let arr = [];
 
         //
-        if(Pp.isNull(htmlCollection) || 0 == htmlCollection.length){
+        if (Pp.isNull(htmlCollection) || 0 == htmlCollection.length) {
             return [];
         }
 
-        
+
         //body 갯수만큼 루프
-       for(let i=0; i<htmlCollection.length; i++){
-           let el = htmlCollection.item(i);
-           if(Pp.isNull(el)){
-               continue;
-           }
+        for (let i = 0; i < htmlCollection.length; i++) {
+            let el = htmlCollection.item(i);
+            if (Pp.isNull(el)) {
+                continue;
+            }
 
-           //body내의 children (input, textarea, ...)
-           let children = el.children;
+            //body내의 children (input, textarea, ...)
+            let children = el.children;
             //children에서 값을 추출해 arr에 추가
-            arr = arr.concat( _children(children) );
-       }
+            arr = arr.concat(_children(children));
+        }
 
-       //
-       return arr;
+        //
+        return arr;
     }
 
 
@@ -779,24 +779,24 @@ class Ppui{
      * @param {Map|undefined} option {showMessage:boolean}
      * @returns {Map} {b:boolean, title:string, node:Node}
      */
-    static checkReq(nodeList, option){
+    static checkReq(nodeList, option) {
         let map = new Map();
         map.set('b', true);
 
         //
-        let opt = Pp.extend(new Map().set('showMessage',true), option);
+        let opt = Pp.extend(new Map().set('showMessage', true), option);
 
         //
-        if(null == nodeList || 0 == nodeList.length){
+        if (null == nodeList || 0 == nodeList.length) {
             return map;
         }
 
         //
-        for(let i=0; i<nodeList.length; i++){
+        for (let i = 0; i < nodeList.length; i++) {
             let node = nodeList.item(i);
 
             //
-            if(Pp.isEmpty(node.value)){
+            if (Pp.isEmpty(node.value)) {
                 map.set('b', false);
                 map.set('node', node);
 
@@ -805,23 +805,23 @@ class Ppui{
         }
 
         //
-        if(Pp.isNotEmpty(map.get('node').title)){
+        if (Pp.isNotEmpty(map.get('node').title)) {
             map.set('title', map.get('node').title);
-        }else{
+        } else {
             let id = node.id;
-            let htmlElement = document.querySelector('label[for="'+id+'"]');
-            if(Pp.isNotNull(htmlElement)){
+            let htmlElement = document.querySelector('label[for="' + id + '"]');
+            if (Pp.isNotNull(htmlElement)) {
                 map.set('title', htmlElement.innerHTML);
             }
         }
 
         //메시지 표시이면
-        if(opt.get('showMessage')){
+        if (opt.get('showMessage')) {
             map.get('node').focus();
             //
-            if(Pp.isNotEmpty(map.get('title'))){
+            if (Pp.isNotEmpty(map.get('title'))) {
                 alert(`${map.get('title')}은(는) 필수항목입니다.`);
-            }else{
+            } else {
                 alert('필수항목입니다.');
             }
         }
@@ -830,8 +830,8 @@ class Ppui{
         return map;
 
     }
-    
-    
+
+
     /**
      * el에 이벤트 등록
      * @param {HtmlElement|HTMLCollection|NodeList|string} elOrSelector
@@ -839,57 +839,57 @@ class Ppui{
      * @param {Function} callbackFn
      * @since	20200818	init
      */
-    static on(elOrSelector, eventName, callbackFn){
-        let _element = function(el, eventName, callbackFn){
-            if(!Ppui._isElement(el)){
+    static on(elOrSelector, eventName, callbackFn) {
+        let _element = function (el, eventName, callbackFn) {
+            if (!Ppui._isElement(el)) {
                 return;
             }
 
             //
             el.addEventListener(eventName, callbackFn);
         };
-        
+
         //
-        let _collection = function(coll, eventName, callbackFn){
-            if(!Ppui._isCollection(coll)){
+        let _collection = function (coll, eventName, callbackFn) {
+            if (!Ppui._isCollection(coll)) {
                 return;
             }
 
             //
-            for(let i=0; i<coll.length; i++){
+            for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
 
                 //
                 _element(el, eventName, callbackFn);
             }
-            
+
         };
-        
+
         //
-        let _nodeList = function(nl, eventName, callbackFn){
-            if(!Ppui._isNodeList(nl)){
+        let _nodeList = function (nl, eventName, callbackFn) {
+            if (!Ppui._isNodeList(nl)) {
                 return;
             }
 
             //
-            nl.forEach(node=>{
+            nl.forEach(node => {
                 _element(node, eventName, callbackFn);
             });
 
         };
 
         //
-    	if(Pp.isNull(elOrSelector)){
-    		console.log('on', 'null htmlNode');
-    		return;
+        if (Pp.isNull(elOrSelector)) {
+            console.log('on', 'null htmlNode');
+            return;
         }
-        
+
         //
         let elOrColl = elOrSelector;
-        if('string' === typeof(elOrColl)){
+        if ('string' === typeof (elOrColl)) {
             elOrColl = document.querySelectorAll(elOrSelector);
         }
-    	
+
         //
         _element(elOrColl, eventName, callbackFn);
         //
@@ -905,10 +905,10 @@ class Ppui{
      * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
      * @param {string} eventName 이벤트명
      */
-    static trigger(elOrSelector, eventName){
+    static trigger(elOrSelector, eventName) {
         //엘리먼트
-        let _element = function(el, eventName){
-            if(!Ppui._isElement(el)){
+        let _element = function (el, eventName) {
+            if (!Ppui._isElement(el)) {
                 return;
             }
 
@@ -917,13 +917,13 @@ class Ppui{
         };
 
         //콜렉션
-        let _collection = function(coll, eventName){
-            if(!Ppui._isCollection(coll)){
+        let _collection = function (coll, eventName) {
+            if (!Ppui._isCollection(coll)) {
                 return;
             }
 
             //
-            for(let i=0; i<coll.length; i++){
+            for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
 
                 //
@@ -932,20 +932,20 @@ class Ppui{
         };
 
         //노드리스트
-        let _nodeList = function(nl, eventName){
-            if(!Ppui._isNodeList(nl)){
+        let _nodeList = function (nl, eventName) {
+            if (!Ppui._isNodeList(nl)) {
                 return;
             }
 
             //
-            nl.forEach(node=>{
+            nl.forEach(node => {
                 _element(node, eventName);
             });
         };
 
         //
         let el = elOrSelector;
-        if('string' === typeof(el)){
+        if ('string' === typeof (el)) {
             el = document.querySelectorAll(elOrSelector);
         }
 
@@ -958,7 +958,27 @@ class Ppui{
     }
 
 
-    
+    /**
+     * click 이벤트 등록
+     * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+     * @param {function} callbackFn 
+     */
+    static click(elOrSelector, callbackFn) {
+        Ppui.on(elOrSelector, 'click', callbackFn);
+    }
+
+
+    /**
+     * change 이벤트 등록
+     * @param {HTMLElement|HTMLCollection|NodeList|string} elOrSelector 
+     * @param {function} callbackFn 
+     */
+    static change(elOrSelector, callbackFn) {
+        Ppui.on(elOrSelector, 'change', callbackFn);
+    }
+
+
+
     /**
      * 파일 업로드
      * @param {string} url
@@ -966,21 +986,21 @@ class Ppui{
      * @param {Function} callbackSuccess
      * @param {any|undefined} option
      */
-    static uploadFile(url, file, callbackSuccess, option){
-        if(Pp.isNull(file)){
-            callbackSuccess({errorCode:'E_NULL'});
+    static uploadFile(url, file, callbackSuccess, option) {
+        if (Pp.isNull(file)) {
+            callbackSuccess({ errorCode: 'E_NULL' });
             return;
         }
 
         //파일 크기 검사
-        if(!Pp.checkFileSize(file, 123456)){
-            callbackSuccess({errorCode:'E_FILE_SIZE'});
+        if (!Pp.checkFileSize(file, 123456)) {
+            callbackSuccess({ errorCode: 'E_FILE_SIZE' });
             return;
         }
 
         //파일 확장자 검사
-        if(!Pp.checkFileExt(file)){
-            callbackSuccess({errorCode:'E_EXT'});
+        if (!Pp.checkFileExt(file)) {
+            callbackSuccess({ errorCode: 'E_EXT' });
             return;
         }
 
@@ -990,8 +1010,8 @@ class Ppui{
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         //
-        xhr.onreadystatechange = ()=>{
-            if(XMLHttpRequest.DONE === xhr.readyState){
+        xhr.onreadystatechange = () => {
+            if (XMLHttpRequest.DONE === xhr.readyState) {
                 //성공
                 if (200 === xhr.status) {
                     //json 형식
@@ -1002,7 +1022,7 @@ class Ppui{
                         callbackSuccess(v);
                     }
                 } else {
-                    callbackSuccess({errorCode:'E_500'});
+                    callbackSuccess({ errorCode: 'E_500' });
                     return;
                 }
             }
