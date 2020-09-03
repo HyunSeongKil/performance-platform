@@ -120,16 +120,9 @@ var Ppui = function () {
          * @returns {void}
          */
         value: function bindEnterKey(elOrSelector, callback) {
-            /**
-             * getElement의 경우
-             * @param {Element|null} el element
-             * @param {Function} callback 
-             */
-            function _element(el, callback) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
-
+            var arr = Ppui._flat(elOrSelector);
+            //
+            arr.forEach(function (el) {
                 //
                 el.removeEventListener('keypress', function () {
                     //nothing
@@ -141,55 +134,7 @@ var Ppui = function () {
                         callback(ev);
                     }
                 });
-            }
-
-            /**
-             * getElements의 경우
-             * @param {HTMLCollection} coll 콜렉션
-             * @param {Function} callback 
-             */
-            function _collection(coll, callback) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    _element(coll.item(i), callback);
-                }
-            }
-
-            /**
-             * querySelectorAll()의 경우
-             * @param {NodeList} nl 노드 리스트
-             * @param {Function} callback
-             */
-            function _nodeList(nl, callback) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (x) {
-                    _element(x, callback);
-                });
-            }
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof el) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(el, callback);
-            //
-            _collection(el, callback);
-            //
-            _nodeList(el, callback);
-
-            //
-            return el;
+            });
         }
 
         /**
@@ -229,8 +174,52 @@ var Ppui = function () {
         }
 
         /**
+         * 배열, 콜렉션, 노드목록을 1차원 배열로 변환
+         * @param {Array|any} arrOrAny 
+         * @returns {Array} 배열
+         */
+
+    }, {
+        key: '_flat',
+        value: function _flat(arrOrAny) {
+            if (!Array.isArray(arrOrAny)) {
+                return Ppui._flat([arrOrAny]);
+            }
+
+            //
+            var arr = [];
+
+            arrOrAny.forEach(function (x) {
+                if ('string' === typeof x) {
+                    arr = arr.concat(Array.from(document.querySelectorAll(x)));
+                    return;
+                }
+
+                if (x instanceof NodeList) {
+                    arr = arr.concat(Array.from(x));
+                    return;
+                }
+
+                if (x instanceof HTMLCollection) {
+                    arr = arr.concat(Array.from(x));
+                    return;
+                }
+
+                if (x instanceof Element) {
+                    arr = arr.concat(Array.from([x]));
+                    return;
+                }
+            });
+
+            //
+            return arr.filter(function (x) {
+                return Pp.isNotNull(x);
+            });
+        }
+
+        /**
          * el에 클래스 추가. like jq's addClass
-         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>|string} el getElement or getElements or querySelectorAll()
+         * @param {HTMLElement|HTMLCollection|NodeListOf<Element>|Array|string} el getElement or getElements or querySelectorAll()
          * @param {string} className 클래스명
          * @returns {object} Ppui
          * @since
@@ -239,10 +228,12 @@ var Ppui = function () {
 
     }, {
         key: 'addClass',
-        value: function addClass(elOrSelector, className) {
-            //엘리먼트
-            var _element = function _element(el, className) {
-                if (!Ppui._isElement(el)) {
+        value: function addClass(obj, className) {
+            var arr = Ppui._flat(obj);
+
+            //
+            arr.forEach(function (el) {
+                if (Pp.isEmpty(el)) {
                     return;
                 }
 
@@ -253,145 +244,29 @@ var Ppui = function () {
 
                 //
                 el.classList.add(className);
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll, className) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el = coll.item(i);
-
-                    //
-                    Ppui.addClass(_el, className);
-                }
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nodeList, className) {
-                if (!Ppui._isNodeList(nodeList)) {
-                    return;
-                }
-
-                //
-                nodeList.forEach(function (el) {
-                    //
-                    Ppui.addClass(el, className);
-                });
-            };
-
-            //
-            if (Pp.isNull(elOrSelector)) {
-                return Ppui;
-            }
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof elOrSelector) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            if (Pp.isNull(el)) {
-                return Ppui;
-            }
-
-            //
-            _element(el, className);
-            //
-            _collection(el, className);
-            //
-            _nodeList(el, className);
-
-            //
-            return Ppui;
+            });
         }
 
         /**
          * el에 클래스가 존재하는지 여부. like jq's hasClass
-         * @param {Element|HTMLCollection|NodeListOf<Element>|null} el getElement or getElements or querySelectorAll()
+         * @param {Element|HTMLCollection|NodeListOf<Element>|Array|string} elOrSelector getElement or getElements or querySelectorAll()
          * @param {string} className 클래스명
          * @returns {boolean|null}
          */
 
     }, {
         key: 'hasClass',
-        value: function hasClass(el, className) {
-            //엘리먼트
-            var _element = function _element(el, className) {
-                if (!Ppui._isElement(el)) {
-                    return null;
-                }
-
-                //
-                return Ppui._hasClassAtElement(el, className);
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll, className) {
-                if (!Ppui._isCollection(coll)) {
-                    return null;
-                }
-
-                //
-                var b = false;
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el2 = coll.item(i);
-                    //
-                    b = b || Ppui._hasClassAtElement(_el2, className);
-                }
-
-                //
-                return b;
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nl, className) {
-                if (!Ppui._nodeList(nl)) {
-                    return null;
-                }
-
-                var b = false;
-                //
-                nl.forEach(function (el) {
-                    b = b || Ppui._hasClassAtElement(el, className);
-                });
-
-                //
-                return b;
-            };
-
-            if (Pp.isNull(el)) {
-                return false;
-            }
+        value: function hasClass(elOrSelector, className) {
+            var arr = Ppui._flat(elOrSelector);
 
             //
-            var b = null;
+            var b = false;
+            arr.forEach(function (el) {
+                b = b || Ppui._hasClassAtElement(el, className);
+            });
 
             //
-            b = _element(el, className);
-            if (null != b) {
-                return b;
-            }
-
-            //
-            b = _collection(el, className);
-            if (null != b) {
-                return b;
-            }
-
-            //
-            b = _nodeList(el, className);
-            if (null != b) {
-                return b;
-            }
-
-            //
-            return null;
+            return b;
         }
 
         /**
@@ -448,62 +323,12 @@ var Ppui = function () {
     }, {
         key: 'removeClass',
         value: function removeClass(elOrSelector, className) {
-            //엘리먼트
-            var _element = function _element(el, className) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
+            var arr = Ppui._flat(elOrSelector);
 
-                //
+            //
+            arr.forEach(function (el) {
                 el.classList.remove(className);
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll, className) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el3 = coll.item(i);
-                    //
-                    Ppui.removeClass(_el3, className);
-                }
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nl, className) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (el) {
-                    Ppui.removeClass(el, className);
-                });
-            };
-
-            //
-            if (Pp.isNull(elOrSelector)) {
-                return Ppui;
-            }
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof elOrSelector) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(el, className);
-            //
-            _collection(el, className);
-            //
-            _nodeList(el, className);
-
-            //
-            return Ppui;
+            });
         }
 
         /**
@@ -516,12 +341,8 @@ var Ppui = function () {
     }, {
         key: 'replaceClass',
         value: function replaceClass(elOrSelector, beforeClassName, afterClassName) {
-
             //
             Ppui.removeClass(elOrSelector, beforeClassName).addClass(elOrSelector, afterClassName);
-
-            //
-            return Ppui;
         }
 
         /**
@@ -533,59 +354,16 @@ var Ppui = function () {
     }, {
         key: 'remove',
         value: function remove(elOrSelector) {
-            //엘리먼트
-            var _element = function _element(el) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
-
-                //
+            var arr = Ppui._flat(elOrSelector);
+            //
+            arr.forEach(function (el) {
                 el.remove();
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el4 = coll.item(i);
-                    //
-                    Ppui.remove(_el4);
-                }
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nl) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (el) {
-                    Ppui.remove(el);
-                });
-            };
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof el) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(el);
-            //
-            _collection(el);
-            //
-            _nodeList(el);
+            });
         }
 
         /**
          * 화면에서 숨기기
-         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         * @param {Element|Collection|NodeList|Array|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
          */
 
     }, {
@@ -596,7 +374,7 @@ var Ppui = function () {
 
         /**
          * 화면에 표시하기
-         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         * @param {Element|Collection|NodeList|Array|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
          */
 
     }, {
@@ -607,61 +385,18 @@ var Ppui = function () {
 
         /**
          * 화면에서 숨기기/표시하기
-         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         * @param {Element|Collection|NodeList|Array|string} elOrSelector 엘리먼트|콜렉션|노드목록|배열|셀렉터
          * @param {boolean} isShow 표시여부
          */
 
     }, {
         key: '_showHide',
         value: function _showHide(elOrSelector, isShow) {
-            //엘리먼트
-            var _element = function _element(el, isShow) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
-
-                //
+            var arr = Ppui._flat(elOrSelector);
+            //
+            arr.forEach(function (el) {
                 el.style.display = isShow ? 'block' : 'none';
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll, isShow) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el5 = coll.item(i);
-                    //
-                    Ppui._showHide(_el5, isShow);
-                }
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nl, isShow) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (el) {
-                    Ppui._showHide(el, isShow);
-                });
-            };
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof el) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(el, isShow);
-            //
-            _collection(el, isShow);
-            //
-            _nodeList(el, isShow);
+            });
         }
 
         /**
@@ -1014,60 +749,12 @@ var Ppui = function () {
     }, {
         key: 'on',
         value: function on(elOrSelector, eventName, callbackFn) {
-            var _element = function _element(el, eventName, callbackFn) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
-
+            var arr = Ppui._flat(elOrSelector);
+            //
+            arr.forEach(function (el) {
                 //
                 el.addEventListener(eventName, callbackFn);
-            };
-
-            //
-            var _collection = function _collection(coll, eventName, callbackFn) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var el = coll.item(i);
-
-                    //
-                    _element(el, eventName, callbackFn);
-                }
-            };
-
-            //
-            var _nodeList = function _nodeList(nl, eventName, callbackFn) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (node) {
-                    _element(node, eventName, callbackFn);
-                });
-            };
-
-            //
-            if (Pp.isNull(elOrSelector)) {
-                console.log('on', 'null htmlNode');
-                return;
-            }
-
-            //
-            var elOrColl = elOrSelector;
-            if ('string' === typeof elOrColl) {
-                elOrColl = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(elOrColl, eventName, callbackFn);
-            //
-            _collection(elOrColl, eventName, callbackFn);
-            //
-            _nodeList(elOrColl, eventName, callbackFn);
+            });
         }
 
         /**
@@ -1079,55 +766,12 @@ var Ppui = function () {
     }, {
         key: 'trigger',
         value: function trigger(elOrSelector, eventName) {
-            //엘리먼트
-            var _element = function _element(el, eventName) {
-                if (!Ppui._isElement(el)) {
-                    return;
-                }
-
+            var arr = Ppui._flat(elOrSelector);
+            //
+            arr.forEach(function (el) {
                 //
                 el.dispatchEvent(new Event(eventName));
-            };
-
-            //콜렉션
-            var _collection = function _collection(coll, eventName) {
-                if (!Ppui._isCollection(coll)) {
-                    return;
-                }
-
-                //
-                for (var i = 0; i < coll.length; i++) {
-                    var _el6 = coll.item(i);
-
-                    //
-                    _element(_el6, eventName);
-                }
-            };
-
-            //노드리스트
-            var _nodeList = function _nodeList(nl, eventName) {
-                if (!Ppui._isNodeList(nl)) {
-                    return;
-                }
-
-                //
-                nl.forEach(function (node) {
-                    _element(node, eventName);
-                });
-            };
-
-            //
-            var el = elOrSelector;
-            if ('string' === typeof el) {
-                el = document.querySelectorAll(elOrSelector);
-            }
-
-            //
-            _element(el, eventName);
-            //
-            _collection(el, eventName);
-            //
-            _nodeList(el, eventName);
+            });
         }
 
         /**
