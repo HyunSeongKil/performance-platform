@@ -480,11 +480,48 @@ class Pp {
         xhr.send(fd);
     }
 
+
     /**
-     *
-     * @param {string} url
+     * get 방식으로 요청
+     * @param {string} url url
+     * @param {object} param case1~4
+     * @param {function} callbackFn 콜백함수
+     * @param {object} option {'async':boolean, 'callbackError':function}
+     * @since 20200902 init
+     */
+    static get(url, param, callbackFn, option){
+        let opt = {'method':'get'};
+        if(!Pp.isNull(option)){
+            opt = Pp.extend(opt, option);
+        }
+
+        //
+        Pp.submitAjax(url, param, callbackFn, opt);
+    }
+
+    /**
+     * post 방식으로 요청
+     * @param {string} url url
+     * @param {object} param case1~4
+     * @param {function} callbackFn 콜백함수
+     * @param {object} option {'async':boolean, 'callbackError':function}
+     * @since 20200902 init
+     */
+    static post(url, param, callbackFn, option){
+        let opt = {'method':'post'};
+        if(!Pp.isNull(option)){
+            opt = Pp.extend(opt, option);
+        }
+
+        //
+        Pp.submitAjax(url, param, callbackFn, opt);
+    }
+
+    /**
+     * ajax 요청
+     * @param {string} url url
      * @param {any} param case1~4
-     * @param {Function} callbackSuccess
+     * @param {Function} callbackSuccess 콜백함수
      * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function}
      */
     static submitAjax(url, param, callbackSuccess, option) {
