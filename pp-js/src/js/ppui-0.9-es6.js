@@ -565,6 +565,82 @@ class Ppui {
 
 
     /**
+     * 화면에서 숨기기
+     * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+     */
+    static hide(elOrSelector){
+        Ppui._showHide(elOrSelector, false);
+    }
+
+
+    /**
+     * 화면에 표시하기
+     * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+     */
+    static show(elOrSelector){
+        Ppui._showHide(elOrSelector, true);
+    }
+
+    /**
+     * 화면에서 숨기기/표시하기
+     * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+     * @param {boolean} isShow 표시여부
+     */
+    static _showHide(elOrSelector, isShow){
+        //엘리먼트
+        let _element = function (el, isShow) {
+            if (!Ppui._isElement(el)) {
+                return;
+            }
+
+            //
+            el.style.display = isShow ? 'block' : 'none';
+        };
+
+         //콜렉션
+         let _collection = function (coll, isShow) {
+            if (!Ppui._isCollection(coll)) {
+                return;
+            }
+
+            //
+            for (let i = 0; i < coll.length; i++) {
+                let el = coll.item(i);
+                //
+                Ppui._showHide(el, isShow);
+            }
+
+        };
+
+        //노드리스트
+        let _nodeList = function (nl, isShow) {
+            if (!Ppui._isNodeList(nl)) {
+                return;
+            }
+
+            //
+            nl.forEach(el => {
+                Ppui._showHide(el, isShow);
+            });
+        };
+
+        
+        //
+        let el = elOrSelector;
+        if('string' === typeof(el)){
+            el = document.querySelectorAll(elOrSelector);
+        }
+
+        //
+        _element(el, isShow);
+        //
+        _collection(el, isShow);
+        //
+        _nodeList(el, isShow);
+    }
+
+
+    /**
      * blob로 <img> 생성
      * @param {Object} blob 이미지 blob
      * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}

@@ -584,6 +584,87 @@ var Ppui = function () {
         }
 
         /**
+         * 화면에서 숨기기
+         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         */
+
+    }, {
+        key: 'hide',
+        value: function hide(elOrSelector) {
+            Ppui._showHide(elOrSelector, false);
+        }
+
+        /**
+         * 화면에 표시하기
+         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         */
+
+    }, {
+        key: 'show',
+        value: function show(elOrSelector) {
+            Ppui._showHide(elOrSelector, true);
+        }
+
+        /**
+         * 화면에서 숨기기/표시하기
+         * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+         * @param {boolean} isShow 표시여부
+         */
+
+    }, {
+        key: '_showHide',
+        value: function _showHide(elOrSelector, isShow) {
+            //엘리먼트
+            var _element = function _element(el, isShow) {
+                if (!Ppui._isElement(el)) {
+                    return;
+                }
+
+                //
+                el.style.display = isShow ? 'block' : 'none';
+            };
+
+            //콜렉션
+            var _collection = function _collection(coll, isShow) {
+                if (!Ppui._isCollection(coll)) {
+                    return;
+                }
+
+                //
+                for (var i = 0; i < coll.length; i++) {
+                    var _el5 = coll.item(i);
+                    //
+                    Ppui._showHide(_el5, isShow);
+                }
+            };
+
+            //노드리스트
+            var _nodeList = function _nodeList(nl, isShow) {
+                if (!Ppui._isNodeList(nl)) {
+                    return;
+                }
+
+                //
+                nl.forEach(function (el) {
+                    Ppui._showHide(el, isShow);
+                });
+            };
+
+            //
+            var el = elOrSelector;
+            if ('string' === typeof el) {
+                el = document.querySelectorAll(elOrSelector);
+            }
+
+            //
+            _element(el, isShow);
+            //
+            _collection(el, isShow);
+            //
+            _nodeList(el, isShow);
+        }
+
+        /**
          * blob로 <img> 생성
          * @param {Object} blob 이미지 blob
          * @param {object} option 속성값 {'width':number, 'height':number, 'id':string, 'name':string}
@@ -1016,10 +1097,10 @@ var Ppui = function () {
 
                 //
                 for (var i = 0; i < coll.length; i++) {
-                    var _el5 = coll.item(i);
+                    var _el6 = coll.item(i);
 
                     //
-                    _element(_el5, eventName);
+                    _element(_el6, eventName);
                 }
             };
 
