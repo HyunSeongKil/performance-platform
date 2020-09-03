@@ -52,6 +52,11 @@ class Ppui {
                 el.options.length = 0;
             }
 
+            //
+            if(Pp.isEmpty(datas)){
+                return;
+            }
+
             //헤더 텍스트 존재하면
             if (Pp.isNotEmpty(opt.headerText)) {
                 let option = document.createElement('option');
@@ -97,17 +102,21 @@ class Ppui {
 
     /**
      * 엔터키 처리
-     * @param {HTMLElement|HTMLCollection|NodeListOf<Element>} el getElement or getElements or querySelectorAll()
+     * @param {HTMLElement|HTMLCollection|NodeListOf<Element>|string} elOrSelector getElement or getElements or querySelectorAll()
      * @param {Function} callback 
      * @returns {void}
      */
-    static bindEnterKey(el, callback) {
+    static bindEnterKey(elOrSelector, callback) {
         /**
          * getElement의 경우
          * @param {Element|null} el element
          * @param {Function} callback 
          */
         function _element(el, callback) {
+            if(!Ppui._isElement(el)){
+                return;
+            }
+
             //
             el.removeEventListener('keypress', function () {
                 //nothing
@@ -127,10 +136,10 @@ class Ppui {
          * @param {Function} callback 
          */
         function _collection(coll, callback) {
-            if (Pp.isNull(coll)) {
+            if(!Ppui._isCollection(coll)){
                 return;
             }
-
+            
             //
             for (let i = 0; i < coll.length; i++) {
                 _element(coll.item(i), callback);
@@ -144,10 +153,10 @@ class Ppui {
          * @param {Function} callback
          */
         function _nodeList(nl, callback) {
-            if (Pp.isNull(nl)) {
+            if(!Ppui._isNodeList(nl)){
                 return;
             }
-
+            
             //
             nl.forEach(x => {
                 _element(x, callback);
@@ -155,19 +164,20 @@ class Ppui {
         }
 
         //
-        if (el instanceof HTMLElement) {
-            _element(el, callback);
+        let el = elOrSelector;
+        if('string' === typeof(el)){
+            el = document.querySelectorAll(elOrSelector);
         }
 
         //
-        if (el instanceof HTMLCollection) {
-            _collection(el, callback);
-        }
+        _element(el, callback);
+        //
+        _collection(el, callback);
+        //
+        _nodeList(el, callback);
 
         //
-        if (el instanceof NodeList) {
-            _nodeList(el, callback);
-        }
+        return el;
     }
 
 
@@ -235,12 +245,8 @@ class Ppui {
             for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
 
-                if (Ppui.hasClass(el, className)) {
-                    continue;
-                }
-
                 //
-                el.classList.add(className);
+                Ppui.addClass(el, className);
             }
         }
 
@@ -252,11 +258,8 @@ class Ppui {
 
             //
             nodeList.forEach(el => {
-                if (Ppui.hasClass(el, className)) {
-                    return;
-                }
                 //
-                el.classList.add(className);
+                Ppui.addClass(el, className);
             });
 
         }
@@ -377,12 +380,12 @@ class Ppui {
 
     /**
      * like jquery's toggleClass
-     * @param {Element} el 
+     * @param {Element|HTMLCollection|NodeList|string} elOrSelector 
      * @param {string} className 
      * @returns {object} Ppui
      */
-    static toggleClass(el, className) {
-        Ppui.hasClass(el, className) ? Ppui.removeClass(el, className) : Ppui.addClass(el, className);
+    static toggleClass(elOrSelector, className) {
+        Ppui.hasClass(elOrSelector, className) ? Ppui.removeClass(elOrSelector, className) : Ppui.addClass(elOrSelector, className);
 
         return Ppui;
     }
@@ -443,7 +446,7 @@ class Ppui {
             for (let i = 0; i < coll.length; i++) {
                 let el = coll.item(i);
                 //
-                el.classList.remove(className);
+                Ppui.removeClass(el, className);
             }
 
         };
@@ -456,7 +459,7 @@ class Ppui {
 
             //
             nl.forEach(el => {
-                el.classList.remove(className);
+                Ppui.removeClass(el, className);
             });
         };
 
@@ -499,6 +502,65 @@ class Ppui {
 
         //
         return Ppui;
+    }
+
+
+    /**
+     * 엘리먼트 삭제
+     * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
+     * @since 20200903 init
+     */
+    static remove(elOrSelector){
+        //엘리먼트
+        let _element = function (el) {
+            if (!Ppui._isElement(el)) {
+                return;
+            }
+
+            //
+            el.remove();
+        };
+
+         //콜렉션
+         let _collection = function (coll) {
+            if (!Ppui._isCollection(coll)) {
+                return;
+            }
+
+            //
+            for (let i = 0; i < coll.length; i++) {
+                let el = coll.item(i);
+                //
+                Ppui.remove(el);
+            }
+
+        };
+
+        //노드리스트
+        let _nodeList = function (nl) {
+            if (!Ppui._isNodeList(nl)) {
+                return;
+            }
+
+            //
+            nl.forEach(el => {
+                Ppui.remove(el);
+            });
+        };
+
+
+        //
+        let el = elOrSelector;
+        if('string' === typeof(el)){
+            el = document.querySelectorAll(elOrSelector);
+        }
+
+        //
+        _element(el);
+        //
+        _collection(el);
+        //
+        _nodeList(el);
     }
 
 
