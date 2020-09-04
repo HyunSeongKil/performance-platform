@@ -196,6 +196,25 @@ class Ppui {
     }
 
 
+    /**
+     * 엘리먼트 인스턴스 리턴
+     * @param {string} selector 셀렉터
+     */
+    static find(selector){
+        let coll = document.querySelectorAll(selector);
+        if(Pp.isNull(coll)){
+            return null;
+        }
+
+        //
+        if(1 == coll.length){
+            return coll.item(0);
+        }else{
+            return coll;
+        }
+    }
+
+
 
     /**
      * el에 클래스 추가. like jq's addClass
@@ -210,10 +229,6 @@ class Ppui {
 
         //
         arr.forEach(el=>{
-            if(Pp.isEmpty(el)){
-                return;
-            }
-
             //
             if (Ppui.hasClass(el, className)) {
                 return;
@@ -702,7 +717,24 @@ class Ppui {
         //
         arr.forEach(el=>{
             //
+            Ppui.unbind(el, eventName, callbackFn);
+            //
             el.addEventListener(eventName, callbackFn);
+        });
+    }
+
+
+    /**
+     * 이벤트 핸들러 삭제
+     * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트
+     * @param {string} eventName 이벤트명
+     * @param {function} callbackFn 콜백함수
+     */
+    static unbind(elOrSelector, eventName, callbackFn){
+        let arr = Ppui._flat(elOrSelector);
+        //
+        arr.forEach(el=>{
+            el.removeEventListener(eventName, callbackFn, false);
         });
     }
 
