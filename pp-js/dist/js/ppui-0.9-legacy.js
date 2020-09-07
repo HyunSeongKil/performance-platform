@@ -216,6 +216,12 @@ var Ppui = function () {
                 return Pp.isNotNull(x);
             });
         }
+
+        /**
+         * 엘리먼트 인스턴스 리턴
+         * @param {string} selector 셀렉터
+         */
+
     }, {
         key: 'find',
         value: function find(selector) {
@@ -890,4 +896,115 @@ var Ppui = function () {
     }]);
 
     return Ppui;
+}();
+
+/**
+ * jQuery같은거 흉내내기
+ * @param {*} args 
+ */
+
+
+window['X'] = function (args) {
+    return new X_(args);
+};
+
+var X_ = function () {
+    function X_(args) {
+        _classCallCheck(this, X_);
+
+        this.arr = Ppui._flat(args);
+    }
+
+    _createClass(X_, [{
+        key: 'addClass',
+        value: function addClass(className) {
+            Ppui.addClass(this.arr, className);
+            //
+            return this;
+        }
+    }, {
+        key: 'removeClass',
+        value: function removeClass(className) {
+            Ppui.removeClass(this.arr, className);
+            //
+            return this;
+        }
+    }, {
+        key: 'toggleClass',
+        value: function toggleClass(className) {
+            Ppui.toggleClass(this.arr, className);
+            //
+            return this;
+        }
+    }, {
+        key: 'hasClass',
+        value: function hasClass(className) {
+            return Ppui.hasClass(this.arr, className);
+        }
+    }, {
+        key: 'click',
+        value: function click(callbackFn) {
+            Ppui.click(this.arr, callbackFn);
+            //
+            return this;
+        }
+    }, {
+        key: 'change',
+        value: function change(callbackFn) {
+            Ppui.change(this.arr, callbackFn);
+            //
+            return this;
+        }
+    }, {
+        key: 'unbind',
+        value: function unbind(eventName, callbackFn) {
+            Ppui.unbind(this.arr, eventName, callbackFn);
+            //
+            return this;
+        }
+    }, {
+        key: 'on',
+        value: function on(eventName, callbackFn) {
+            Ppui.on(this.arr, eventName, callbackFn);
+            //
+            return this;
+        }
+    }, {
+        key: 'length',
+        value: function length() {
+            return this.arr.length;
+        }
+    }, {
+        key: 'size',
+        value: function size() {
+            return this.length();
+        }
+    }, {
+        key: 'each',
+        value: function each(callbackFn) {
+            var i = 0;
+            this.arr.forEach(function (el) {
+                callbackFn(i++, el);
+            });
+
+            //
+            return this;
+        }
+    }, {
+        key: 'find',
+        value: function find(selector) {
+            var newarr = [];
+
+            this.arr.forEach(function (el) {
+                newarr = newarr.concat(Array.from(el.querySelectorAll(selector)));
+            });
+
+            //
+            this.arr = newarr;
+            //
+            return this;
+        }
+    }]);
+
+    return X_;
 }();

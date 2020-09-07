@@ -107,7 +107,7 @@ class Ppui {
      * @returns {void}
      */
     static bindEnterKey(elOrSelector, callback) {
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             //
@@ -158,9 +158,9 @@ class Ppui {
      * @param {Array|any} arrOrAny 
      * @returns {Array} 배열
      */
-    static _flat(arrOrAny){
+    static flat(arrOrAny){
         if(!Array.isArray(arrOrAny)){
-            return Ppui._flat([arrOrAny]);
+            return Ppui.flat([arrOrAny]);
         }
 
         //
@@ -225,7 +225,7 @@ class Ppui {
      *  20200831    el에 string 추가
      */
     static addClass(obj, className) {
-        let arr = Ppui._flat(obj);
+        let arr = Ppui.flat(obj);
 
         //
         arr.forEach(el=>{
@@ -247,7 +247,7 @@ class Ppui {
      * @returns {boolean|null}
      */
     static hasClass(elOrSelector, className) {
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
 
         //
         let b = false;
@@ -308,7 +308,7 @@ class Ppui {
      *  20200831    el에 string추가
      */
     static removeClass(elOrSelector, className) {
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
 
         //
         arr.forEach(el=>{
@@ -331,12 +331,30 @@ class Ppui {
 
 
     /**
+     * 추가하기
+     * @param {Element|Collection|NodeList|Array|string} elOrSelector 엘리먼트
+     * @param {string} htmlString 문자열
+     */
+    static append(elOrSelector, htmlString){
+        let arr = Ppui.flat(elOrSelector);
+
+        let div = document.createElement('div');
+        div.innerHTML = htmlString;
+
+        //
+        arr.forEach(el=>{
+            el.appendChild( div.firstChild.cloneNode(true));
+        });
+    }
+
+
+    /**
      * 엘리먼트 삭제
      * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
      * @since 20200903 init
      */
     static remove(elOrSelector){
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             el.remove();
@@ -367,7 +385,7 @@ class Ppui {
      * @param {boolean} isShow 표시여부
      */
     static _showHide(elOrSelector, isShow){
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             el.style.display = isShow ? 'block' : 'none';
@@ -713,7 +731,7 @@ class Ppui {
      * @since	20200818	init
      */
     static on(elOrSelector, eventName, callbackFn) {
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             //
@@ -731,7 +749,7 @@ class Ppui {
      * @param {function} callbackFn 콜백함수
      */
     static unbind(elOrSelector, eventName, callbackFn){
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             el.removeEventListener(eventName, callbackFn, false);
@@ -746,7 +764,7 @@ class Ppui {
      * @param {string} eventName 이벤트명
      */
     static trigger(elOrSelector, eventName) {
-        let arr = Ppui._flat(elOrSelector);
+        let arr = Ppui.flat(elOrSelector);
         //
         arr.forEach(el=>{
             //
@@ -831,6 +849,150 @@ class Ppui {
 
         //
         xhr.send(fd);
+    }
+
+}
+
+
+
+
+
+
+/**
+ * jQuery같은거 흉내내기
+ * @param {*} args 
+ * @since 20200904 init
+ */
+let globalFunction = function(args){
+    return new X_(args);
+}
+
+//
+window['x'] = globalFunction;
+
+class X_{
+    constructor(args){
+        this.items = Ppui.flat(args);
+    }
+
+    addClass(className){
+        Ppui.addClass(this.items, className);
+        //
+        return this;
+    }
+
+    removeClass(className){
+        Ppui.removeClass(this.items, className);
+        //
+        return this;
+    }
+
+    toggleClass(className){
+        Ppui.toggleClass(this.items, className);
+        //
+        return this;
+    }
+
+    hasClass(className){
+        return Ppui.hasClass(this.items, className);
+    }
+
+    hide(){
+        Ppui.hide(this.items);
+        //
+        return this;
+    }
+
+    show(){
+        Ppui.show(this.items);
+        //
+        return this;
+    }
+
+    click(callbackFn){
+        Ppui.click(this.items, callbackFn);
+        //
+        return this;
+    }
+
+    change(callbackFn){
+        Ppui.change(this.items, callbackFn);
+        //
+        return this;
+    }
+
+    unbind(eventName, callbackFn){
+        Ppui.unbind(this.items, eventName, callbackFn);
+        //
+        return this;
+    }
+
+    on(eventName, callbackFn){
+        Ppui.on(this.items, eventName, callbackFn);
+        //
+        return this;
+    }
+
+    length(){
+        return this.items.length;
+    }
+
+    size(){
+        return this.length();
+    }
+
+    each(callbackFn){
+        let i=0;
+        this.items.forEach(el=>{
+            callbackFn(i++, el);
+        });
+
+        //
+        return this;
+    }
+
+    find(selector){
+        let arr=[];
+
+        this.items.forEach(el=>{
+            arr = arr.concat(Array.from(el.querySelectorAll(selector)));
+        });
+
+        //
+        this.items = arr;
+        //
+        return this;
+    }
+
+
+    append(htmlString){
+        Ppui.append(this.items, htmlString);
+
+        //
+        return this;
+    }
+
+
+
+    remove(){
+        Ppui.remove(this.items);
+        //
+        this.items = [];
+        //
+        return this;
+    }
+
+
+    each(arr, callback){
+        if(Pp.isEmpty(arr)){
+            return;
+        }
+
+        //
+        let i=0;
+        arr.forEach(x=>{
+            callback(i++, x);
+        });
     }
 
 }
