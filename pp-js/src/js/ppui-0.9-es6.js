@@ -154,6 +154,15 @@ class Ppui {
 
 
     /**
+     * TODO
+     * @param {string} selector 셀렉터
+     */
+    static data(selector){
+
+    }
+
+
+    /**
      * 배열, 콜렉션, 노드목록을 1차원 배열로 변환
      * @param {Array|any} arrOrAny 
      * @returns {Array} 배열
@@ -193,6 +202,11 @@ class Ppui {
             return Pp.isNotNull(x);
         });
 
+    }
+
+
+    static child(parentEl, selector){
+        return parentEl.querySelector(selector);
     }
 
 

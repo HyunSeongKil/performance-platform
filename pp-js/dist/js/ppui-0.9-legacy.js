@@ -120,7 +120,7 @@ var Ppui = function () {
          * @returns {void}
          */
         value: function bindEnterKey(elOrSelector, callback) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 //
@@ -174,16 +174,25 @@ var Ppui = function () {
         }
 
         /**
+         * TODO
+         * @param {string} selector 셀렉터
+         */
+
+    }, {
+        key: 'data',
+        value: function data(selector) {}
+
+        /**
          * 배열, 콜렉션, 노드목록을 1차원 배열로 변환
          * @param {Array|any} arrOrAny 
          * @returns {Array} 배열
          */
 
     }, {
-        key: '_flat',
-        value: function _flat(arrOrAny) {
+        key: 'flat',
+        value: function flat(arrOrAny) {
             if (!Array.isArray(arrOrAny)) {
-                return Ppui._flat([arrOrAny]);
+                return Ppui.flat([arrOrAny]);
             }
 
             //
@@ -215,6 +224,11 @@ var Ppui = function () {
             return arr.filter(function (x) {
                 return Pp.isNotNull(x);
             });
+        }
+    }, {
+        key: 'child',
+        value: function child(parentEl, selector) {
+            return parentEl.querySelector(selector);
         }
 
         /**
@@ -250,7 +264,7 @@ var Ppui = function () {
     }, {
         key: 'addClass',
         value: function addClass(obj, className) {
-            var arr = Ppui._flat(obj);
+            var arr = Ppui.flat(obj);
 
             //
             arr.forEach(function (el) {
@@ -274,7 +288,7 @@ var Ppui = function () {
     }, {
         key: 'hasClass',
         value: function hasClass(elOrSelector, className) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
 
             //
             var b = false;
@@ -340,7 +354,7 @@ var Ppui = function () {
     }, {
         key: 'removeClass',
         value: function removeClass(elOrSelector, className) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
 
             //
             arr.forEach(function (el) {
@@ -363,6 +377,26 @@ var Ppui = function () {
         }
 
         /**
+         * 추가하기
+         * @param {Element|Collection|NodeList|Array|string} elOrSelector 엘리먼트
+         * @param {string} htmlString 문자열
+         */
+
+    }, {
+        key: 'append',
+        value: function append(elOrSelector, htmlString) {
+            var arr = Ppui.flat(elOrSelector);
+
+            var div = document.createElement('div');
+            div.innerHTML = htmlString;
+
+            //
+            arr.forEach(function (el) {
+                el.appendChild(div.firstChild.cloneNode(true));
+            });
+        }
+
+        /**
          * 엘리먼트 삭제
          * @param {Element|Collection|NodeList|string} elOrSelector 엘리먼트|콜렉션|노드목록|셀렉터
          * @since 20200903 init
@@ -371,7 +405,7 @@ var Ppui = function () {
     }, {
         key: 'remove',
         value: function remove(elOrSelector) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 el.remove();
@@ -409,7 +443,7 @@ var Ppui = function () {
     }, {
         key: '_showHide',
         value: function _showHide(elOrSelector, isShow) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 el.style.display = isShow ? 'block' : 'none';
@@ -766,7 +800,7 @@ var Ppui = function () {
     }, {
         key: 'on',
         value: function on(elOrSelector, eventName, callbackFn) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 //
@@ -786,7 +820,7 @@ var Ppui = function () {
     }, {
         key: 'unbind',
         value: function unbind(elOrSelector, eventName, callbackFn) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 el.removeEventListener(eventName, callbackFn, false);
@@ -802,7 +836,7 @@ var Ppui = function () {
     }, {
         key: 'trigger',
         value: function trigger(elOrSelector, eventName) {
-            var arr = Ppui._flat(elOrSelector);
+            var arr = Ppui.flat(elOrSelector);
             //
             arr.forEach(function (el) {
                 //
@@ -901,78 +935,96 @@ var Ppui = function () {
 /**
  * jQuery같은거 흉내내기
  * @param {*} args 
+ * @since 20200904 init
  */
 
 
-window['X'] = function (args) {
+var globalFunction = function globalFunction(args) {
     return new X_(args);
 };
+
+//
+window['x'] = globalFunction;
 
 var X_ = function () {
     function X_(args) {
         _classCallCheck(this, X_);
 
-        this.arr = Ppui._flat(args);
+        this.items = Ppui.flat(args);
     }
 
     _createClass(X_, [{
         key: 'addClass',
         value: function addClass(className) {
-            Ppui.addClass(this.arr, className);
+            Ppui.addClass(this.items, className);
             //
             return this;
         }
     }, {
         key: 'removeClass',
         value: function removeClass(className) {
-            Ppui.removeClass(this.arr, className);
+            Ppui.removeClass(this.items, className);
             //
             return this;
         }
     }, {
         key: 'toggleClass',
         value: function toggleClass(className) {
-            Ppui.toggleClass(this.arr, className);
+            Ppui.toggleClass(this.items, className);
             //
             return this;
         }
     }, {
         key: 'hasClass',
         value: function hasClass(className) {
-            return Ppui.hasClass(this.arr, className);
+            return Ppui.hasClass(this.items, className);
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            Ppui.hide(this.items);
+            //
+            return this;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            Ppui.show(this.items);
+            //
+            return this;
         }
     }, {
         key: 'click',
         value: function click(callbackFn) {
-            Ppui.click(this.arr, callbackFn);
+            Ppui.click(this.items, callbackFn);
             //
             return this;
         }
     }, {
         key: 'change',
         value: function change(callbackFn) {
-            Ppui.change(this.arr, callbackFn);
+            Ppui.change(this.items, callbackFn);
             //
             return this;
         }
     }, {
         key: 'unbind',
         value: function unbind(eventName, callbackFn) {
-            Ppui.unbind(this.arr, eventName, callbackFn);
+            Ppui.unbind(this.items, eventName, callbackFn);
             //
             return this;
         }
     }, {
         key: 'on',
         value: function on(eventName, callbackFn) {
-            Ppui.on(this.arr, eventName, callbackFn);
+            Ppui.on(this.items, eventName, callbackFn);
             //
             return this;
         }
     }, {
         key: 'length',
         value: function length() {
-            return this.arr.length;
+            return this.items.length;
         }
     }, {
         key: 'size',
@@ -983,7 +1035,7 @@ var X_ = function () {
         key: 'each',
         value: function each(callbackFn) {
             var i = 0;
-            this.arr.forEach(function (el) {
+            this.items.forEach(function (el) {
                 callbackFn(i++, el);
             });
 
@@ -993,16 +1045,46 @@ var X_ = function () {
     }, {
         key: 'find',
         value: function find(selector) {
-            var newarr = [];
+            var arr = [];
 
-            this.arr.forEach(function (el) {
-                newarr = newarr.concat(Array.from(el.querySelectorAll(selector)));
+            this.items.forEach(function (el) {
+                arr = arr.concat(Array.from(el.querySelectorAll(selector)));
             });
 
             //
-            this.arr = newarr;
+            this.items = arr;
             //
             return this;
+        }
+    }, {
+        key: 'append',
+        value: function append(htmlString) {
+            Ppui.append(this.items, htmlString);
+
+            //
+            return this;
+        }
+    }, {
+        key: 'remove',
+        value: function remove() {
+            Ppui.remove(this.items);
+            //
+            this.items = [];
+            //
+            return this;
+        }
+    }, {
+        key: 'each',
+        value: function each(arr, callback) {
+            if (Pp.isEmpty(arr)) {
+                return;
+            }
+
+            //
+            var i = 0;
+            arr.forEach(function (x) {
+                callback(i++, x);
+            });
         }
     }]);
 
