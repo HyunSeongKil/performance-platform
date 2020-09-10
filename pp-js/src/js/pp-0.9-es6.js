@@ -486,7 +486,7 @@ class Pp {
      * @param {string} url url
      * @param {object} param case1~4
      * @param {function} callbackFn 콜백함수
-     * @param {object} option {'async':boolean, 'callbackError':function}
+     * @param {object} option @see submitAjax's option
      * @since 20200902 init
      */
     static get(url, param, callbackFn, option){
@@ -504,7 +504,7 @@ class Pp {
      * @param {string} url url
      * @param {object} param case1~4
      * @param {function} callbackFn 콜백함수
-     * @param {object} option {'async':boolean, 'callbackError':function}
+     * @param {object} option @see submitAjax's option
      * @since 20200902 init
      */
     static post(url, param, callbackFn, option){
@@ -522,7 +522,7 @@ class Pp {
      * @param {string} url url
      * @param {any} param case1~4
      * @param {Function} callbackSuccess 콜백함수
-     * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function}
+     * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function, 'header':{}}
      */
     static submitAjax(url, param, callbackSuccess, option) {
         if (Pp.isEmpty(url) || Pp.isNull(param)) {
@@ -543,6 +543,14 @@ class Pp {
         //
         xhr.open(opt.method, url, opt.async);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        if(Pp.isNotEmpty(opt.header)){
+            let keys = Object.keys(opt.header);
+            for(let i=0; i<keys.length; i++){
+                let k = keys[i];
+                //
+                xhr.setRequestHeader(k, opt.header[k]);
+            }
+        }
 
         //
         xhr.upload.onprogress = (e) => {
