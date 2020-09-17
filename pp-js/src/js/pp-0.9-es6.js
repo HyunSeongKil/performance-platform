@@ -337,38 +337,95 @@ class Pp {
         return !Pp.isEmpty(strOrArr);
     }
 
-    /**
-     * obj가 공백인지 여부
-     * @param {string | number | Array<any>|Map|undefined} strOrArr 문자열|배열
-     * @returns {boolean}
-     */
-    static isEmpty(strOrArr) {
-        if (Pp.isNull(strOrArr)) {
-            return true;
-        }
 
-        //숫자형은 항상 false
-        if ("number" === typeof strOrArr) {
+    /**
+     * arr요소중 하나라도 empty인지 검사
+     * @param {Array<any>} arr 
+     * @returns {Boolean} 하나라도 empty이면 true
+     * @since 20200915 init
+     */
+    static isAnyEmpty(arr){
+        if(Pp.isEmpty(arr)){
             return false;
         }
 
         //
-        if(strOrArr instanceof Map){
-            return 0 === strOrArr.size;
-        }
+        for(let i=0; i<arr.length; i++){
+            let d = arr[i];
 
-        //
-        if (Array.isArray(strOrArr)) {
-            if (0 === strOrArr.length) {
+            let b = Pp.isEmpty(d);
+            if(b){
                 return true;
             }
         }
 
         //
-        if ("string" === typeof strOrArr) {
-            if (0 === strOrArr.length) {
+        return false;
+    }
+
+
+    /**
+     * arr의 모든 요소가 empty인지 여부
+     * @param {Array<any>} arr 
+     * @returns {Boolean} 모든 요소가 empty이면 true
+     * @since 20200915 init
+     */
+    static isAllEmpty(arr){
+        if(Pp.isEmpty(arr)){
+            return true;
+        }
+
+        //
+        for(let i=0; i<arr.length; i++){
+            let d = arr[i];
+
+            let b = Pp.isEmpty(d);
+            if(!b){
+                return false;
+            }
+        }
+
+        //
+        return true;
+    }
+
+    /**
+     * obj가 공백인지 여부
+     * @param {any} obj 문자열|배열
+     * @returns {boolean}
+     */
+    static isEmpty(obj) {
+        if (Pp.isNull(obj)) {
+            return true;
+        }
+
+        //숫자형은 항상 false
+        if ("number" === typeof obj) {
+            return false;
+        }
+
+        //
+        if(obj instanceof Map){
+            return 0 === obj.size;
+        }
+
+        //
+        if (Array.isArray(obj)) {
+            if (0 === obj.length) {
                 return true;
             }
+        }
+
+        //
+        if ("string" === typeof obj) {
+            if (0 === obj.length) {
+                return true;
+            }
+        }
+
+        //object이면 키의 갯수로 확인
+        if('object' === typeof obj){
+            return 0 === Object.keys(obj).length;
         }
 
         //

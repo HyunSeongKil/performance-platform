@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -377,40 +379,101 @@ var Pp = function () {
         }
 
         /**
+         * arr요소중 하나라도 empty인지 검사
+         * @param {Array<any>} arr 
+         * @returns {Boolean} 하나라도 empty이면 true
+         * @since 20200915 init
+         */
+
+    }, {
+        key: 'isAnyEmpty',
+        value: function isAnyEmpty(arr) {
+            if (Pp.isEmpty(arr)) {
+                return false;
+            }
+
+            //
+            for (var i = 0; i < arr.length; i++) {
+                var d = arr[i];
+
+                var b = Pp.isEmpty(d);
+                if (b) {
+                    return true;
+                }
+            }
+
+            //
+            return false;
+        }
+
+        /**
+         * arr의 모든 요소가 empty인지 여부
+         * @param {Array<any>} arr 
+         * @returns {Boolean} 모든 요소가 empty이면 true
+         * @since 20200915 init
+         */
+
+    }, {
+        key: 'isAllEmpty',
+        value: function isAllEmpty(arr) {
+            if (Pp.isEmpty(arr)) {
+                return true;
+            }
+
+            //
+            for (var i = 0; i < arr.length; i++) {
+                var d = arr[i];
+
+                var b = Pp.isEmpty(d);
+                if (!b) {
+                    return false;
+                }
+            }
+
+            //
+            return true;
+        }
+
+        /**
          * obj가 공백인지 여부
-         * @param {string | number | Array<any>|Map|undefined} strOrArr 문자열|배열
+         * @param {any} obj 문자열|배열
          * @returns {boolean}
          */
 
     }, {
         key: 'isEmpty',
-        value: function isEmpty(strOrArr) {
-            if (Pp.isNull(strOrArr)) {
+        value: function isEmpty(obj) {
+            if (Pp.isNull(obj)) {
                 return true;
             }
 
             //숫자형은 항상 false
-            if ("number" === typeof strOrArr) {
+            if ("number" === typeof obj) {
                 return false;
             }
 
             //
-            if (strOrArr instanceof Map) {
-                return 0 === strOrArr.size;
+            if (obj instanceof Map) {
+                return 0 === obj.size;
             }
 
             //
-            if (Array.isArray(strOrArr)) {
-                if (0 === strOrArr.length) {
+            if (Array.isArray(obj)) {
+                if (0 === obj.length) {
                     return true;
                 }
             }
 
             //
-            if ("string" === typeof strOrArr) {
-                if (0 === strOrArr.length) {
+            if ("string" === typeof obj) {
+                if (0 === obj.length) {
                     return true;
                 }
+            }
+
+            //object이면 키의 갯수로 확인
+            if ('object' === (typeof obj === 'undefined' ? 'undefined' : _typeof(obj))) {
+                return 0 === Object.keys(obj).length;
             }
 
             //
@@ -534,7 +597,7 @@ var Pp = function () {
          * @param {string} url url
          * @param {object} param case1~4
          * @param {function} callbackFn 콜백함수
-         * @param {object} option {'async':boolean, 'callbackError':function}
+         * @param {object} option @see submitAjax's option
          * @since 20200902 init
          */
 
@@ -555,7 +618,7 @@ var Pp = function () {
          * @param {string} url url
          * @param {object} param case1~4
          * @param {function} callbackFn 콜백함수
-         * @param {object} option {'async':boolean, 'callbackError':function}
+         * @param {object} option @see submitAjax's option
          * @since 20200902 init
          */
 
@@ -576,7 +639,7 @@ var Pp = function () {
          * @param {string} url url
          * @param {any} param case1~4
          * @param {Function} callbackSuccess 콜백함수
-         * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function}
+         * @param {any|undefined} option {'method':string, 'async':boolean, 'callbackError':function, 'header':{}}
          */
 
     }, {
@@ -600,6 +663,14 @@ var Pp = function () {
             //
             xhr.open(opt.method, url, opt.async);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            if (Pp.isNotEmpty(opt.header)) {
+                var keys = Object.keys(opt.header);
+                for (var i = 0; i < keys.length; i++) {
+                    var k = keys[i];
+                    //
+                    xhr.setRequestHeader(k, opt.header[k]);
+                }
+            }
 
             //
             xhr.upload.onprogress = function (e) {
