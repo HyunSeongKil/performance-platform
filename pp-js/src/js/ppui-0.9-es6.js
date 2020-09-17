@@ -29,17 +29,12 @@ class Ppui {
      * @since 20200827 init
      */
     static bindDatas(selectorOrEl, datas, option) {
-        let el = selectorOrEl;
-
-        //
-        if ('string' === typeof (selectorOrEl)) {
-            el = document.querySelector(selectorOrEl);
-        }
-
-        //
-        if (Pp.isNull(el)) {
+        let arr = Ppui.flat(selectorOrEl);
+                //
+        if (Pp.isNull(arr)) {
             return;
         }
+
 
         //
         let opt = Pp.extend({ 'initValue': null, 'append': true, 'headerText': null, 'headerValue': null }, option);
@@ -53,8 +48,8 @@ class Ppui {
             }
 
             //
-            if(Pp.isEmpty(datas)){
-                return;
+            if(Pp.isNull(datas)){
+                datas = [];
             }
 
             //헤더 텍스트 존재하면
@@ -93,11 +88,20 @@ class Ppui {
         };
 
 
+        
         //
-        if ('SELECT' === el.tagName) {
-            _select(el, datas, opt);
-            return;
+        for(let i=0; i<arr.length; i++){
+            let el = arr[i];
+
+            //
+            if ('SELECT' === el.tagName) {
+                _select(el, datas, opt);
+            }
         }
+
+        //
+        return arr;
+        
     };
 
     /**

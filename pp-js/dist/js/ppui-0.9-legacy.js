@@ -40,15 +40,9 @@ var Ppui = function () {
          * @since 20200827 init
          */
         value: function bindDatas(selectorOrEl, datas, option) {
-            var el = selectorOrEl;
-
+            var arr = Ppui.flat(selectorOrEl);
             //
-            if ('string' === typeof selectorOrEl) {
-                el = document.querySelector(selectorOrEl);
-            }
-
-            //
-            if (Pp.isNull(el)) {
+            if (Pp.isNull(arr)) {
                 return;
             }
 
@@ -64,8 +58,8 @@ var Ppui = function () {
                 }
 
                 //
-                if (Pp.isEmpty(datas)) {
-                    return;
+                if (Pp.isNull(datas)) {
+                    datas = [];
                 }
 
                 //헤더 텍스트 존재하면
@@ -104,10 +98,17 @@ var Ppui = function () {
             };
 
             //
-            if ('SELECT' === el.tagName) {
-                _select(el, datas, opt);
-                return;
+            for (var i = 0; i < arr.length; i++) {
+                var el = arr[i];
+
+                //
+                if ('SELECT' === el.tagName) {
+                    _select(el, datas, opt);
+                }
             }
+
+            //
+            return arr;
         }
     }, {
         key: 'bindEnterKey',
