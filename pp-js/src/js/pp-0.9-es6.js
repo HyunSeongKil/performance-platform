@@ -574,6 +574,25 @@ class Pp {
         Pp.submitAjax(url, param, callbackFn, opt);
     }
 
+
+    /**
+     * 0 ~ 100사이의 임의의 값 생성
+     * @param {number} min 
+     * @param {number} max 
+     * @since 20201015 init
+     */
+    static random(min=0, max=100){
+        for(let i=0; i<100; i++){
+            let no =  Math.floor((Math.random() * 100) + 1);
+
+            if(min <= no && no < max){
+                return no;
+            }
+        }
+
+        return max;
+    }
+
     /**
      * ajax 요청
      * @param {string} url url
