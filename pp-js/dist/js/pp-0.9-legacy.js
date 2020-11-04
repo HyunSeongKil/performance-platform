@@ -635,6 +635,30 @@ var Pp = function () {
         }
 
         /**
+         * 0 ~ 100사이의 임의의 값 생성
+         * @param {number} min 
+         * @param {number} max 
+         * @since 20201015 init
+         */
+
+    }, {
+        key: 'random',
+        value: function random() {
+            var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+            var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+
+            for (var i = 0; i < 100; i++) {
+                var no = Math.floor(Math.random() * 100 + 1);
+
+                if (min <= no && no < max) {
+                    return no;
+                }
+            }
+
+            return max;
+        }
+
+        /**
          * ajax 요청
          * @param {string} url url
          * @param {any} param case1~4
@@ -1097,6 +1121,31 @@ var Pp = function () {
                 endIndex: endIndex,
                 pages: pages
             };
+        }
+
+        /**
+         * 일자는 구분자로 구분된 문자열로 리턴. 형식 : yyyyMMdd
+         * @param {Date} dt 일자
+         * @param {String} deli 구분자
+         */
+
+    }, {
+        key: 'getYmd',
+        value: function getYmd() {
+            var dt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
+            var deli = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '-';
+
+            var arr = [];
+
+            arr.push(dt.getFullYear());
+
+            var m = dt.getMonth() + 1;
+            arr.push(10 > m ? '0' + m : m);
+
+            var d = dt.getDate();
+            arr.push(10 > d ? '0' + d : d);
+
+            return arr.join(deli);
         }
     }]);
 
