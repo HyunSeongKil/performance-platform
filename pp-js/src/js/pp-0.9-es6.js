@@ -24,10 +24,13 @@ const Exts = Object.freeze({
     ZIP : {ext:'.zip .alz .7z'}
 });
 
+
 /**
  * performance platform util js
  */
 class Pp {
+
+
 
     /**
      * base64 문자열을 Blob로 변환하기
@@ -1025,5 +1028,25 @@ class Pp {
             pages: pages
         };
 
+    }
+
+
+    /**
+     * 일자는 구분자로 구분된 문자열로 리턴. 형식 : yyyyMMdd
+     * @param {Date} dt 일자
+     * @param {String} deli 구분자
+     */
+    static getYmd(dt=new Date(), deli='-'){
+        let arr = [];
+        
+        arr.push(dt.getFullYear());
+        
+        let m = dt.getMonth()+1;
+        arr.push(10>m ? '0' + m : m);
+        
+        let d = dt.getDate();
+        arr.push(10>d ? '0' + d : d);
+
+        return arr.join(deli);
     }
 }
