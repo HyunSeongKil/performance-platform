@@ -26,6 +26,9 @@ class Ppui {
      *                  headerText : 헤더 텍스트. 헤더 텍스트 존재시 headerValue도 반드시 존재해야 함. 선택
      *                  headerValue : 헤더 값. 헤더 값 존재시 headerText도 반드시 존재해야 함. 선택
      *                  append : 추가 여부. false이면 기존 option 모두 삭제 후 데이터 바인드. 선택. 초기값:true
+     *                  data : [{'attrkey':'string', 'datakey':'string'}]
+     *                      attrkey : element에 data-*에 해당하는 문자열. camel표기법 사용. js에서는 camel, html에서는 dash로 자동 변환됨. js에 dash사용하면 오류 발생
+     *                      datakey : datas에서 데이터를 꺼내올 키 문자열
      * @since 20200827 init
      */
     static bindDatas(selectorOrEl, datas, option) {
@@ -37,7 +40,19 @@ class Ppui {
 
 
         //
-        let opt = Pp.extend({ 'initValue': null, 'append': true, 'headerText': null, 'headerValue': null }, option);
+        let opt = Pp.extend({ 'initValue': null, 'append': true, 'headerText': null, 'headerValue': null, 'data':[] }, option);
+
+
+        //element에 data-* 속성 추가
+        let _dataset = function(el, d, opt){
+            for(let i=0; i<opt.data.length; i++){
+                let attrKey = opt.data[i].attrKey || opt.data[i].attrkey;
+                let dataKey = opt.data[i].dataKey || opt.data[i].datakey;
+
+                el.dataset[attrKey] = d[dataKey] || '';
+            }
+        };
+
 
         //
         let _select = function (el, datas, opt) {
@@ -71,6 +86,8 @@ class Ppui {
                 //
                 option.value = d[opt.vkey];
                 option.text = d[opt.tkey];
+
+                _dataset(option, d, opt);
             }
 
             //초기값 존재하면
