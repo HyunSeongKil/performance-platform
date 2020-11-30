@@ -108,8 +108,20 @@ class Pp {
      * 
      * @param {string|Date} str
      * @param {number} len 4,6,8,10,12,14
+     * @returns {string}
      */
     static formatDate(str, len){
+        if(str instanceof Date){
+            let dt = str;
+            if(6 == len){
+                return `${dt.getFullYear()}-${dt.getMonth()+1}`;
+            }
+
+            if(8 == len){
+                return `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+            }
+        }
+
         if('string' === typeof(str)){
             let s = str.replace(/-/gi, '')
                         .replace(/ /gi, '')
@@ -1048,5 +1060,31 @@ class Pp {
         arr.push(10>d ? '0' + d : d);
 
         return arr.join(deli);
+    }
+
+
+    /**
+     * stop watch
+     * @param {String} gbn start|stop
+     * @param {String} key 
+     * @since 20201106 init
+     */
+    static stopWatch(gbn, key){
+        if(null == window[key] || undefined == window[key]){
+            window[key] = {};
+        }
+
+        if('start' === gbn){
+            window[key][gbn] = new Date();
+        }
+
+        if('stop' === gbn){
+            window[key][gbn] = new Date();
+
+            //소요시간 ms 리턴
+            let leadTime = window[key]['stop'].getTime() - window[key]['start'].getTime();
+            console.log(key, leadTime, 'ms');
+            return leadTime;
+        }
     }
 }
