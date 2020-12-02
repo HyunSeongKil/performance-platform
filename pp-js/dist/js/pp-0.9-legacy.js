@@ -138,12 +138,16 @@ var Pp = function () {
         value: function formatDate(str, len) {
             if (str instanceof Date) {
                 var dt = str;
+                var y = dt.getFullYear();
+                var m = dt.getMonth() + 1;
+                var d = dt.getDate();
+
                 if (6 == len) {
-                    return dt.getFullYear() + '-' + (dt.getMonth() + 1);
+                    return y + '-' + (10 < m ? m : '0' + m);
                 }
 
                 if (8 == len) {
-                    return dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate();
+                    return y + '-' + (10 < m ? m : '0' + m) + '-' + (10 < d ? d : '0' + d);
                 }
             }
 
