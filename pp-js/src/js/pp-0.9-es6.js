@@ -31,6 +31,16 @@ const Exts = Object.freeze({
 class Pp {
 
 
+    /**
+     * deep copy
+     * @param {object} json 
+     */
+    static deepCopy(json){
+        let jsonString = JSON.stringify(json);
+        return JSON.parse(jsonString);
+    }
+
+
 
     /**
      * base64 문자열을 Blob로 변환하기

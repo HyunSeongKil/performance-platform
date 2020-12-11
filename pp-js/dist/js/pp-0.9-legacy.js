@@ -41,8 +41,17 @@ var Pp = function () {
     }
 
     _createClass(Pp, null, [{
-        key: 'base64ToBlob',
+        key: 'deepCopy',
 
+
+        /**
+         * deep copy
+         * @param {object} json 
+         */
+        value: function deepCopy(json) {
+            var jsonString = JSON.stringify(json);
+            return JSON.parse(jsonString);
+        }
 
         /**
          * base64 문자열을 Blob로 변환하기
@@ -51,6 +60,9 @@ var Pp = function () {
          * @param {string} contentType 
          * @returns {Blob}
          */
+
+    }, {
+        key: 'base64ToBlob',
         value: function base64ToBlob(base64) {
             var contentType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'image/png';
 
