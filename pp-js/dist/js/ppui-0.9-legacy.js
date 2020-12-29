@@ -81,7 +81,7 @@ var Ppui = function () {
                     el.appendChild(_option);
                     //
                     _option.text = opt.headerText;
-                    _option.value = opt.headerValue ? opt.headerValue : '';
+                    _option.value = opt.headerValue || '';
                 }
 
                 //

@@ -73,7 +73,7 @@ class Ppui {
                 el.appendChild(option);
                 //
                 option.text = opt.headerText;
-                option.value = opt.headerValue ? opt.headerValue : '';
+                option.value = opt.headerValue || '';
             }
 
             //
