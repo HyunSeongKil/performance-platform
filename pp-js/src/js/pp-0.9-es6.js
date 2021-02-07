@@ -496,6 +496,52 @@ class Pp {
 
 
     /**
+     * obj가 num|undefined|공백이면 defaultValue 리턴
+     * 값이 있어야 하는데, 없는 경우 defaultValue를 할당하기 위해 사용
+     * @since 20210207
+     * @param {object} obj 
+     * @param {object} defaultValue 기본값. default:''
+     * @returns
+     */
+    static empty(obj, defaultValue=''){
+        if(Pp.isNull(obj)){
+            return defaultValue;
+        }
+
+        if(Pp.isEmpty(obj)){
+            return defaultValue;
+        }
+
+        return obj;
+    }
+
+
+    /**
+     * obj가 null|undefined|공백|숫자가 아니면 Number.NaN 리턴
+     * 숫자값 이어야 하는데, 그렇지 않은 경우 NaN을 할당하려고 할 때 사용
+     * @since 20210207
+     * @param {*} obj 
+     * @param {*} defaultValue 기본값. default:NaN
+     * @returns
+     */
+    static nan(obj, defaultValue=Number.NaN){
+        if(Pp.isNull(obj)){
+            return defaultValue;
+        }
+
+        if(Pp.isEmpty(obj)){
+            return defaultValue;
+        }
+
+        if(Number.isNaN(obj)){
+            return defaultValue;
+        }
+
+        return obj;
+    }
+
+
+    /**
      * ajax 호출을 Promise 패턴으로 구현
      * @param {string} url 
      * @param {any} param 
