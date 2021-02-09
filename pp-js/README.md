@@ -15,3 +15,8 @@
 ## jsdoc 사용 방법
   - jsdoc in파일명
   - ex)jsdoc src/js/pp-0.9-es6
+
+
+# html
+  - title 추가
+  - <img/>  alt 추가
