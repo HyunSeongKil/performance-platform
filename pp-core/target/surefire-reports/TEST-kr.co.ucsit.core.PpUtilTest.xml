@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="0" name="kr.co.ucsit.core.PpUtilTest" time="0.003" errors="0" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="java.vm.version" value="14.0.2+12-46"/>
+    <property name="sun.boot.library.path" value="D:\work\jdk-14.0.2\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="D:\work\performance-platform\pp-core"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="KR"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="D:\work\performance-platform\pp-core"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.runtime.version" value="14.0.2+12-46"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\a\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="D:\work\performance-platform\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf13987513583749774533.tmp"/>
+    <property name="sun.jnu.encoding" value="MS949"/>
+    <property name="java.library.path" value="D:\work\jdk-14.0.2\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\work\jdk-14.0.2\\bin;%CATALINA_HOME%\bin;D:\work\apache-maven-3.6.3\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Git\cmd;C:\Users\a\AppData\Local\Programs\Microsoft VS Code Insiders\;C:\Program Files\nodejs\;C:\OSGeo4W64\bin;C:\RabbitMQ\rabbitmq_server-3.8.5\sbin;D:\work\gradle-6.5.1\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\MFP-Printer Utility\Box Operator3\;C:\Program Files\dotnet\;C:\Users\a\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\Users\a\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Users\a\.dotnet\tools;C:\Users\a\AppData\Roaming\npm;;C:\Users\a\AppData\Local\Programs\Fiddler;C:\Users\a\.dotnet\tools;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2\bin;;."/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="58.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="user.home" value="C:\Users\a"/>
+    <property name="user.timezone" value="Asia/Seoul"/>
+    <property name="file.encoding" value="MS949"/>
+    <property name="java.specification.version" value="14"/>
+    <property name="user.name" value="a"/>
+    <property name="java.class.path" value="D:\work\eclipse\plugins\org.eclipse.m2e.maven.runtime_1.16.0.20200610-1735\jars\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="14"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="java.home" value="D:\work\jdk-14.0.2"/>
+    <property name="user.language" value="ko"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="14.0.2"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="D:\work\performance-platform\pp-core\EMBEDDED"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2020-07-14"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase classname="kr.co.ucsit.core.PpUtilTest" name="testForceDelete" time="0.003"/>
+</testsuite>

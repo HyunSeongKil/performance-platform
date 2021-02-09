@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import dev.hyunlab.core.PpCrypto;
+import dev.hyunlab.core.misc.PpCrypto;
 
 /**
  * @author hyunseongkil

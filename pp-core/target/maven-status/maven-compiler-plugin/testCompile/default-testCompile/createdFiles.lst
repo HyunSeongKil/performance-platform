@@ -1,1 +1,4 @@
 kr\co\ucsit\core\AppTest.class
+kr\co\ucsit\core\CsCryptoTest.class
+kr\co\ucsit\core\CsDateUtilTest.class
+kr\co\ucsit\core\PpUtilTest.class
