@@ -199,6 +199,39 @@ var Ppui = function () {
         value: function data(selector) {}
 
         /**
+         * className으로 모든 엘리먼트 목록 조회. className이 정확하게 일치해야 함(like조건 아님)
+         * @param {string} className 클래스 명
+         * @returns className을 가지고 있는 엘리먼트 목록
+         * @history 20210307    init
+         */
+
+    }, {
+        key: 'getElementsByClassName',
+        value: function getElementsByClassName(className) {
+            var arr = [];
+            var els = document.getElementsByTagName('*');
+
+            els.forEach(function (el) {
+                if (Pp.isNull(el)) {
+                    return;
+                }
+
+                var classes = el.className.split(' ');
+                if (Pp.isEmpty(classes)) {
+                    return;
+                }
+
+                classes.forEach(function (x) {
+                    if (className === x) {
+                        arr.push(el);
+                    }
+                });
+            });
+
+            return arr;
+        }
+
+        /**
          * 배열, 콜렉션, 노드목록을 1차원 배열로 변환
          * @param {Array|any} arrOrAny 
          * @returns {Array} 배열
@@ -942,6 +975,36 @@ var Ppui = function () {
 
             //
             xhr.send(fd);
+        }
+
+        /**
+         * async하게 javascript 로드
+         * @param {string} src js파일 경로
+         * @param {string} charset 문자셋
+         * @history 20210307    init
+         */
+
+    }, {
+        key: 'loadScript',
+        value: function loadScript(src, charset) {
+            var el = document.createElement('script');
+            el.type = 'text/javascript';
+            el.src = src;
+            el.charset = charset || 'ISO-8859-1';
+
+            var headEl = document.getElementsByTagName('head');
+            if (Pp.isNotNull(headEl)) {
+                headEl.appendChild(el);
+                return;
+            }
+
+            var bodyEl = document.getElementsByTagName('body');
+            if (Pp.isNotNull(bodyEl)) {
+                bodyEl.appendChild(el);
+                return;
+            }
+
+            console.debug('<<.loadScript - null head and body element');
         }
     }]);
 
