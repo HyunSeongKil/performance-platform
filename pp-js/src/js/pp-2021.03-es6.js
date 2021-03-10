@@ -457,11 +457,354 @@ class PP {
 
     }
 
+    /**
+     * 엔터키 처리
+     * 예) PP.addEnterListener('input[type=search]', function(el){ console.log(el); })
+     * 예) PP.addEnterListener(['input[type=text]', 'input#id', 'input#pw'], function(el){ console.log(el); })
+     * @param {string|array<string>} selectorOrArr 
+     * @param {*} callbackFn 
+     */
+     static addEnterListener(selectorOrArr, callbackFn){
+        //문자열
+        if('string' === selectorOrArr){
+            let els = document.querySelectorAll(selectorOrArr);
+            els.forEach(el=>{
+                el.addEventListener('keyup', (evt)=>{
+                    if(13 == evt.keyCode){
+                        callbackFn(el);
+                    }
+                });
+            });
+
+            return;
+        }
+
+
+        //배열
+        if(Array.isArray(selectorOrArr)){
+            let arr = selectorOrArr;
+            arr.forEach(selector=>{
+                PP.addEnterListener(selector);
+            });
+        }
+    }
+
+
+    /**
+     * 
+     * @param {string|Array<string>|Element} selectorOrArrOrEl 
+     * @param {*} className 
+     */
+    static removeClass(selectorOrArrOrEl, className){
+        /**
+         * 
+         * @param {Element} el 
+         * @param {*} className 
+         */
+        let _element = (el, className)=>{
+            el.classList.remove(className);
+        };
+
+
+        /**
+         * 
+         * @param {Array<string>} arr 
+         * @param {*} className 
+         */
+        let _array = (arr, className)=>{
+            arr.forEach(selector=>{
+                PP.removeClass(selector, className);
+            });
+        };
+
+
+        /**
+         * 
+         * @param {string} selector 
+         * @param {*} className 
+         */
+        let _string = (selector, className)=>{
+            let els = document.querySelectorAll(selector);
+            els.forEach(el=>{
+                PP.removeClass(el, className);
+            })
+
+        }
+
+        //Element
+        if(selectorOrArrOrEl instanceof Element){
+            _element(selectorOrArrOrEl, className);
+
+            return;
+        }
+
+
+        //배열
+        if(Array.isArray(selectorOrArrOrEl)){
+            _array(selectorOrArrOrEl, className);
+            
+            return;
+        }
+
+
+        //문자열
+        if('string' == typeof selectorOrArrOrEl){
+            _string(selectorOrArrOrEl, className);
+            
+            return;
+        }
+    }
+
+
+    /**
+     * 
+     * @param {string|Array<string>|Element} selectorOrArrOrEl 
+     * @param {*} className 
+     */
+    static toggleClass(selectorOrArrOrEl, className){
+        /**
+         * 
+         * @param {Element} el 
+         * @param {*} className 
+         */
+        let _element = (el, className)=>{
+            if(PP.hasClass(el, className)){
+                PP.removeClass(el, className);
+            }else{
+                PP.addClass(el, className);
+            }
+
+        };
+
+
+        /**
+         * 
+         * @param {Array<string>} arr 
+         * @param {*} className 
+         */
+        let _array = (arr, className)=>{
+            arr.forEach(selector=>{
+                PP.toggleClass(selector, className);
+            })
+
+        };
+
+        /**
+         * 
+         * @param {string} selector 
+         * @param {*} className 
+         */
+        let _string = (selector, className)=>{
+            let els = document.querySelectorAll(selector);
+            els.forEach(el=>{
+                PP.toggleClass(el, className);
+            })
+
+        };
+
+
+        //Element
+        if(selectorOrArrOrEl instanceof Element){
+            _element(selectorOrArrOrEl, className);
+            return ;
+        }
+
+        //배열
+        if(Array.isArray(selectorOrArrOrEl)){
+            _array(selectorOrArrOrEl, className);
+            return;
+        }
+
+        //문자열
+        if('string' === typeof selectorOrArrOrEl){
+            _string(selectorOrArrOrEl, className);
+            return;
+        }
+    }
+
+
+
+    /**
+     * 
+     * @param {string|Array<string>|Element} selectorOrArrOrEl 
+     * @param {*} className 
+     */
+    static addClass(selectorOrArrOrEl, className){
+        /**
+         * 
+         * @param {Element} el 
+         * @param {*} className 
+         * @returns 
+         */
+        let _element = (el, className)=>{
+            if(PP.hasClass(el, className)){
+                return;
+            }
+
+            el.classList.add(className);
+        };
+
+
+        /**
+         * 
+         * @param {Array<string>} arr 
+         * @param {*} className 
+         */
+        let _array = (arr, className)=>{
+            arr.forEach(selector=>{
+                PP.addClass(selector, className);
+            });
+
+        };
+
+
+        /**
+         * 
+         * @param {string} selector 
+         * @param {*} className 
+         */
+        let _string = (selector, className)=>{
+            let els = document.querySelectorAll(selector);
+            els.forEach(el=>{
+                PP.addClass(el, className);
+            });
+
+        };
+
+
+        //Element
+        if(selectorOrArrOrEl instanceof Element){
+            _element(selectorOrArrOrEl, className);
+            return;
+        }
+
+
+        //배열
+        if(Array.isArray(selectorOrArrOrEl)){
+            _array(selectorOrArrOrEl, className);
+            return;
+        }
+
+        //문자열
+        if('string' === typeof selectorOrArrOrEl){
+            _string(selectorOrArrOrEl, className);
+            return;
+        }
+
+    }
+
+
+    /**
+     * 
+     * @param {string|array<string>|Element} selectorOrArrOrEl 
+     * @param {*} className 
+     */
+    static hasClass(selectorOrArrOrEl, className){
+        /**
+         * 
+         * @param {Element} el 
+         * @param {*} className 
+         * @returns 
+         */
+        let _element = (el, className)=>{
+            let b = false;
+
+            el.classList.forEach(x=>{
+                b |= (x === className);
+            })
+
+            return b;
+        };
+
+
+        /**
+         * 
+         * @param {Array<string>} arr 
+         * @param {*} className 
+         * @returns 
+         */
+        let _array = (arr, className)=>{
+            let b = false;
+
+            arr.forEach(selector=>{
+                b |= PP.hasClass(selector, className);
+            });
+
+            return b;
+        };
+
+
+        /**
+         * 
+         * @param {string} selector 
+         * @param {*} className 
+         * @returns 
+         */
+        let _string = (selector, className)=>{
+            let b = false;
+
+            let els = document.querySelectorAll(selector);
+            els.forEach(el=>{
+                b |= PP.hasClass(el, className);
+            });
+
+            return b;
+        };
+
+
+        //Element
+        if(selectorOrArrOrEl instanceof Element){
+            return _element(selectorOrArrOrEl);
+        }
+
+        //배열
+        if(Array.isArray(selectorOrArrOrEl)){
+            return _array(selectorOrArrOrEl, className);
+        }
+
+
+        //문자열
+        if('string' === typeof selectorOrArrOrEl){
+            return _string(selectorOrArrOrEl, className);
+        }
+    }
+
+
+    /**
+     * className으로 모든 엘리먼트 목록 조회. className이 정확하게 일치해야 함(like조건 아님)
+     * @param {string} className 클래스 명
+     * @returns className을 가지고 있는 엘리먼트 목록
+     * @history 20210307    init
+     */
+     static getElementsByClassName(className){
+        let arr = [];
+        let els = document.getElementsByTagName('*');
+
+        els.forEach(el=>{
+            if(PP.isNull(el)){
+                return;
+            }
+
+            let classes = el.className.split(' ');
+            if(PP.isEmpty(classes)){
+                return;
+            }
+
+            classes.forEach(x=>{
+                if(className === x){
+                    arr.push(el);
+                }
+            });
+        });
+
+        return arr;
+    }
+
 
 
     /**
      * <select/>에 데이터 바인드 하기
-     * 예)PP.bindDatas('select:first', 
+     * 예)PP.bindDatas('select:eq(0)', 
      *                  [{'t':'텍스트', 'v':'값', 'loValue':'127'}], 
      *                  {'vKey':'v', 
      *                   'tKey':'t', 
@@ -607,6 +950,9 @@ class PP {
         console.debug('<<.loadScript - null head and body element');
 
     }
+
+
+    
 
 
 }
