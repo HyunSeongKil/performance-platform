@@ -923,6 +923,52 @@ class PP {
 
 
     /**
+     * 엘리먼트 생성
+     * 예)PP.createElement('input', {'id':'아이디', 'name':'명', 'value':'값'});
+     * @param {string} tagName 
+     * @param {object} opt 
+     *  key : 엘리먼트에 추가할 attribute명
+     *  value : attribute에 해당하는 값
+     */
+    static createElement(tagName, opt=null){
+        let el = document.createElement(tagName);
+
+        if(PP.isNull(opt)){
+            return el;
+        }
+
+        Object.keys(opt).forEach(k=>{
+            el.setAttribute(k, opt[k]);
+        });
+
+        return el;
+    }
+
+
+    /**
+     * form 생성 & form에 element추가
+     * 예)PP.createForm('f123', [PP.createElement('input', {'type':'hidden', 'value':'값'})]);
+     * @param {string} id 
+     * @param {Array<Element>} els 
+     */
+    static createForm(id, els=null){
+        let form = document.createElement('form');
+        form.setAttribute('id', id);
+
+        if(PP.isNull(els)){
+            return form;
+        }
+
+
+        els.forEach(el=>{
+            form.appendChild(el);
+        });
+
+        return form;
+    }
+
+
+    /**
      * async하게 javascript 로드
      * @param {string} src js파일 경로
      * @param {string|undefined|null} charset 문자셋
